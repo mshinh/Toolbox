@@ -1,23 +1,44 @@
 import React, {Component} from 'react';
 import AppNavbar from './components/AppNavbar'
-<<<<<<< HEAD
-import ShoppingList from './components/ShoppingList'
 
-=======
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import './assets/fonts/fonts.scss';
+import './assets/stylesheets/_reset.scss';
+
+
 import Home from './components/Home'
->>>>>>> f6d45bb68b25b933934f89d3d7e30765e8f1b532
+
+import Dashboard from './components/Dashboard'
+
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './App.css';
+import './App.scss';
 
 class App extends Component {
   render()
   {
     return (
-      <div className="App">
-        <AppNavbar/>
-        <Home/>
-        <h1>Welcome to ToolBox</h1>
-        <ShoppingList/>
+      <div id="toolbox-app">
+        
+       
+      <Router>
+     
+        <div id="subclass-container" >
+
+          
+            {/* <Route path={"/home"} render={(props)=><Admin changeDash={this.changeDash} {...props}  />}    />
+            <Route path={"/contact"} component={Contact} />
+            <Route path={"/login"} component={Login} exact />
+            <Route path={"/search"} exact  render={(props) => <Search changeDash={this.changeDash} {...props}/>}  /> */}
+            <Route path={"/"} exact  render={(props) => <Home   />}  />
+
+
+        </div>
+        <div id="dash-container">  
+          <Dashboard />
+        </div>
+      </Router>
+      
       </div>
     );    
   }
