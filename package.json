@@ -1,7 +1,7 @@
 {
   "name": "learnmern",
   "version": "1.0.0",
-  "description": "Shopping list build with MERN stack",
+  "description": "ToolBox",
   "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
@@ -15,9 +15,13 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "concurrently": "^4.1.2",
+    "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
+    "express-validator": "^5.3.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.1",
-    "node-sass": "^4.12.0"
+    "node-sass": "^4.12.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^1.19.2"

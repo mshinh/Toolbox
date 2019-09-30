@@ -11,8 +11,7 @@ class App extends Component {
       <div className="App">
         <AppNavbar/>
         <Home/>
-        <h1>Welcome to ToolBox</h1>
-        <ShoppingList/>
+        <h1>Welcome to ToolBox</h1>        
       </div>
     );    
   }
