@@ -1,13 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+var cookieParser = require('cookie-parser');
 
-const items = require('./routes/api/items')
+
+
 
 const app = express();
-
-//bodyParser Middleware
-app.use(bodyParser.json());
 
 
 //DB config
@@ -20,9 +20,21 @@ mongoose
     .then(()=>console.log('Mongo DB connected..'))
     .catch(err=>console.log(err));
 
-//Use Routes
+    
 
-app.use('/api/items',items);
+
+//bring in routes
+const authRoutes = require('./routes/api/auth');
+
+//middleware
+
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(expressValidator());
+
+app.use('/',authRoutes);
+
+
 
 const port = process.env.PORT || 5000;
 
