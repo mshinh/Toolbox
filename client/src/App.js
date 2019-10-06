@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
 import AppNavbar from './components/AppNavbar'
 
+
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import './assets/fonts/fonts.scss';
 import './assets/stylesheets/_reset.scss';
 
-
 import Home from './components/Home'
-
 import Dashboard from './components/Dashboard'
-
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.scss';
 
@@ -18,6 +16,7 @@ class App extends Component {
   render()
   {
     return (
+
       <div id="toolbox-app">
         
        
