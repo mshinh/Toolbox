@@ -1,0 +1,137 @@
+//Text Sizes
+
+
+
+p,h1,h2,h3,h4,h5,button {
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+
+input {
+    font-size: 18px;
+    font-family: $mainTextL;
+    color: $mainTextColor;
+    letter-spacing: $sansSerifSpacing;
+
+    &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: $placeHolderColor;
+    }
+
+    &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: $placeHolderColor;
+    }
+
+    &::-ms-input-placeholder { /* Microsoft Edge */
+        color: $placeHolderColor;
+    }
+
+}
+
+textarea {
+    background-color: transparent;
+    color: $mainTextColor;
+    width: 100%;
+    font-family: $mainTextL;
+    font-size: 12px;
+    margin-top: 5px;
+    height: 130px;
+}
+
+.form-wrapper {
+  &.margin {
+      padding: ($marginD/$desktop) * 100vw;
+  }
+  &.half-margin {
+    padding: (($marginD/2)/$desktop) * 100vw;
+  }
+}
+.form-row {
+  display: flex;
+  margin: 0;
+}
+.form-column {
+ 
+  margin: 0;
+
+  &:first-child {
+    padding-left: 0px;
+  }
+
+
+}
+
+.input-row {
+  display: flex;
+  justify-content: flex-start;
+
+
+  .input-wrapper {
+  padding-bottom: 20px;
+  padding-top: 20px;
+  width: 100%;
+
+  //margin-right: (20/$desktop) * 100vw;
+  &:nth-child(even) {
+    margin-right: 0;
+    margin-left: (40/$desktop) * 100vw;
+  }
+
+    input {
+
+      background-color: transparent;
+      border: none;
+      border-bottom: 2px solid $greyWhite;
+      padding-bottom: 7px;
+      padding-top: 7px;
+      width: 100%;
+
+
+    }
+
+    label {
+      display: block;
+      margin: 0;
+    }
+  }
+}
+
+.input-info {
+  padding-top: 20px;
+}
+
+//Remove Default Styles
+
+a {
+    text-decoration: none;
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+
+@media(max-width: 460px) {
+    .form-column {
+        padding-left: 0;
+    }
+}
+//presets
+textarea, input, button { outline: none; }
+//input {-webkit-appearance: none;}
+button:focus {outline:0;};
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+ // border: inherit;
+// -webkit-text-fill-color: transparent;
+    color: $backgroundColor;
+  //-webkit-box-shadow: 0 0 0px 1000px #000 inset;
+  //transition: background-color 5000s ease-in-out 0s;
+}
