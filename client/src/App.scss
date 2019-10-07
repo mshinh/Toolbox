@@ -1,0 +1,16 @@
+@import './assets/stylesheets/main.scss';
+
+#toolbox-app {
+    display: flex;
+
+    #dash-container {
+        width: (722/$desktop) * 100vw;
+        border: 1px solid #000;
+        height: 100vmax;
+        
+    }
+    #subclass-container {
+        width: (1198/$desktop) * 100vw;
+        height: 100vmax;
+    }
+}
