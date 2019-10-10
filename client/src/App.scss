@@ -5,8 +5,9 @@
 
     #dash-container {
         width: (722/$desktop) * 100vw;
-        border: 1px solid #000;
-        height: 100vmax;
+        border-left: 1px solid #000;
+        height: 100vh;
+        
         
     }
     #subclass-container {

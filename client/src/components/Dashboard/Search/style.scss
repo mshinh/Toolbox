@@ -1,6 +1,12 @@
-h1 {
-    font-size: 100px;
-}
-.test {
-    color: blue;
+
+@import './../../../assets/stylesheets/main.scss';
+.search-item {
+    box-sizing: border-box;
+    border-bottom: 1px solid #000;
+    height: (80/1080) * 100vh;
+    padding-left: $DwS;
+    h2 {
+
+        margin-top: (30/1080) * 100vh;
+    }
 }
