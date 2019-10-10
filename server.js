@@ -26,6 +26,8 @@ mongoose
 //bring in routes
 const authRoutes = require('./routes/api/auth');
 const postRoutes = require('./routes/api/post');
+const userRoutes = require('./routes/api/user');
+
 //middleware
 
 app.use(bodyParser.json());
@@ -33,6 +35,8 @@ app.use(cookieParser());
 app.use(expressValidator());
 
 app.use('/',authRoutes);
+app.use('/',postRoutes);
+app.use('/',userRoutes);
 
 app.use(function(err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
@@ -40,7 +44,7 @@ app.use(function(err, req, res, next) {
     }
 });
 
-app.use('/', postRoutes);
+
 
 
 
