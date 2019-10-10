@@ -15,8 +15,8 @@ class Search extends Component {
 
   
     render() {
-        return(<div>
-           
+        return(<div className="search-item">
+           <h2>Search</h2>
         </div>);
     }
 }

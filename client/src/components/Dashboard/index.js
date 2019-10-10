@@ -21,7 +21,10 @@ class Dashboard extends Component {
     render() {
         return(<div>
             
-                <Link className="header" to={`/`}>Home</Link>
+                <Link className="header dash-item" to={`/`}>
+                    <h1>ToolBox</h1>
+                    <h3>Home</h3>
+                </Link>
             
             <Search />
 
