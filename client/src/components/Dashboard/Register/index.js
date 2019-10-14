@@ -12,11 +12,13 @@ class Register extends Component {
         super(props);
         
         this.state = {
-          firstName: "",
-          lastName: "",
+          fname: "",
+          lname: "",
           email: "",
           password:"",
-          confirmPassword: ""
+          confirmPassword: "",
+          error: ""
+
             
         }
         this.onChange = this.onChange.bind(this);
@@ -29,14 +31,39 @@ class Register extends Component {
     onSubmit = (e) => {
       e.preventDefault();
 
-      const newAccount = accountConstructor(
-        this.state.firstName,
-        this.state.lastName,
-        this.state.email,
-        this.state.password,
-        this.state.confirmPassword,
-      )
-      console.log("submit");
+      const {fname,lname,email,password} = this.state;
+
+      const user = {
+        fname,
+        lname,
+        email,
+        password
+      };
+
+       //console.log(user);
+      this.signup(user)
+      .then(data => {
+        if(data.error) this.setState({error: data.error})
+        else this.setState({
+          fname: "",
+          lname: "",
+          email: "",
+          password:"",
+          confirmPassword: "",
+          error: ""
+
+        });
+      });
+      
+
+      // const newAccount = accountConstructor(
+      //   this.state.fname,
+      //   this.state.lname,
+      //   this.state.email,
+      //   this.state.password,
+      //   this.state.confirmPassword,
+      // )
+     
       // API.addAccount(newAccount).then(res => {
       //   this.renderResponse('success')
       //   this.resetState()
@@ -46,12 +73,26 @@ class Register extends Component {
       //   this.renderResponse('fail')
       // })
 
-    }
+    };
+
+    signup = (user) => {
+      return fetch("http://localhost:8000/signup",{
+        method: "POST",
+        headers:{
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+      })
+      .then(response => {
+        return response.json()
+      })
+      .catch(err => console.log(err));
+    };
 
   
     // renderResponse = (res) => {
     // }
-
 
   
     render() {
@@ -64,15 +105,15 @@ class Register extends Component {
                 
                   <div className="input-row">
                     <div className="input-wrapper">
-                      <label htmlFor="firstName">First Name</label>
-                      <input name="firstName" type="text" id="firstName" placeholder="John" onChange={this.onChange}  />
+                      <label htmlFor="fname">First Name</label>
+                      <input name="fname" type="text" id="fname" placeholder="John" onChange={this.onChange}  />
                     </div>
                   </div>
                   
                   <div className="input-row">
                     <div className="input-wrapper">
-                        <label htmlFor="lastName">Last Name</label>
-                        <input name="lastName" type="text" id="name" placeholder="Smith" onChange={this.onChange}  />
+                        <label htmlFor="lname">Last Name</label>
+                        <input name="lname" type="text" id="lname" placeholder="Smith" onChange={this.onChange}  />
                     </div>
                   </div>
 
@@ -92,8 +133,8 @@ class Register extends Component {
 
                   <div className="input-row">
                     <div className="input-wrapper">
-                      <label htmlFor="passwordConfirm">Confirm Password</label>
-                      <input name="passwordConfirm" type="text" id="passwordConfirm" placeholder="" onChange={this.onChange}  />
+                      <label htmlFor="confirmPassword">Confirm Password</label>
+                      <input name="confirmPassword" type="text" id="confirmPassword" placeholder="" onChange={this.onChange}  />
                     </div>
                   </div>
                   
