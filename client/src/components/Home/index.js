@@ -16,8 +16,20 @@ class Home extends Component {
   
     render() {
         return(<div>
-            <h1 className="test">Home Branch 01</h1>
-           <h2> Testing</h2>
+            <h1 className="test">Welcome to Toolbox</h1>
+            <h2>Your one stop location for <br/> 
+            skilled workers and opportunities </h2> 
+            {/* Make this a class */}
+            <div className="post-template">
+                <div className="post-popup">
+
+                </div>
+                <div className="post-board">
+                    <div ClassName="post">
+                        
+                    </div>
+                </div>
+            </div>
         </div>);
     }
 }

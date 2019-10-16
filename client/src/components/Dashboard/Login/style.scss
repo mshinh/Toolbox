@@ -1,6 +1,73 @@
-h1 {
-    font-size: 100px;
-}
-.test {
-    color: blue;
+@import './../../../assets/stylesheets/main.scss';
+
+.login-area  {
+    border-top: 1px solid #000;
+    position: absolute;
+    height: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 2;
+    transition: height 400ms $easeInOut3;
+    background-color: #fff;
+    .login-button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding-left: $DwS;
+        display: flex;
+        transition: background-color 300ms $easeInOut3, opacity 400ms $easeInOut3 300ms;
+        align-items: center;
+      
+
+        h2 {
+            padding-top: 5px;
+            font-size: $h2Size;
+            font-family: $mainTextR;
+            transition: color 300ms $easeInOut3;
+        }
+
+        &:hover {
+            background-color: #707070;
+            cursor: pointer; 
+
+            h2 {
+                color: #fff;
+            }
+        }
+    }
+
+    .login-form {
+        
+        background-color: #fff;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        height: 280px;
+        opacity: 0;
+        pointer-events: none; 
+        transition: opacity 300ms $easeInOut3;
+       
+    }
+
+    &.active {
+
+        height: 280px;
+
+        .login-button {
+            opacity: 0;
+            pointer-events: none;
+            transition: background-color 300ms $easeInOut3, opacity 200ms $easeInOut3;
+        }
+        .login-form {
+            transition: opacity 300ms $easeInOut3 300ms;
+            opacity: 1;
+            pointer-events: auto; 
+            
+       
+        }
+    }
 }

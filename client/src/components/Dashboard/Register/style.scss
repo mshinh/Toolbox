@@ -1,5 +1,9 @@
-h1 {
-    font-size: 100px;
+
+@import './../../../assets/stylesheets/main.scss';
+
+.input-heading {
+     padding-top: 20px;
+    // padding-bottom: 2px; 
 }
 .test {
     color: blue;
