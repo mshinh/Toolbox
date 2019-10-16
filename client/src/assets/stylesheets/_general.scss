@@ -4,6 +4,7 @@
 
 p,h1,h2,h3,h4,h5,button {
     -webkit-font-smoothing: subpixel-antialiased;
+    color: #707070;
 }
 
 
@@ -27,6 +28,54 @@ input {
 
 }
 
+.input-btn {
+  border: 1px solid #707070;
+  background-color: transparent;
+  padding: 5px 40px;
+  padding-top: 10px;
+  position: relative;
+  display: block;
+  width: 38.9%;
+
+
+  .button-bar {
+    display: block;
+    pointer-events: none;
+    position: absolute; 
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 10%;
+    width: 100%;
+    background-color: #707070;
+  
+    transition: height 400ms $easeInOut3;
+  }
+  h4 {
+    pointer-events: none;
+    font-size: 14px;
+    position: relative;
+    padding: 0;
+    z-index: 1;
+    color: #707070;
+    transition: color 200ms $easeInOut3;
+    
+  }
+  &.cancel {
+    width: auto; 
+    margin-left: 10px;
+    opacity: 0.5;
+  }
+  &:hover {
+    .button-bar {
+      height: 100%;
+    }
+    h4 {
+      color: #fff;
+    }
+  }
+}
+
 textarea {
     background-color: transparent;
     color: $mainTextColor;
@@ -38,6 +87,9 @@ textarea {
 }
 
 .form-wrapper {
+  padding-left: $DwS;
+  padding-right: $DwS;
+
   &.margin {
       padding: ($marginD/$desktop) * 100vw;
   }
@@ -48,17 +100,20 @@ textarea {
 .form-row {
   display: flex;
   margin: 0;
+  
 }
 .form-column {
- 
+  flex-grow: 1;
   margin: 0;
 
-  &:first-child {
-    padding-left: 0px;
-  }
+ 
+  // &:first-child {
+  //   padding-left: 0px;
+  // }
 
 
 }
+
 
 .input-row {
   display: flex;
@@ -66,8 +121,8 @@ textarea {
 
 
   .input-wrapper {
-  padding-bottom: 20px;
-  padding-top: 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
   width: 100%;
 
   //margin-right: (20/$desktop) * 100vw;
@@ -79,11 +134,12 @@ textarea {
     input {
 
       background-color: transparent;
-      border: none;
-      border-bottom: 2px solid $greyWhite;
+      border: 1px solid #707070;
       padding-bottom: 7px;
-      padding-top: 7px;
+      padding-top: 8px;
+      padding-left: 10px;
       width: 100%;
+      font-size: $dashInputSize;
 
 
     }
@@ -91,6 +147,8 @@ textarea {
     label {
       display: block;
       margin: 0;
+      font-size: 12px;
+      color: #707070;
     }
   }
 }

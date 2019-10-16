@@ -7,11 +7,13 @@
         width: (722/$desktop) * 100vw;
         border-left: 1px solid #000;
         height: 100vh;
+        position: relative;
         
         
     }
     #subclass-container {
         width: (1198/$desktop) * 100vw;
-        height: 100vmax;
+        height: 100vh;
+        overflow-y: scroll;
     }
 }

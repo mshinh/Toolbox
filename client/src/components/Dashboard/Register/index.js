@@ -101,7 +101,7 @@ class Register extends Component {
             <div className="form-wrapper">
               <div className="form-row">
                   <fieldset className="form-column" id='meta-form'>
-                  <h2>Register</h2>
+                  <h2 className="input-heading">Register</h2>
                 
                   <div className="input-row">
                     <div className="input-wrapper">
@@ -141,8 +141,8 @@ class Register extends Component {
                   </fieldset>
                  
                 </div>
-                <button type='submit' className="btn-slide light" onClick={this.onSubmit}>
-                    <h4>Submit</h4>  
+                <button type='submit' className="input-btn" onClick={this.onSubmit}>
+                    <h4>Register</h4>  
                     <span className="button-bar"></span>  
                   </button>
               </div>
