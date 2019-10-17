@@ -17,7 +17,8 @@ class Register extends Component {
           email: "",
           password:"",
           confirmPassword: "",
-          error: ""
+          error: "",
+          open: false
 
             
         }
@@ -26,7 +27,9 @@ class Register extends Component {
     }
     
     onChange = (e) => {
-        this.setState({[e.target.name]: e.target.value})
+        this.setState({error:""});
+        this.setState({open:false});
+        this.setState({[e.target.name]: e.target.value});
     }
     onSubmit = (e) => {
       e.preventDefault();
@@ -50,7 +53,8 @@ class Register extends Component {
           email: "",
           password:"",
           confirmPassword: "",
-          error: ""
+          error: "",
+          open: true
 
         });
       });
@@ -96,12 +100,19 @@ class Register extends Component {
 
   
     render() {
+        const {fname,lname,email,password,error,open} = this.state;
         return(<div>
             <form className="addBarForm" autoComplete="off" >
             <div className="form-wrapper">
               <div className="form-row">
                   <fieldset className="form-column" id='meta-form'>
                   <h2 className="input-heading">Register</h2>
+
+                  <div className="alert alert-danger" style={{display: error ? "": "none"}}>{error}</div>
+
+                  <div className="alert alert-info" style={{display: open ? "": "none"}}>
+                     New account is succesfully created. Please Sign In.
+                  </div>
                 
                   <div className="input-row">
                     <div className="input-wrapper">
