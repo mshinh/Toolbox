@@ -26,6 +26,7 @@ class Login extends Component {
         if(e){
             e.preventDefault();
         }
+
         this.setState({
             active: !this.state.active
         });             
