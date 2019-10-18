@@ -9,6 +9,9 @@ import './assets/stylesheets/_reset.scss';
 
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
+import Register from './components/Dashboard/Register'
+import Login from './components/Dashboard/Login'
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.scss';
 
@@ -30,11 +33,14 @@ class App extends Component {
             <Route path={"/login"} component={Login} exact />
             <Route path={"/search"} exact  render={(props) => <Search changeDash={this.changeDash} {...props}/>}  /> */}
             <Route path={"/"} exact  render={(props) => <Home   />}  />
-
+           
 
         </div>
-        <div id="dash-container">  
+        <div id="dash-container"> 
+            
           <Dashboard />
+          
+
         </div>
       </Router>
       
