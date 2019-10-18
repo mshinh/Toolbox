@@ -46,17 +46,22 @@ class Register extends Component {
        //console.log(user);
       this.signup(user)
       .then(data => {
-        if(data.error) this.setState({error: data.error})
-        else this.setState({
-          fname: "",
-          lname: "",
-          email: "",
-          password:"",
-          confirmPassword: "",
-          error: "",
-          open: true
 
-        });
+        if(data.error) this.setState({error: data.error})
+          else { this.setState({
+            fname: "",
+            lname: "",
+            email: "",
+            password:"",
+            confirmPassword: "",
+            error: "",
+            open: true
+
+          });
+          // Calls parent method to change dashboard apppearnce, not sure if best way
+           this.props.logger();
+        }
+
       });
       
 

@@ -22,7 +22,8 @@ class Login extends Component {
         if(e){
             e.preventDefault();
         }
-        console.log("test");
+        
+
         this.setState({
             active: !this.state.active
         })

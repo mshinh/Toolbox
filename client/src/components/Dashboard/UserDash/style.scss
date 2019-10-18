@@ -1,0 +1,18 @@
+
+@import './../../../assets/stylesheets/main.scss';
+.user-item {
+    box-sizing: border-box;
+   // border-bottom: 1px solid #000;
+   
+    .user-detail {
+        padding: $DwS;
+    }
+    
+    .user-picture {
+        height: 260px;
+        width: 100%;
+        background-position: center;
+        background-size: cover; 
+        border-bottom: 1px solid #000;
+    }
+}
