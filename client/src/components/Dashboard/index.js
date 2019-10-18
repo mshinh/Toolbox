@@ -4,19 +4,30 @@ import './style.scss';
 
 import Login from './Login';
 import Register from './Register';
-import Search from './Search'
+import Search from './Search';
+import UserDash from './UserDash';
+import Nav from './Nav';
+
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         
+        // This has to be changed in order to login
         this.state = {
-         
+
+            isLoggedIn: true
             
         }
+        this.logger = this.logger.bind(this)
     }
 
   
+    logger = () => {
+        
+        this.setState({isLoggedIn: !this.state.isLoggedIn})
+    }
 
+    
   
     render() {
         return(<div>
@@ -28,8 +39,10 @@ class Dashboard extends Component {
             
             <Search />
 
-            <Register />
-            <Login />
+            {/*  */}
+            {this.state.isLoggedIn ? <UserDash logger={this.logger} /> : <Register logger={this.logger} /> }
+            {this.state.isLoggedIn ? <Nav logger={this.logger}/>  :  <Login logger={this.logger} />}
+        
         </div>);
     }
 }
