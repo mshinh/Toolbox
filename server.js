@@ -27,6 +27,7 @@ mongoose
 const authRoutes = require('./routes/api/auth');
 const postRoutes = require('./routes/api/post');
 const userRoutes = require('./routes/api/user');
+const profileRoutes = require('./routes/api/profile');
 
 //middleware
 
@@ -37,6 +38,7 @@ app.use(expressValidator());
 app.use('/',authRoutes);
 app.use('/',postRoutes);
 app.use('/',userRoutes);
+app.use('/',profileRoutes);
 
 app.use(function(err, req, res, next) {
     if (err.name === 'UnauthorizedError') {

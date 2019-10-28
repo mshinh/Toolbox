@@ -15,7 +15,7 @@ class Dashboard extends Component {
         // This has to be changed in order to login
         this.state = {
 
-            isLoggedIn: true
+            isLoggedIn: false
             
         }
         this.logger = this.logger.bind(this)

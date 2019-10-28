@@ -2,7 +2,7 @@ const express = require("express");
 const { getPosts, createPost } = require("../../controllers/post");
 const { requireSignin } = require("../../controllers/auth");
 const { userById } = require("../../controllers/user");
-const {createPostValidator} = require('../../validator/post');
+const {createPostValidator} = require('../../validation/post');
 
 
 const router = express.Router();

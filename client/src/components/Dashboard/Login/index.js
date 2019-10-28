@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import './style.scss';
+import {signin,authenticate} from "../../../actions/auth";
 import {Redirect} from 'react-router-dom';
 
 class Login extends Component {
@@ -32,13 +33,7 @@ class Login extends Component {
         });             
                 
     }
-    authenticate (jwt,next) {
-        if(typeof window !== "undefined"){
-            localStorage.setItem("jwt",JSON.stringify(jwt));
-            next();
-        }
-
-    } 
+    
     onSubmit = (e) => {
         if(e){
             e.preventDefault();
@@ -57,14 +52,17 @@ class Login extends Component {
         // console.log("test");
         console.log(user);
         
-        this.signin(user).then(data => {
+        signin(user).then(data => {
             if(data.error) {
                 this.setState({error: data.error})
             } else {
                 //authenticate the user
-                this.authenticate(data,() => {
+                authenticate(data,() => {
                     this.setState({redirectToReferer: true})
                 });
+
+                // Calls parent method to change dashboard apppearnce, not sure if best way
+                this.props.logger();
                
             }
         });
@@ -72,20 +70,7 @@ class Login extends Component {
         
     };
 
-    signin = (user) => {
-        return fetch("http://localhost:8000/signin",{
-          method: "POST",
-          headers:{
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(user)
-        })
-        .then(response => {
-          return response.json()
-        })
-        .catch(err => console.log(err));
-      };
+    
 
     render() {
         const {email,password,error,redirectToReferer} = this.state;
@@ -117,7 +102,7 @@ class Login extends Component {
                                 <div className="input-row">
                                     <div className="input-wrapper">
                                     <label htmlFor="loginPassword">Password</label>
-                                    <input name="password" type="text" id="loginPassword" placeholder="" onChange={this.onChange}  />
+                                    <input name="password" type="password" id="loginPassword" placeholder="" onChange={this.onChange}  />
                                     </div>
                                 </div>
                             

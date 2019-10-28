@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import './style.scss';
+import {isAuthenticated} from '../../../actions/auth';
 import userImage from '../../../assets/images/f_trades.jpg';
 
 class UserDash extends Component {
@@ -10,10 +11,7 @@ class UserDash extends Component {
          
             
         }
-    }
-
-  
-
+    }  
   
     render() {
         return(<div className="user-item">
@@ -23,7 +21,7 @@ class UserDash extends Component {
             <div className="user-detail">
             <h3>
                 {/* Have to put the user name here */}
-                Hello User! 
+                Hello {isAuthenticated().user.fname} !
             </h3>
             </div>
         </div>);

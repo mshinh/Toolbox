@@ -7,14 +7,23 @@ exports.userSignupValidator = (req,res,next) => {
     // last name is not null and between 4-10 characters
     req.check("lname","Last name is required").notEmpty();
 
+    // //email is not null,valid and normalized
+    // req.check("email","Email must be between 3 to 32 characters")
+    // .matches(/.+\@.+\..+/)
+    // .withMessage("Email must contain @")
+    // .isLength({
+    //     min: 4,
+    //     max:2000
+    // });
+
     //email is not null,valid and normalized
-    req.check("email","Email must be between 3 to 32 characters")
+    req.check("email","Email is required").notEmpty();
+    req.check("email")
+    .isLength({min: 3})
+    .withMessage("Email must contain at least 3 characters")
     .matches(/.+\@.+\..+/)
-    .withMessage("Email must contain @")
-    .isLength({
-        min: 4,
-        max:2000
-    });
+    .withMessage("Email must contain @");
+
 
 
     //check for password
