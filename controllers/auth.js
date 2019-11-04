@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const secret = require("../config/keys").JWT_SECRET;
+require('dotenv').config();
 const expressJwt = require('express-jwt');
 const User = require("../models/User");
 
@@ -16,9 +16,23 @@ exports.signup = async (req,res) => {
     const user = await new User(req.body);
 
     await user.save();
-    
-    res.status(200).json({message:"Signup success! Please login."});
 
+    // //generate a token with user id and secret
+    // const token = jwt.sign({_id: user._id},process.env.JWT_SECRET);
+
+    // //persist the token as 't' in cookie with expiry date
+    // res.cookie("t",token,{expire: new Date() + 9999});
+
+    // //return response with user and token to fronted client
+    // const {_id,fname,lname,email} = user;
+
+    // //signup success return webtoken, user is logged in
+
+    // return res.json({token,user:{_id,email,fname,lname}});
+
+    res.status(200).json({ message: 'Signup success! Please login.' });
+    
+    
 };
 
 exports.signin = (req,res) => {
@@ -43,7 +57,7 @@ exports.signin = (req,res) => {
         }
 
         //generate a token with user id and secret
-        const token = jwt.sign({_id: user._id},secret);
+        const token = jwt.sign({_id: user._id},process.env.JWT_SECRET);
 
         //persist the token as 't' in cookie with expiry date
         res.cookie("t",token,{expire: new Date() + 9999});
@@ -66,6 +80,6 @@ exports.signout = (req,res) => {
 exports.requireSignin = expressJwt({
     //if the token is valid, express jwt appends the verified user id
     //in an auth key to the request object
-    secret: secret,
+    secret: process.env.JWT_SECRET,
     userProperty: "auth"
 });

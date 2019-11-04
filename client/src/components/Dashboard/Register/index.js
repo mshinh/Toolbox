@@ -1,5 +1,8 @@
 import React,{Component} from 'react';
 import './style.scss';
+import {signup} from '../../../actions/auth';
+
+// import {Redirect} from 'react-router-dom';
 
 
 //Need to import API, example below
@@ -15,10 +18,11 @@ class Register extends Component {
           fname: "",
           lname: "",
           email: "",
-          password:"",
-          confirmPassword: "",
+          username:"",
+          password:"",          
           error: "",
-          open: false
+          open: false,
+          redirectToReferer: false
 
             
         }
@@ -31,74 +35,62 @@ class Register extends Component {
         this.setState({open:false});
         this.setState({[e.target.name]: e.target.value});
     }
+
+    // authenticate (jwt,next) {
+    //   if(typeof window !== "undefined"){
+    //       localStorage.setItem("jwt",JSON.stringify(jwt));
+    //       next();
+    //   }
+
+    // } 
     onSubmit = (e) => {
       e.preventDefault();
 
       const {fname,lname,email,password} = this.state;
 
+      var userEmail = email.split('@');  
+      const username = userEmail[0];
+
       const user = {
         fname,
         lname,
         email,
+        username,
         password
       };
 
-       //console.log(user);
-      this.signup(user)
+      console.log(user);
+      signup(user)
       .then(data => {
 
-        if(data.error) this.setState({error: data.error})
-          else { this.setState({
+        if(data.error) this.setState({error: data.error});
+        else { this.setState({
             fname: "",
             lname: "",
             email: "",
-            password:"",
-            confirmPassword: "",
+            username: "",
+            password:"",            
             error: "",
             open: true
 
           });
+
+          // //authenticate the user
+          // this.authenticate(data,() => {
+          //   this.setState({redirectToReferer: true})
+          //  });
+
+          
           // Calls parent method to change dashboard apppearnce, not sure if best way
-           this.props.logger();
+          //  this.props.logger();
         }
 
-      });
-      
-
-      // const newAccount = accountConstructor(
-      //   this.state.fname,
-      //   this.state.lname,
-      //   this.state.email,
-      //   this.state.password,
-      //   this.state.confirmPassword,
-      // )
+      });      
      
-      // API.addAccount(newAccount).then(res => {
-      //   this.renderResponse('success')
-      //   this.resetState()
-
-      // })
-      // .catch(err => {
-      //   this.renderResponse('fail')
-      // })
 
     };
 
-    signup = (user) => {
-      return fetch("http://localhost:8000/signup",{
-        method: "POST",
-        headers:{
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(user)
-      })
-      .then(response => {
-        return response.json()
-      })
-      .catch(err => console.log(err));
-    };
-
+    
   
     // renderResponse = (res) => {
     // }
@@ -147,12 +139,6 @@ class Register extends Component {
                     </div>
                   </div>
 
-                  <div className="input-row">
-                    <div className="input-wrapper">
-                      <label htmlFor="confirmPassword">Confirm Password</label>
-                      <input name="confirmPassword" type="text" id="confirmPassword" placeholder="" onChange={this.onChange}  />
-                    </div>
-                  </div>
                   
                   </fieldset>
                  

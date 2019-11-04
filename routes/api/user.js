@@ -1,9 +1,9 @@
 const express = require('express');
 const { requireSignin } = require("../../controllers/auth");
 const { userById, allUsers,getUser,updateUser,deleteUser } = require("../../controllers/user");
-
-
 const router = express.Router();
+
+
 
 
 router.get("/users",allUsers);

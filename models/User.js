@@ -22,9 +22,13 @@ const UserSchema = new mongoose.Schema({
         trim:true,
         required: true,
     },
+    username:{
+        type:String,
+        required: true,
+    },
     hashed_password: {
         type:String,        
-        required: true,
+        required: true,        
     },
     salt:String,
     created:{
@@ -71,6 +75,19 @@ UserSchema.methods = {
         } catch (err) {
             return "";
         }
+    },
+    toProfile: function(){
+        return {
+          username: getUserFromEmail(this.email),
+         // image: this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
+         // following:  false  // we'll implement following functionality in a few chapters :)
+        };
+    },
+    getUserFromEmail: function(email){
+
+        var userEmail = email.split('@');        
+       
+        return userEmail[0];
     }
 };
 
