@@ -18,6 +18,7 @@ class Register extends Component {
           fname: "",
           lname: "",
           email: "",
+          username:"",
           password:"",          
           error: "",
           open: false,
@@ -47,22 +48,27 @@ class Register extends Component {
 
       const {fname,lname,email,password} = this.state;
 
+      var userEmail = email.split('@');  
+      const username = userEmail[0];
+
       const user = {
         fname,
         lname,
         email,
+        username,
         password
       };
 
-       //console.log(user);
+      console.log(user);
       signup(user)
       .then(data => {
 
-        if(data.error) this.setState({error: data.error})
-          else { this.setState({
+        if(data.error) this.setState({error: data.error});
+        else { this.setState({
             fname: "",
             lname: "",
             email: "",
+            username: "",
             password:"",            
             error: "",
             open: true
@@ -80,12 +86,11 @@ class Register extends Component {
         }
 
       });      
-
-      
+     
 
     };
 
-      
+    
   
     // renderResponse = (res) => {
     // }
