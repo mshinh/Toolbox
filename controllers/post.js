@@ -107,6 +107,11 @@ exports.updatePost = (req, res, next) => {
 
 };
 
+exports.photo = (req, res, next) => {
+    res.set("Content-Type", req.post.photo.contentType);
+    return res.send(req.post.photo.data);
+};
+
 
 exports.deletePost = (req, res) =>{
     let post = req.post
