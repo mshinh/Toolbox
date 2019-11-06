@@ -16,14 +16,13 @@ class Createpost extends Component {
         
         
         this.state = {
-          fname: "",
-          lname: "",
-          email: "",
-          username:"",
-          password:"",          
+          type: "job",
+          title: "",
+          location: "",         
+          desc: "",
           error: "",
-          open: false,
-          redirectToReferer: false
+          open: true
+    
         }
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -45,48 +44,17 @@ class Createpost extends Component {
     onSubmit = (e) => {
       e.preventDefault();
 
-      const {fname,lname,email,password} = this.state;
+      //const {fname,lname,email,password} = this.state;
 
-      var userEmail = email.split('@');  
-      const username = userEmail[0];
+      // const user = {
+      //   fname,
+      //   lname,
+      //   email,
+      //   username,
+      //   password
+      // };
 
-      const user = {
-        fname,
-        lname,
-        email,
-        username,
-        password
-      };
-
-      console.log(user);
-      signup(user)
-      .then(data => {
-
-        if(data.error) this.setState({error: data.error});
-        
-        else { this.setState({
-            fname: "",
-            lname: "",
-            email: "",
-            username: "",
-            password:"",            
-            error: "",
-            open: true
-
-          });
-
-          // //authenticate the user
-          
-          // this.authenticate(data,() => {
-          //   this.setState({redirectToReferer: true})
-          //  });
-
-          
-          // Calls parent method to change dashboard apppearnce, not sure if best way
-          //  this.props.logger();
-        }
-
-      });      
+   
      
 
     };
@@ -98,12 +66,13 @@ class Createpost extends Component {
 
   
     render() {
-        const {fname,lname,email,password,error,open} = this.state;
+      const {error,open} = this.state;
         return(<div>
             <form className="addBarForm" autoComplete="off" >
             <div className="form-wrapper">
               <div className="form-row">
                   <fieldset className="form-column" id='meta-form'>
+                 
                   <h2 className="input-heading">Create A Post</h2>
 
                   <div className="alert alert-danger" style={{display: error ? "": "none"}}>{error}</div>
@@ -114,38 +83,38 @@ class Createpost extends Component {
                 
                   <div className="input-row">
                     <div className="input-wrapper">
-                      <label htmlFor="fname">First Name</label>
-                      <input name="fname" type="text" id="fname" placeholder="John" onChange={this.onChange}  />
+                      <label htmlFor="title">Job Title</label>
+                      <input name="title" type="text" id="title" placeholder="Weekend Plumbing" onChange={this.onChange}  />
                     </div>
                   </div>
                   
                   <div className="input-row">
                     <div className="input-wrapper">
-                        <label htmlFor="lname">Last Name</label>
-                        <input name="lname" type="text" id="lname" placeholder="Smith" onChange={this.onChange}  />
+                      <label htmlFor="location">Location</label>
+                      {/* Will have to expand on this more */}
+                      <input name="location" type="text" id="location" placeholder="Toronto" onChange={this.onChange}  />
                     </div>
                   </div>
 
-                  <div className="input-row">
-                    <div className="input-wrapper">
-                      <label htmlFor="email">Email Name</label>
-                      <input name="email" type="email" id="email" placeholder="hello@toolbox.com" onChange={this.onChange}  />
-                    </div>
-                  </div>
                   
-                  <div className="input-row">
-                    <div className="input-wrapper">
-                        <label htmlFor="password">Password</label>
-                        <input name="password" type="password" id="password" placeholder="" onChange={this.onChange}  />
-                    </div>
+                  <div className="input-row">       
+                      <div className="input-wrapper">
+                          <label htmlFor="desc">Description</label>
+                          
+                          <textarea row="10" col="80" name="desc" type="text" id="desc" onChange={this.onChange}  >
+
+                          </textarea>
+                      </div>
                   </div>
+
+                
 
                   
                   </fieldset>
                  
                 </div>
                 <button type='submit' className="input-btn" onClick={this.onSubmit}>
-                    <h4>Register</h4>  
+                    <h4>Submit Post</h4>  
                     <span className="button-bar"></span>  
                   </button>
               </div>
