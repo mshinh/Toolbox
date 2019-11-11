@@ -2,11 +2,14 @@ import React,{Component} from 'react';
 import {Link} from 'react-router-dom';
 import './style.scss';
 
+import {isAuthenticated} from './../../actions/auth'
+
 import Login from './Login';
 import Register from './Register';
 import Search from './Search';
 import UserDash from './UserDash';
 import Nav from './Nav';
+
 
 class Dashboard extends Component {
     constructor(props) {
@@ -15,10 +18,21 @@ class Dashboard extends Component {
         // This has to be changed in order to login
         this.state = {
 
-            isLoggedIn: false
+            isLoggedIn: this.setInit() 
             
         }
         this.logger = this.logger.bind(this)
+        this.setInit = this.setInit.bind(this)
+    }
+
+
+    setInit = () => {
+        let result = isAuthenticated();
+        if(result !== false) {
+            return true
+        } else {
+            return false
+        }
     }
 
   

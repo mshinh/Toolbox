@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import './assets/fonts/fonts.scss';
 import './assets/stylesheets/_reset.scss';
 
-import Home from './components/Home'
+import PostDisplay from './components/PostDisplay'
 import Dashboard from './components/Dashboard'
 import Register from './components/Dashboard/Register'
 import Login from './components/Dashboard/Login'
@@ -34,7 +34,7 @@ class App extends Component {
             <Route path={"/contact"} component={Contact} />
             <Route path={"/login"} component={Login} exact />
             <Route path={"/search"} exact  render={(props) => <Search changeDash={this.changeDash} {...props}/>}  /> */}
-            <Route path={"/"} exact  render={(props) => <Home   />}  />
+            <Route path={"/(|account)"}  render={(props) => <PostDisplay  {...props} />}  />
             <Route path={"/account"} exact render={(props)=> <Createpost />} />
             <Route path={"/profile"} exact render={(props)=> <Profile />} />
             {/* Add Route protection for non logged in users */}
