@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import './style.scss';
-import {signup} from '../../actions/auth';
+import {signup,isAuthenticated} from '../../actions/auth';
 
 // import {Redirect} from 'react-router-dom';
 
@@ -42,6 +42,11 @@ class Profile extends Component {
         this.setState({open:false});
         this.setState({[e.target.name]: e.target.value});
     }
+
+
+    componentDidMount(){
+      console.log("user id from route params: ", isAuthenticated().user._id)
+  }
 
     // authenticate (jwt,next) {
     //   if(typeof window !== "undefined"){
