@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import Post from './Post'
 import './style.scss';
 
 class PostDisplay extends Component {
@@ -7,11 +8,12 @@ class PostDisplay extends Component {
         super(props);
         
         this.state = {
-         
+            currPost: {id: 0, type: "", title: "", desc: ""}
             
         }
         this.createPosts = this.createPosts.bind(this)
         this.currentSettings = this.currentSetting.bind(this)
+        this.activeContent = this.activeContent.bind(this)
     }
 
     currentSetting = () => {
@@ -52,7 +54,7 @@ class PostDisplay extends Component {
         <h3>{data.title}</h3>
         <p>{data.desc}</p>
         <div className="buttom-container">
-            <button type='submit' className="input-btn">
+            <button type='submit' onClick={e => {this.activeContent(data)}} className="input-btn">
                 <h4>More Information</h4>  
                 <span className="button-bar"></span>  
             </button>
@@ -62,10 +64,19 @@ class PostDisplay extends Component {
         return post; 
     }
 
+    activeContent = (data) => {
+        console.log("update Content")
+        this.setState({
+            currPost:data
+        })
+      
+    }
+
   
     render() {
         return(<div className="home-container">
-            
+            <Post currPost={this.state.currPost} />
+
             <div className="page-heading">
                 <h1>Welcome To Toolbox</h1>
                 <h2>Your one stop location for <br/> 
