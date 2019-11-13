@@ -1,50 +1,46 @@
-import React,{Component} from 'react';
-import {Link} from 'react-router-dom';
-import './style.scss';
+import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
+import "./style.scss";
 
-import Login from './Login';
-import Register from './Register';
-import Search from './Search';
-import UserDash from './UserDash';
-import Nav from './Nav';
+import Login from "./Login";
+import Register from "./Register";
+import Search from "./Search";
+import UserDash from "./UserDash";
+import NavContainer from "./Nav";
+import Alert from "../Layout/Alert";
 
-class Dashboard extends Component {
-    constructor(props) {
-        super(props);
-        
-        // This has to be changed in order to login
-        this.state = {
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { logout } from "../../actions/auth";
 
-            isLoggedIn: false
-            
-        }
-        this.logger = this.logger.bind(this)
-    }
+const Dashboard = ({ auth: { isAuthenticated, loading }, logout }) => {
+  const authComponents = [<Register />, <Login />];
 
-  
-    logger = () => {
-        
-        this.setState({isLoggedIn: !this.state.isLoggedIn})
-    }
+  const userDash = [<UserDash />, <NavContainer />];
 
-    
-  
-    render() {
-        return(<div>
-            
-                <Link className="header dash-item" to={`/`}>
-                    <h1>ToolBox</h1>
-                    <h3>Home</h3>
-                </Link>
-            
-            <Search />
+  return (
+    <div>
+      <Link className="header dash-item" to={`/`}>
+        <h1>ToolBox</h1>
+        <h3>Home</h3>
+      </Link>
+      <Search />
+      <Alert />
+      {/* {!loading && (
+        <Fragment>{isAuthenticated ? authComponents : userDash}</Fragment>
+      )} */}
+      <Fragment>{isAuthenticated ? userDash : authComponents}</Fragment>
+    </div>
+  );
+};
 
-            {/*  */}
-            {this.state.isLoggedIn ? <UserDash logger={this.logger} /> : <Register logger={this.logger} /> }
-            {this.state.isLoggedIn ? <Nav logger={this.logger}/>  :  <Login logger={this.logger} />}
-        
-        </div>);
-    }
-}
+Dashboard.propTypes = {
+  logout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
 
-export default Dashboard
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { logout })(Dashboard);

@@ -1,31 +1,49 @@
-import React,{Component} from 'react';
-import './style.scss';
-import {isAuthenticated} from '../../../actions/auth';
-import userImage from '../../../assets/images/f_trades.jpg';
+import React, { useEffect } from "react";
+import "./style.scss";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { getCurrentProfile, deleteAccount } from "../../../actions/profile";
 
-class UserDash extends Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-         
-            
-        }
-    }  
-  
-    render() {
-        return(<div className="user-item">
-           <div className="user-picture" style ={ { backgroundImage: `url(${userImage})`}}>
-                
-           </div>
-            <div className="user-detail">
-            <h3>
-                {/* Have to put the user name here */}
-                Hello {isAuthenticated().user.fname} !
-            </h3>
-            </div>
-        </div>);
-    }
-}
+import userImage from "../../../assets/images/f_trades.jpg";
 
-export default UserDash
+const UserDash = ({
+  getCurrentProfile,
+  deleteAccount,
+  auth: { user },
+  profile: { profile, loading }
+}) => {
+  useEffect(() => {
+    getCurrentProfile();
+  }, [getCurrentProfile]);
+
+  return (
+    <div className="user-item">
+      <div
+        className="user-picture"
+        style={{ backgroundImage: `url(${userImage})` }}
+      ></div>
+      <div className="user-detail">
+        <h3>
+          {/* Have to put the user name here */}
+          Hello {user && user.fname} {user.lname} !
+        </h3>
+      </div>
+    </div>
+  );
+};
+
+UserDash.propTypes = {
+  getCurrentProfile: PropTypes.func.isRequired,
+  deleteAccount: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  profile: state.profile
+});
+
+export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(
+  UserDash
+);
