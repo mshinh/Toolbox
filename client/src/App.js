@@ -1,6 +1,4 @@
-import React, { Fragment, Component } from "react";
-import AppNavbar from "./components/AppNavbar";
-
+import React, { Fragment, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import "./assets/fonts/fonts.scss";
@@ -10,12 +8,11 @@ import "./App.scss";
 
 import Home from "./components/Home";
 import Dashboard from "./components/Dashboard";
-import Register from "./components/Dashboard/Register";
-import Login from "./components/Dashboard/Login";
+import PrivateRoute from "./routing/PrivateRoute";
 import Createpost from "./components/Createpost";
-import Profile from "./components/Profile";
-import UserDash from "./components/Dashboard/UserDash";
-import Alert from "./components/Layout/Alert";
+import Profile from "./components/Profile/UserProfile";
+import CreateProfile from "./components/profile-forms/CreateProfile";
+import EditProfile from "./components/profile-forms/EditProfile";
 
 // Redux
 import { Provider } from "react-redux";
@@ -23,58 +20,44 @@ import store from "./store";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
 
-const App = () => (
-  <Provider store={store}>
-    <Router>
-      <Fragment>
-        <div id="toolbox-app">
-          <Alert />
-          <div id="subclass-container">
-            <Route exact path="/" component={Home} />
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
+
+const App = () => {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+  return (
+    <Provider store={store}>
+      <Router>
+        <Fragment>
+          <div id="toolbox-app">
+            <div id="subclass-container">
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <PrivateRoute exact path="/dashboard" component={Home} />
+                <PrivateRoute exact path="/profile" component={Profile} />
+                <PrivateRoute
+                  exact
+                  path="/create-profile"
+                  component={CreateProfile}
+                />
+                <PrivateRoute
+                  exact
+                  path="/edit-profile"
+                  component={EditProfile}
+                />
+              </Switch>
+            </div>
+            <div id="dash-container">
+              <Dashboard />
+            </div>
           </div>
-          <div id="dash-container">
-            <Dashboard />
-          </div>
-        </div>
-      </Fragment>
-    </Router>
-  </Provider>
-);
-
-// class App extends Component {
-//   render()
-//   {
-//     return (
-
-//       <div id="toolbox-app">
-
-//       <Router>
-
-//         <div id="subclass-container" >
-
-//             {/* <Route path={"/home"} render={(props)=><Admin changeDash={this.changeDash} {...props}  />}    />
-//             <Route path={"/contact"} component={Contact} />
-//             <Route path={"/login"} component={Login} exact />
-//             <Route path={"/search"} exact  render={(props) => <Search changeDash={this.changeDash} {...props}/>}  /> */}
-//             <Route path={"/"} exact  render={(props) => <Home   />}  />
-//             <Route path={"/account"} exact render={(props)=> <Createpost />} />
-//             <Route path={"/profile/:userId"} exact render={(props)=> <Profile />} />
-//             {/* Add Route protection for non logged in users */}
-
-//         </div>
-//         <div id="dash-container">
-
-//           {/* <Route path={"/user/:userId"} exact render={(props)=> <UserDash />} />    */}
-
-//           <Dashboard />
-
-//         </div>
-//       </Router>
-
-//       </div>
-//     );
-//   }
-
-// }
+        </Fragment>
+      </Router>
+    </Provider>
+  );
+};
 
 export default App;

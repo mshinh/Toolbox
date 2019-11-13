@@ -11,10 +11,9 @@ exports.signup = async (req, res) => {
 
     const userEmail = req.body.email;
 
-    if (userExists)
-      return res.status(403).json({
-        error: "Email is taken!"
-      });
+    if (userExists) {
+      return res.status(400).json({ errors: [{ msg: "Email is taken!" }] });
+    }
 
     const avatar = gravatar.url(userEmail, {
       s: "200",
