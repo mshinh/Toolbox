@@ -32,23 +32,18 @@ const profileRoutes = require("./routes/api/profile");
 
 app.use(express.json({ extended: false }));
 app.use(cookieParser());
-app.use(expressValidator());
-
-// app.use("/", authRoutes);
-// app.use("/", postRoutes);
-// app.use("/", userRoutes);
-// app.use("/", profileRoutes);
+// app.use(expressValidator());
 
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/posts", postRoutes);
 
-app.use(function(err, req, res, next) {
-  if (err.name === "UnauthorizedError") {
-    res.status(401).json({ error: "Unauthorized!" });
-  }
-});
+// app.use(function(err, req, res, next) {
+//   if (err.name === "UnauthorizedError") {
+//     res.status(401).json({ error: "Unauthorized!" });
+//   }
+// });
 
 const port = process.env.PORT || 8000;
 
