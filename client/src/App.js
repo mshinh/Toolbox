@@ -13,6 +13,7 @@ import Createpost from "./components/Createpost";
 import Profile from "./components/Profile/UserProfile";
 import CreateProfile from "./components/profile-forms/CreateProfile";
 import EditProfile from "./components/profile-forms/EditProfile";
+import EditAccount from "./components/profile-forms/EditAccount";
 import PostDisplay from "./components/PostDisplay";
 
 // Redux
@@ -48,6 +49,11 @@ const App = () => {
                   exact
                   path="/edit-profile"
                   component={EditProfile}
+                />
+                <PrivateRoute
+                  exact
+                  path="/edit-account"
+                  component={EditAccount}
                 />
               </Switch>
             </div>

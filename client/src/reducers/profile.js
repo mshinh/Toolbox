@@ -4,7 +4,10 @@ import {
   CLEAR_PROFILE,
   UPDATE_PROFILE,
   GET_PROFILES,
-  GET_REPOS
+  GET_REPOS,
+  GET_ACCOUNT,
+  ACCOUNT_ERROR,
+  ACCOUNT_UPDATED
 } from "../actions/types";
 
 const initialState = {
@@ -20,18 +23,21 @@ export default function(state = initialState, action) {
 
   switch (type) {
     case GET_PROFILE:
+    case ACCOUNT_UPDATED:
     case UPDATE_PROFILE:
       return {
         ...state,
         profile: payload,
         loading: false
       };
+
     case GET_PROFILES:
       return {
         ...state,
         profiles: payload,
         loading: false
       };
+    case ACCOUNT_ERROR:
     case PROFILE_ERROR:
       return {
         ...state,

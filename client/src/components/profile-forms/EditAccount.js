@@ -4,50 +4,49 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { updateAccount, getCurrentProfile } from "../../actions/profile";
 
+import Alert from "../Layout/Alert";
+
 const EditAccount = ({
   profile: { profile, loading },
-  updateAccount,
   getCurrentProfile,
+  updateAccount,
   history
 }) => {
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
     email: "",
-    password: ""
+    password: "",
+    passwordold: ""
   });
 
   useEffect(() => {
     getCurrentProfile();
 
     setFormData({
-      fname: loading || !user.fname ? "" : user.fname,
-      lname: loading || !user.lname ? "" : user.lname,
-      email: loading || !user.email ? "" : user.email,
-      password: loading || !user.password ? "" : user.password
+      fname: loading || !profile.user.fname ? "" : profile.user.fname,
+      lname: loading || !profile.user.lname ? "" : profile.user.lname,
+      email: loading || !profile.user.email ? "" : profile.user.email
     });
   }, [loading, getCurrentProfile]);
 
-  const { dob, gender, location, phone, occupation, website, bio } = formData;
+  const { fname, lname, email, password, passwordold } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
   const onSubmit = e => {
     e.preventDefault();
-    createProfile(formData, history, true);
+    updateAccount(formData, history, true);
   };
 
   return (
     <Fragment>
+      <Alert />
       <form className="addBarForm" autoComplete="off">
         <div className="form-wrapper">
           <div className="form-row">
             <fieldset className="form-column" id="meta-form">
-              <h2 className="input-heading">Update Profile</h2>
-
-              {/* <div className="alert alert-danger" style={{display: error ? "": "none"}}>{error}</div>
-
-                     <div className="alert alert-info" style={{display: open ? "": "none"}}>  </div> */}
+              <h2 className="input-heading">Update Account</h2>
 
               <div className="input-row">
                 <div className="input-wrapper">
@@ -60,6 +59,7 @@ const EditAccount = ({
                     placeholder="John"
                     onChange={e => onChange(e)}
                     value={fname}
+                    required
                   />
                 </div>
 
@@ -72,6 +72,7 @@ const EditAccount = ({
                     placeholder="Smith"
                     onChange={e => onChange(e)}
                     value={lname}
+                    required
                   />
                 </div>
               </div>
@@ -86,18 +87,29 @@ const EditAccount = ({
                     placeholder="hello@toolbox.com"
                     onChange={e => onChange(e)}
                     value={email}
+                    required
                   />
                 </div>
-
+              </div>
+              <div className="input-row">
                 <div className="input-wrapper">
-                  <label htmlFor="password">Update Password</label>
+                  <label htmlFor="password">Current Password</label>
+                  <input
+                    name="passwordold"
+                    type="password"
+                    id="passwordold"
+                    placeholder=""
+                    onChange={e => onChange(e)}
+                  />
+                </div>
+                <div className="input-wrapper">
+                  <label htmlFor="password">New Password</label>
                   <input
                     name="password"
                     type="password"
                     id="password"
                     placeholder=""
                     onChange={e => onChange(e)}
-                    value={password}
                   />
                 </div>
               </div>
@@ -127,6 +139,7 @@ EditAccount.propTypes = {
 const mapStateToProps = state => ({
   profile: state.profile
 });
-export default connect(mapStateToProps, { updateAccount, getCurrentProfile })(
-  withRouter(EditAccount)
-);
+export default connect(mapStateToProps, {
+  updateAccount,
+  getCurrentProfile
+})(withRouter(EditAccount));
