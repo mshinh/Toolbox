@@ -1,16 +1,34 @@
-import React, { Component } from "react";
+import React, { Component,  useState, useEffect } from "react";
 import Post from "./Post";
 import "./style.scss";
-
+import { Link, withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { logout } from "../../actions/auth";
+import { getPosts, getUserPosts } from "../../actions/post";
 
-const PostDisplay = ({ auth: { isAuthenticated, loading } }) => {
-  return isAuthenticated ? (
+
+
+const PostDisplay = ({  
+    getPosts,
+    
+    post: {posts, loading}
+
+    }) => {
+
+    // const [posts, updatePost] = useState({
+    //     posts: []
+    // });
+
+    useEffect(() => {
+        getPosts();
+    }, [getPosts]);
+  
+
+  return loading ? "" : (
     <div className="home-container">
-      <Post currPost={this.state.currPost} />
-
+      {/* <Post currPost={} /> */}
+      
+        <h2>Test</h2>
       <div className="page-heading">
         <h1>Welcome To Toolbox</h1>
         <h2>
@@ -23,40 +41,47 @@ const PostDisplay = ({ auth: { isAuthenticated, loading } }) => {
         <div className="post-popup">
           {/* This has to be moved becasue it will take up the entire home page */}
         </div>
-        <div className="post-board">{this.createPosts()}</div>
-      </div>
-    </div>
-  ) : (
-    <div className="home-container">
-      <Post currPost={this.state.currPost} />
-
-      <div className="page-heading">
-        <h1>Welcome To Toolbox</h1>
-        <h2>
-          Your one stop location for <br />
-          skilled workers and opportunities{" "}
-        </h2>
-      </div>
-      {/* Make this a class */}
-      <div className="post-template">
-        <div className="post-popup">
-          {/* This has to be moved becasue it will take up the entire home page */}
+        <div className="post-board">
+            {/* {this.createPosts()} */}
+            {posts.map(post => (
+                    <div key={post._id}  className="post">
+                    <h4>{post.name}</h4>
+                    <h3>{post.title}</h3>
+                    <p>{post.body}</p>
+                    <div className="buttom-container">
+                      <button
+                        type="submit"
+                        // onClick={e => {
+                        //   this.activeContent(data);
+                        // }}
+                        className="input-btn"
+                      >
+                        <h4>More Information</h4>
+                        <span className="button-bar"></span>
+                      </button>
+                    </div>
+                  </div>
+            ))}
         </div>
-        <div className="post-board">{this.createPosts()}</div>
       </div>
     </div>
-  );
+  )
 };
 
 PostDisplay.propTypes = {
-  auth: PropTypes.object.isRequired
+  getPosts: PropTypes.func.isRequired,
+  getUserPosts: PropTypes.func.isRequired,
+  post: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  post: state.post
 });
+export default connect(mapStateToProps, { getPosts, getUserPosts })(
+    withRouter(PostDisplay)
+);
+  
 
-export default connect(mapStateToProps)(PostDisplay);
 
 // class PostDisplay extends Component {
 //   constructor(props) {
@@ -114,23 +139,23 @@ export default connect(mapStateToProps)(PostDisplay);
 
 //   postContent = (data, idx) => {
 //     let post = (
-//       <div key={idx} className="post">
-//         <h4>{data.type}</h4>
-//         <h3>{data.title}</h3>
-//         <p>{data.desc}</p>
-//         <div className="buttom-container">
-//           <button
-//             type="submit"
-//             onClick={e => {
-//               this.activeContent(data);
-//             }}
-//             className="input-btn"
-//           >
-//             <h4>More Information</h4>
-//             <span className="button-bar"></span>
-//           </button>
-//         </div>
-//       </div>
+    //   <div key={idx} className="post">
+    //     <h4>{data.type}</h4>
+    //     <h3>{data.title}</h3>
+    //     <p>{data.desc}</p>
+    //     <div className="buttom-container">
+    //       <button
+    //         type="submit"
+    //         onClick={e => {
+    //           this.activeContent(data);
+    //         }}
+    //         className="input-btn"
+    //       >
+    //         <h4>More Information</h4>
+    //         <span className="button-bar"></span>
+    //       </button>
+    //     </div>
+    //   </div>
 //     );
 
 //     return post;
