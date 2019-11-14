@@ -11,6 +11,9 @@ import {
   REMOVE_COMMENT
 } from "./types";
 
+
+
+
 // Get posts
 export const getPosts = () => async dispatch => {
   try {
