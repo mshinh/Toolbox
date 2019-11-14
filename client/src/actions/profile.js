@@ -5,6 +5,9 @@ import {
   GET_PROFILE,
   GET_PROFILES,
   PROFILE_ERROR,
+  GET_ACCOUNT,
+  ACCOUNT_ERROR,
+  ACCOUNT_UPDATED,
   UPDATE_PROFILE,
   CLEAR_PROFILE,
   ACCOUNT_DELETED,
@@ -23,6 +26,23 @@ export const getCurrentProfile = () => async dispatch => {
   } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Get Current User Account
+export const getCurrentAccount = () => async dispatch => {
+  try {
+    const res = await axios.get("/api/users/me");
+
+    dispatch({
+      type: GET_ACCOUNT,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: ACCOUNT_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
@@ -90,7 +110,8 @@ export const createProfile = (
   try {
     const config = {
       headers: {
-        "Content-Type": "application/json"
+        // "Content-Type": "application/json"
+        "Content-Type": "multipart/form-data"
       }
     };
 
@@ -131,27 +152,26 @@ export const updateAccount = (
       }
     };
 
-    const res = await axios.post("/api/profile", formData, config);
+    const res = await axios.post("api/users/update", formData, config);
 
     dispatch({
-      type: GET_PROFILE,
+      type: ACCOUNT_UPDATED,
       payload: res.data
     });
 
     dispatch(setAlert("Account Updated", "success"));
 
-    // if (!edit) {
-    //   history.push("/profile");
-    // }
+    history.push("/profile");
   } catch (err) {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+      // errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+      dispatch(setAlert(errors[0].msg, "danger"));
     }
 
     dispatch({
-      type: PROFILE_ERROR,
+      type: ACCOUNT_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }

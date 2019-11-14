@@ -3,6 +3,7 @@ import { Link, withRouter, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createProfile, getCurrentProfile } from "../../actions/profile";
+import Alert from "../Layout/Alert";
 
 const CreateProfile = ({
   createProfile,
@@ -21,8 +22,12 @@ const CreateProfile = ({
   });
   const { dob, gender, location, phone, occupation, website, bio } = formData;
 
-  const onChange = e =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onChange = e => {
+    const value =
+      e.target.name === "profilePhoto" ? e.target.files : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
+  };
+
   const onSubmit = e => {
     e.preventDefault();
     createProfile(formData, history);
@@ -34,11 +39,27 @@ const CreateProfile = ({
 
   return (
     <Fragment>
+      <Alert />
       <form className="addBarForm" autoComplete="off">
         <div className="form-wrapper">
           <div className="form-row">
             <fieldset className="form-column" id="meta-form">
               <h2 className="input-heading">Create Profile</h2>
+
+              <div className="input-row">
+                <div className="input-wrapper">
+                  <label htmlFor="profilePhoto">Profile Photo</label>
+                  {/* Have to check to see if state is being updated with type date */}
+                  {/* defaultValue={dob} */}
+                  <input
+                    name="profilePhoto"
+                    type="file"
+                    id="profilePhoto"
+                    accept="image/*"
+                    onChange={e => onChange(e)}
+                  />
+                </div>
+              </div>
 
               <div className="input-row">
                 <div className="input-wrapper">

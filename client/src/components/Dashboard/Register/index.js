@@ -31,14 +31,14 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 
   return (
     <Fragment>
-      <div>
-        <form className="addBarForm" autoComplete="off">
-          <div className="form-wrapper">
-            <div className="form-row">
-              <fieldset className="form-column" id="meta-form">
-                <h2 className="input-heading">Register</h2>
+      <Alert />
+      <form className="addBarForm" autoComplete="off">
+        <div className="form-wrapper">
+          <div className="form-row">
+            <fieldset className="form-column" id="meta-form">
+              <h2 className="input-heading">Register</h2>
 
-                {/* <div
+              {/* <div
                 className="alert alert-danger"
                 style={{ display: error ? "" : "none" }}
               >
@@ -52,70 +52,69 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                 New account is succesfully created. Please Sign In.
               </div> */}
 
-                <div className="input-row">
-                  <div className="input-wrapper">
-                    <label htmlFor="fname">First Name</label>
-                    <input
-                      name="fname"
-                      type="text"
-                      value={fname}
-                      placeholder="John"
-                      onChange={e => onChange(e)}
-                    />
-                  </div>
+              <div className="input-row">
+                <div className="input-wrapper">
+                  <label htmlFor="fname">First Name</label>
+                  <input
+                    name="fname"
+                    type="text"
+                    value={fname}
+                    placeholder="John"
+                    onChange={e => onChange(e)}
+                  />
                 </div>
+              </div>
 
-                <div className="input-row">
-                  <div className="input-wrapper">
-                    <label htmlFor="lname">Last Name</label>
-                    <input
-                      name="lname"
-                      type="text"
-                      value={lname}
-                      placeholder="Smith"
-                      onChange={e => onChange(e)}
-                    />
-                  </div>
+              <div className="input-row">
+                <div className="input-wrapper">
+                  <label htmlFor="lname">Last Name</label>
+                  <input
+                    name="lname"
+                    type="text"
+                    value={lname}
+                    placeholder="Smith"
+                    onChange={e => onChange(e)}
+                  />
                 </div>
+              </div>
 
-                <div className="input-row">
-                  <div className="input-wrapper">
-                    <label htmlFor="email">Email Name</label>
-                    <input
-                      name="email"
-                      type="email"
-                      value={email}
-                      placeholder="hello@toolbox.com"
-                      onChange={e => onChange(e)}
-                    />
-                  </div>
+              <div className="input-row">
+                <div className="input-wrapper">
+                  <label htmlFor="email">Email Name</label>
+                  <input
+                    name="email"
+                    type="email"
+                    value={email}
+                    placeholder="hello@toolbox.com"
+                    onChange={e => onChange(e)}
+                  />
                 </div>
+              </div>
 
-                <div className="input-row">
-                  <div className="input-wrapper">
-                    <label htmlFor="password">Password</label>
-                    <input
-                      name="password"
-                      type="password"
-                      value={password}
-                      placeholder="Password"
-                      onChange={e => onChange(e)}
-                    />
-                  </div>
+              <div className="input-row">
+                <div className="input-wrapper">
+                  <label htmlFor="password">Password</label>
+                  <input
+                    name="password"
+                    type="password"
+                    value={password}
+                    placeholder="Password"
+                    onChange={e => onChange(e)}
+                  />
                 </div>
-              </fieldset>
-            </div>
-            <button
-              type="submit"
-              className="input-btn"
-              onClick={e => onSubmit(e)}
-            >
-              <h4>Register</h4>
-              <span className="button-bar"></span>
-            </button>
+              </div>
+            </fieldset>
           </div>
-        </form>
-      </div>
+          <button
+            type="submit"
+            className="input-btn"
+            onClick={e => onSubmit(e)}
+          >
+            <h4>Register</h4>
+            <span className="button-bar"></span>
+          </button>
+        </div>
+      </form>
     </Fragment>
   );
 };

@@ -117,11 +117,7 @@ router.post(
     check("lname", "Last name is required")
       .not()
       .isEmpty(),
-    check("email", "Please include a valid email").isEmail(),
-    check(
-      "password",
-      "Please enter a password with 6 or more characters"
-    ).isLength({ min: 6 })
+    check("email", "Please include a valid email").isEmail()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -129,7 +125,13 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { fname, lname, email, password } = req.body;
+    const { fname, lname, email, password, passwordold } = req.body;
+
+    if (!passwordold && password) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Please include your current password" }] });
+    }
 
     // Build account object
     const accountFields = {};
@@ -150,6 +152,26 @@ router.post(
         }
         if (userEmail) {
           return res.status(400).json({ errors: [{ msg: "Email is taken!" }] });
+        }
+
+        const isMatch = await bcrypt.compare(passwordold, user.password);
+
+        if (!isMatch) {
+          return res
+            .status(400)
+            .json({ errors: [{ msg: "Invalid Current Password" }] });
+        }
+
+        if (passwordold && !password) {
+          return res
+            .status(400)
+            .json({ errors: [{ msg: "Please include your new password" }] });
+        }
+
+        if (passwordold === password) {
+          return res
+            .status(400)
+            .json({ errors: [{ msg: "Please use different new password" }] });
         }
       }
 

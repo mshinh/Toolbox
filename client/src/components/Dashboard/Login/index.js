@@ -4,6 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../../../actions/auth";
+import Alert from "../../Layout/Alert";
 
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -34,6 +35,7 @@ const Login = ({ login, isAuthenticated }) => {
 
   return (
     <Fragment>
+      <Alert />
       <div className={`login-area ${active ? "active" : " "}`}>
         <div className="login-button" onClick={e => toggleLogin(e)}>
           <h2>Login</h2>

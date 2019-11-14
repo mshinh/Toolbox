@@ -6,6 +6,10 @@ const ProfileSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "User"
   },
+  photo: {
+    data: Buffer,
+    contentType: String
+  },
   dob: {
     type: Date
   },
