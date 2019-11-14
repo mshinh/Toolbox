@@ -36,7 +36,7 @@ const App = () => {
           <div id="toolbox-app">
             <div id="subclass-container">
               <Switch>
-                <Route exact path="/" component={PostDisplay} />
+                <Route exact path="/" component={Home} />
                 <PrivateRoute exact path="/dashboard" component={Home} />
                 <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute

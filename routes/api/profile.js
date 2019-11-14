@@ -1,71 +1,142 @@
 const express = require("express");
+const request = require("request");
+require("dotenv").config();
 const router = express.Router();
+const auth = require("../../middleware/auth");
+const { check, validationResult } = require("express-validator/check");
 
+const Profile = require("../../models/Profile");
 const User = require("../../models/User");
-const { requireSignin } = require("../../controllers/auth");
-const {
-  profileById,
-  getUserProfile,
-  getallProfiles,
-  getProfilebyUserId,
-  createProfile,
-  updateProfile,
-  deleteProfile
-} = require("../../controllers/profile");
-const {
-  userById,
-  allUsers,
-  getUser,
-  updateUser,
-  deleteUser
-} = require("../../controllers/user");
-const { validateProfileInput } = require("../../validation/profile");
-const { auth } = require("../../middleware/auth");
-
-// const mongoose = require('mongoose');
+const Post = require("../../models/Post");
 
 // @route    GET api/profile/me
 // @desc     Get current users profile
 // @access   Private
-// router.get("/me", requireSignin, getUserProfile);
-router.get("/me", auth, getUserProfile);
+router.get("/me", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.user.id
+    }).populate("user", ["fname", "lname", "email", "avatar"]);
+
+    if (!profile) {
+      return res.status(400).json({ msg: "There is no profile for this user" });
+    }
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    POST api/profile
+// @desc     Create or update user profile
+// @access   Private
+router.post(
+  "/",
+  [
+    auth
+    // [
+    //   check("status", "Status is required")
+    //     .not()
+    //     .isEmpty(),
+    //   check("skills", "Skills is required")
+    //     .not()
+    //     .isEmpty()
+    // ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { dob, gender, location, phone, occupation, website, bio } = req.body;
+
+    // Build profile object
+    const profileFields = {};
+    profileFields.user = req.user.id;
+
+    if (dob) profileFields.dob = dob;
+    if (gender) profileFields.gender = gender;
+    if (location) profileFields.location = location;
+    if (phone) profileFields.phone = phone;
+    if (occupation) profileFields.occupation = occupation;
+    if (website) profileFields.website = website;
+    if (bio) profileFields.bio = bio;
+    profileFields.updated = Date.now();
+
+    try {
+      // Using upsert option (creates new doc if no match is found):
+      let profile = await Profile.findOneAndUpdate(
+        { user: req.user.id },
+        { $set: profileFields },
+        { new: true, upsert: true }
+      );
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
 
 // @route    GET api/profile
 // @desc     Get all profiles
 // @access   Public
-router.get("/", getallProfiles);
+router.get("/", async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate("user", [
+      "fname",
+      "lname",
+      "email",
+      "avatar"
+    ]);
+    res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 // @route    GET api/profile/user/:user_id
 // @desc     Get profile by user ID
 // @access   Public
-router.get("/user/:user_id", getProfilebyUserId);
+router.get("/user/:user_id", async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id
+    }).populate("user", ["fname", "lname", "email", "avatar"]);
 
-// @route    POST api/profile/
-// @desc     Create Profile
-// @access   Public
-// router.post("/", auth, validateProfileInput, createProfile);
-router.post("/", auth, validateProfileInput, createProfile);
+    if (!profile) return res.status(400).json({ msg: "Profile not found" });
 
-// @route    DELETE api/profile/
-// @desc     Delete Profile, user & posts
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind == "ObjectId") {
+      return res.status(400).json({ msg: "Profile not found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    DELETE api/profile
+// @desc     Delete profile, user & posts
 // @access   Private
-router.delete("/", auth, deleteProfile);
+router.delete("/", auth, async (req, res) => {
+  try {
+    // Remove user posts
+    await Post.deleteMany({ user: req.user.id });
+    // Remove profile
+    await Profile.findOneAndRemove({ user: req.user.id });
+    // Remove user
+    await User.findOneAndRemove({ _id: req.user.id });
 
-// // @route    POST api/profile/
-// // @desc     Update Profile
-// // @access   Public
-// router.put("/profile/:userId", requireSignin, updateProfile);
-
-// //follow users
-// router.post("/:username/follow",allUsers);
-
-// //unfollow user
-// router.DELETE("/:username/follow",allUsers);
-
-//any route containing :userId, our app will first execute userById()
-router.param("userId", userById);
-
-//any route containing :profileId, our app will first execute profileById()
-router.param("profileId", profileById);
+    res.json({ msg: "User deleted" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;

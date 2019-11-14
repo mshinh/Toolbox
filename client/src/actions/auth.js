@@ -61,7 +61,8 @@ export const register = ({
 
     if (errors) {
       console.log("errors");
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+      // errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+      dispatch(setAlert(errors[0].msg, "danger"));
     }
 
     dispatch({

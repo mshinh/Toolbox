@@ -1,32 +1,180 @@
 const express = require("express");
-const { requireSignin } = require("../../controllers/auth");
-const {
-  userById,
-  allUsers,
-  getUser,
-  updateUser,
-  deleteUser
-} = require("../../controllers/user");
 const router = express.Router();
-const { userSignupValidator } = require("../../validation/index");
-const { signup, signin, signout } = require("../../controllers/auth");
+const gravatar = require("gravatar");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const { check, validationResult } = require("express-validator/check");
+const auth = require("../../middleware/auth");
 
-// router.get("/users",allUsers);
-// router.get("/user/:userId",requireSignin,getUser);
-// router.put("/user/:userId",requireSignin,updateUser);
-// router.delete("/user/:userId",requireSignin,deleteUser);
+const User = require("../../models/User");
 
 // @route    POST api/users
 // @desc     Register user
 // @access   Public
-router.post("/", userSignupValidator, signup);
+router.post(
+  "/",
+  [
+    check("fname", "First name is required")
+      .not()
+      .isEmpty(),
+    check("lname", "Last name is required")
+      .not()
+      .isEmpty(),
+    check("email", "Please include a valid email").isEmail(),
+    check(
+      "password",
+      "Please enter a password with 6 or more characters"
+    ).isLength({ min: 6 })
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-// router.post("/", (req, res) => {
-//   console.log(req.body);
-//   res.send("User route");
-// });
+    const { fname, lname, email, password } = req.body;
 
-//any route containing :userId, our app will first execute userById()
-router.param("userId", userById);
+    try {
+      let user = await User.findOne({ email });
+
+      if (user) {
+        return res.status(400).json({ errors: [{ msg: "Email is taken!" }] });
+      }
+
+      const avatar = gravatar.url(email, {
+        s: "200",
+        r: "pg",
+        d: "mm"
+      });
+
+      user = new User({
+        fname,
+        lname,
+        email,
+        avatar,
+        password
+      });
+
+      const salt = await bcrypt.genSalt(10);
+
+      user.password = await bcrypt.hash(password, salt);
+
+      await user.save();
+
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: 360000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    }
+  }
+);
+
+// @route    GET api/users/me
+// @desc     Get current users account information
+// @access   Private
+router.get("/me", auth, async (req, res) => {
+  try {
+    const user = await User.findOne({
+      _id: req.user.id
+    });
+
+    if (!user) {
+      return res.status(400).json({ msg: "There is no user" });
+    }
+
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    POST api/users/update
+// @desc     Update user info
+// @access   Public
+router.post(
+  "/update",
+  [
+    auth,
+    check("fname", "First name is required")
+      .not()
+      .isEmpty(),
+    check("lname", "Last name is required")
+      .not()
+      .isEmpty(),
+    check("email", "Please include a valid email").isEmail(),
+    check(
+      "password",
+      "Please enter a password with 6 or more characters"
+    ).isLength({ min: 6 })
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { fname, lname, email, password } = req.body;
+
+    // Build account object
+    const accountFields = {};
+
+    if (fname) accountFields.fname = fname;
+    if (lname) accountFields.lname = lname;
+    if (email) accountFields.email = email;
+    if (password) accountFields.password = password;
+    accountFields.updated = Date.now();
+
+    try {
+      let user = await User.findOne({ _id: req.user.id });
+      let userEmail;
+
+      if (user) {
+        if (user.email != email) {
+          userEmail = await User.findOne({ email });
+        }
+        if (userEmail) {
+          return res.status(400).json({ errors: [{ msg: "Email is taken!" }] });
+        }
+      }
+
+      const avatar = gravatar.url(email, {
+        s: "200",
+        r: "pg",
+        d: "mm"
+      });
+      accountFields.avatar = avatar;
+
+      const salt = await bcrypt.genSalt(10);
+      accountFields.password = await bcrypt.hash(password, salt);
+
+      user = await User.findOneAndUpdate(
+        { _id: req.user.id },
+        { $set: accountFields },
+        { new: true, upsert: true }
+      );
+
+      res.json(user);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
 
 module.exports = router;
