@@ -6,6 +6,9 @@ import Spinner from "../Layout/Spinner";
 import ProfileActions from "./ProfileActions";
 import { getCurrentProfile, deleteAccount } from "../../actions/profile";
 
+import "./style.scss";
+
+
 const UserProfile = ({
   getCurrentProfile,
   deleteAccount,
@@ -20,17 +23,26 @@ const UserProfile = ({
     <Spinner />
   ) : (
     <Fragment>
-      <h1 className="large text-primary">Profile</h1>
-      <p className="lead">
-        <i className="fas fa-user" /> Welcome {user && user.name}
-      </p>
+      <div className="profile-content">
+        <h1>Profile</h1>
+        <p className="lead">
+          <i className="fas fa-user" /> Welcome {user.fname}
+        </p>
+      </div>
       {profile !== null ? (
         <Fragment>
-          <ProfileActions />
+            <div className="profile-content">
+              <h3>{user.email}</h3>
+
+              {/* KATE ADD USER INFO HERE */}
+
+            </div>
           {/* <Experience experience={profile.experience} />
           <Education education={profile.education} /> */}
 
-          <div className="my-2">
+          <div className="profile-content">
+          <ProfileActions />
+
             <button className="btn btn-danger" onClick={() => deleteAccount()}>
               <i className="fas fa-user-minus" /> Delete My Account
             </button>
@@ -38,10 +50,12 @@ const UserProfile = ({
         </Fragment>
       ) : (
         <Fragment>
-          <p>You have not yet setup a profile, please add some info</p>
-          <Link to="/create-profile" className="btn btn-primary my-1">
-            Create Profile
-          </Link>
+          <div className="profile-content">
+            <p>You have not yet setup a profile, please add some info</p>
+            <Link to="/create-profile" className="btn btn-primary my-1">
+              Create Profile
+            </Link>
+          </div>
         </Fragment>
       )}
     </Fragment>
