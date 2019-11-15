@@ -5,9 +5,10 @@ import { connect } from "react-redux";
 import Spinner from "../Layout/Spinner";
 import ProfileActions from "./ProfileActions";
 import { getCurrentProfile, deleteAccount } from "../../actions/profile";
+import Moment from "react-moment";
+import moment from "moment";
 
 import "./style.scss";
-
 
 const UserProfile = ({
   getCurrentProfile,
@@ -26,22 +27,32 @@ const UserProfile = ({
       <div className="profile-content">
         <h1>Profile</h1>
         <p className="lead">
-          <i className="fas fa-user" /> Welcome {user.fname}
+          <i className="fas fa-user" /> Welcome {user.fname} {user.lname}
         </p>
       </div>
       {profile !== null ? (
         <Fragment>
-            <div className="profile-content">
-              <h3>{user.email}</h3>
+          <div className="profile-content">
+            <h4>{profile.gender ? profile.gender : " "}</h4>
+            <h4>
+              {" "}
+              {<Moment format="DD/MM/YY">{moment.utc(profile.dob)}</Moment>}
+            </h4>
 
-              {/* KATE ADD USER INFO HERE */}
+            <h4>{profile.occupation ? profile.occupation : " "}</h4>
+            <h4>{user.email}</h4>
+            <h4>{profile.website ? profile.website : " "}</h4>
+            <h4>{profile.phone ? profile.phone : " "}</h4>
+            <h4>{profile.location ? profile.location : " "}</h4>
+            <h4>{profile.bio ? profile.bio : " "}</h4>
 
-            </div>
+            {/* KATE ADD USER INFO HERE */}
+          </div>
           {/* <Experience experience={profile.experience} />
           <Education education={profile.education} /> */}
 
           <div className="profile-content">
-          <ProfileActions />
+            <ProfileActions />
 
             <button className="btn btn-danger" onClick={() => deleteAccount()}>
               <i className="fas fa-user-minus" /> Delete My Account
