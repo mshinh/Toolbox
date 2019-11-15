@@ -28,8 +28,7 @@ const EditProfile = ({
     getCurrentProfile();
 
     setFormData({
-      dob:
-        loading || !profile.dob ? "" : moment(profile.dob).format("yyyy-MM-dd"),
+      dob: loading || !profile.dob ? "" : profile.dob,
       gender: loading || !profile.gender ? "" : profile.gender,
       location: loading || !profile.location ? "" : profile.location,
       phone: loading || !profile.phone ? "" : profile.phone,
