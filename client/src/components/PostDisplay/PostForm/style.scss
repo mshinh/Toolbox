@@ -1,0 +1,36 @@
+
+@import './../../../assets/stylesheets/main.scss';
+
+.input-heading {
+     padding-top: 20px;
+    // padding-bottom: 2px; 
+}
+.test {
+    color: blue;
+}
+.post-form-container {
+    position: fixed;
+    background-color: #fff;
+    //height: 200px;
+    width: (1198/$desktop) * 100vw;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    border-top: 1px solid #000;
+    transform: translateY(80%);
+    
+    transition: transform 500ms $easeInOut3;
+
+    .input-btn {
+        width: 100%;
+        border: none;
+    }
+
+    .input-heading {
+        padding-bottom: 40px;
+    }
+
+    &.active {
+        transform: translateY(0%);
+    }
+}
