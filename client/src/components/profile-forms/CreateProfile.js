@@ -23,9 +23,9 @@ const CreateProfile = ({
   const { dob, gender, location, phone, occupation, website, bio } = formData;
 
   const onChange = e => {
-    const value =
-      e.target.name === "profilePhoto" ? e.target.files : e.target.value;
-    setFormData({ ...formData, [e.target.name]: value });
+    // const value =
+    //   e.target.name === "profilePhoto" ? e.target.files : e.target.value;
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const onSubmit = e => {

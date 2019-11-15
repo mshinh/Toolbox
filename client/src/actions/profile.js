@@ -110,8 +110,8 @@ export const createProfile = (
   try {
     const config = {
       headers: {
-        // "Content-Type": "application/json"
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "application/json"
+        // "Content-Type": "multipart/form-data"
       }
     };
 

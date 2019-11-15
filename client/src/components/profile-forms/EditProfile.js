@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createProfile, getCurrentProfile } from "../../actions/profile";
 import Alert from "../Layout/Alert";
+import Moment from "react-moment";
+import moment from "moment";
 
 const EditProfile = ({
   profile: { profile, loading },
@@ -26,7 +28,8 @@ const EditProfile = ({
     getCurrentProfile();
 
     setFormData({
-      dob: loading || !profile.dob ? "" : profile.dob,
+      dob:
+        loading || !profile.dob ? "" : moment(profile.dob).format("yyyy-MM-dd"),
       gender: loading || !profile.gender ? "" : profile.gender,
       location: loading || !profile.location ? "" : profile.location,
       phone: loading || !profile.phone ? "" : profile.phone,
@@ -48,9 +51,9 @@ const EditProfile = ({
   } = formData;
 
   const onChange = e => {
-    const value =
-      e.target.name === "profilePhoto" ? e.target.files[0] : e.target.value;
-    setFormData({ ...formData, [e.target.name]: value });
+    // const value =
+    //   e.target.name === "profilePhoto" ? e.target.files[0] : e.target.value;
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const onSubmit = e => {
     e.preventDefault();
