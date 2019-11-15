@@ -16,28 +16,33 @@
   color: blue;
 }
 .profile-actions-container {
-  position: fixed;
+  position: absolute;
   background-color: #fff;
   //height: 200px;
-  width: (1198 / $desktop) * 100vw;
-  bottom: 0;
+  width: 100%;
+ // bottom: 0;
   left: 0;
+  right: 0;
   z-index: 5;
-  border-top: 1px solid #000;
-  transform: translateY(50%);
-
+  border: none;
+  //border-top: 1px solid #000;
+ 
+  display: flex;
+  padding-bottom: 2px;
   transition: transform 500ms $easeInOut3;
 
   .input-btn {
-    width: 25%;
-    border: none;
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 18px;
+   // border:none;
+   // border-top: 1px solid #000;
+   //  border: none;
   }
 
   .input-heading {
     padding-bottom: 40px;
   }
 
-  &.active {
-    transform: translateY(50%);
-  }
+  
 }
