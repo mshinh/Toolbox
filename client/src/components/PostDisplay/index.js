@@ -15,9 +15,24 @@ const PostDisplay = ({
 
     }) => {
 
-    // const [posts, updatePost] = useState({
-    //     posts: []
-    // });
+    const [currpost, updateCurr] = useState({
+        title: "",
+        body: "",
+        name: "",
+      
+    });
+    const [active, updateActive] = useState(false)
+
+
+    const activeContent = post => {
+      updateCurr({title: post.title, body: post.body, name: post.name});
+      updateActiveState(true)
+    
+    };
+    const updateActiveState = newSet => {
+      updateActive(newSet)
+    }
+
 
     useEffect(() => {
         getPosts();
@@ -26,9 +41,9 @@ const PostDisplay = ({
 
   return loading ? "" : (
     <div className="home-container">
-      {/* <Post currPost={} /> */}
+    
       
-        <h2>Test</h2>
+  
       <div className="page-heading">
         <h1>Welcome To Toolbox</h1>
         <h2>
@@ -51,9 +66,9 @@ const PostDisplay = ({
                     <div className="buttom-container">
                       <button
                         type="submit"
-                        // onClick={e => {
-                        //   this.activeContent(data);
-                        // }}
+                        onClick={e => {
+                          activeContent(post);
+                        }}
                         className="input-btn"
                       >
                         <h4>More Information</h4>
@@ -64,6 +79,9 @@ const PostDisplay = ({
             ))}
         </div>
       </div>
+      
+      <Post currPost={currpost} active={active} toggle={updateActiveState} />
+
     </div>
   )
 };

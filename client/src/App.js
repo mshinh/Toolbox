@@ -21,7 +21,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
-import CreatePost from "./components/PostDisplay/CreatePost";
+import PostForm from "./components/PostDisplay/PostForm/PostForm";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -40,7 +40,7 @@ const App = () => {
               <Switch>
                 <Route exact path="/" component={PostDisplay} />
                 <PrivateRoute exact path="/dashboard" component={PostDisplay} />
-                <PrivateRoute exact path="/account" component={PostDisplay} />
+                <Route exact path="/account" component={PostDisplay} />
                 <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute
                   exact
@@ -57,8 +57,10 @@ const App = () => {
                   path="/edit-account"
                   component={EditAccount}
                 />
-                <PrivateRoute exact path="/account" component={CreatePost} />
+               
+               
               </Switch>
+              <PrivateRoute exact path="/account" component={PostForm} />
             </div>
             <div id="dash-container">
               <Dashboard />
