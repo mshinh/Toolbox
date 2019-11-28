@@ -2,12 +2,65 @@ const express = require("express");
 const request = require("request");
 require("dotenv").config();
 const router = express.Router();
+
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator/check");
 
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
 const Post = require("../../models/Post");
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: "./public/",
+  filename: function(req, file, cb) {
+    cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+  }
+});
+// const upload = multer({
+//   storage: storage,
+//   limits: { fileSize: 1000000 }
+// }).single("myImage");
+
+var upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype == "image/png" ||
+      file.mimetype == "image/jpg" ||
+      file.mimetype == "image/jpeg"
+    ) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
+    }
+  }
+});
+
+router.post(
+  "/profilePhoto",
+  auth,
+  upload.single("photo"),
+  async (req, res, next) => {
+    const url = req.protocol + "://" + req.get("host");
+    console.log("Request file ---", req.file);
+
+    try {
+      // Using upsert option (creates new doc if no match is found):
+      let profile = await Profile.findOneAndUpdate(
+        { user: req.user.id },
+        { photo: url + "/public/" + req.file.filename },
+        { new: true, upsert: true }
+      );
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
 
 // @route    GET api/profile/me
 // @desc     Get current users profile
@@ -16,7 +69,7 @@ router.get("/me", auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.user.id
-    }).populate("user", ["fname", "lname", "email", "avatar"]);
+    }).populate("user", ["fname", "lname", "email"]);
 
     if (!profile) {
       return res.status(400).json({ msg: "There is no profile for this user" });
@@ -136,6 +189,90 @@ router.delete("/", auth, async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
+  }
+});
+
+// @route    PUT api/profile/portfolio
+// @desc     Add profile portfolio
+// @access   Private
+router.put(
+  "/portfolio",
+  [
+    auth,
+    [
+      // check("title", "Title is required")
+      //   .not()
+      //   .isEmpty()
+    ]
+  ],
+  upload.array("imgCollection", 6),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const url = req.protocol + "://" + req.get("host");
+
+    const { title, description } = req.body;
+
+    const newPortfolio = {};
+    if (title) newPortfolio.title = title;
+    if (description) newPortfolio.description = description;
+    if (req.files.length != 0) {
+      newPortfolio.imgCollection = [];
+      for (var i = 0; i < req.files.length; i++) {
+        newPortfolio.imgCollection.push(
+          url + "/public/" + req.files[i].filename
+        );
+      }
+    }
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      profile.portfolio.unshift(newPortfolio);
+
+      await profile.save();
+
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+// @route    PUT api/profile/portfolio
+// @desc     delete photo from portfolio
+// @access   Private
+
+//To Do later
+
+// @route    DELETE api/profile/portfolio/:portf_id
+// @desc     Delete portfolio from profile
+// @access   Private
+router.delete("/portfolio/:portf_id", auth, async (req, res) => {
+  try {
+    const foundProfile = await Profile.findOne({ user: req.user.id });
+    const portfolioIds = foundProfile.portfolio.map(por => por._id.toString());
+    // if i dont add .toString() it returns this weird mongoose coreArray and the ids are somehow objects and it still deletes anyway even if you put /portfolio/5
+    const removeIndex = portfolioIds.indexOf(req.params.por_id);
+    if (removeIndex === -1) {
+      return res.status(500).json({ msg: "Server error" });
+    } else {
+      // theses console logs helped me figure it out
+      console.log("portfolioIds", portfolioIds);
+      console.log("typeof porIds", typeof portfolioIds);
+      console.log("req.params", req.params);
+      console.log("removed", portfolioIds.indexOf(req.params.por_id));
+      foundProfile.portfolio.splice(removeIndex, 1);
+      await foundProfile.save();
+      return res.status(200).json(foundProfile);
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ msg: "Server error" });
   }
 });
 

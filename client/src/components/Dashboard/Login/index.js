@@ -35,7 +35,7 @@ const Login = ({ login, isAuthenticated }) => {
 
   return (
     <Fragment>
-      <Alert />
+      {/* <Alert /> */}
       <div className={`login-area ${active ? "active" : " "}`}>
         <div className="login-button" onClick={e => toggleLogin(e)}>
           <h2>Login</h2>

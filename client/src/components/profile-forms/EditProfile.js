@@ -2,7 +2,11 @@ import React, { useEffect, useState, Fragment } from "react";
 import { Link, withRouter, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { createProfile, getCurrentProfile } from "../../actions/profile";
+import {
+  createProfile,
+  getCurrentProfile,
+  uploadProfilePhoto
+} from "../../actions/profile";
 import Alert from "../Layout/Alert";
 import Moment from "react-moment";
 import moment from "moment";
@@ -10,6 +14,7 @@ import moment from "moment";
 const EditProfile = ({
   profile: { profile, loading },
   createProfile,
+  uploadProfilePhoto,
   getCurrentProfile,
   history
 }) => {
@@ -20,8 +25,10 @@ const EditProfile = ({
     phone: "",
     occupation: "",
     website: "",
-    bio: "",
-    profilePhoto: ""
+    bio: ""
+  });
+  const [profilePhoto, setProfilePhoto] = useState({
+    photo: ""
   });
 
   useEffect(() => {
@@ -36,18 +43,15 @@ const EditProfile = ({
       website: loading || !profile.website ? "" : profile.website,
       bio: loading || !profile.bio ? "" : profile.bio
     });
+
+    setProfilePhoto({
+      photo: loading || !profile.photo ? "" : profile.photo
+    });
   }, [loading, getCurrentProfile]);
 
-  const {
-    dob,
-    gender,
-    location,
-    phone,
-    occupation,
-    website,
-    bio,
-    profilePhoto
-  } = formData;
+  const { dob, gender, location, phone, occupation, website, bio } = formData;
+
+  const { photo } = profilePhoto;
 
   const onChange = e => {
     // const value =
@@ -57,6 +61,15 @@ const EditProfile = ({
   const onSubmit = e => {
     e.preventDefault();
     createProfile(formData, history, true);
+  };
+
+  const onChangePhoto = e => {
+    setProfilePhoto({ ...profilePhoto, [e.target.name]: e.target.files[0] });
+  };
+
+  const onUploadPhoto = e => {
+    e.preventDefault();
+    uploadProfilePhoto(photo);
   };
 
   return (
@@ -70,16 +83,26 @@ const EditProfile = ({
 
               <div className="input-row">
                 <div className="input-wrapper">
-                  <label htmlFor="profilePhoto">Profile Photo</label>
+                  <label htmlFor="photo">Profile Photo</label>
                   {/* Have to check to see if state is being updated with type date */}
                   {/* defaultValue={dob} */}
                   <input
-                    name="profilePhoto"
+                    name="photo"
                     type="file"
-                    id="profilePhoto"
+                    id="photo"
                     accept="image/*"
-                    onChange={e => onChange(e)}
+                    onChange={e => onChangePhoto(e)}
                   />
+                </div>
+                <div className="input-wrapper">
+                  <button
+                    type="upload"
+                    className="input-btn"
+                    onClick={e => onUploadPhoto(e)}
+                  >
+                    <h4>Upload</h4>
+                    <span className="button-bar"></span>
+                  </button>
                 </div>
               </div>
 
@@ -210,12 +233,15 @@ const EditProfile = ({
 
 EditProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
+  uploadProfilePhoto: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({
   profile: state.profile
 });
-export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
-  withRouter(EditProfile)
-);
+export default connect(mapStateToProps, {
+  uploadProfilePhoto,
+  createProfile,
+  getCurrentProfile
+})(withRouter(EditProfile));

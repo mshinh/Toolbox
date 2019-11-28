@@ -111,7 +111,6 @@ export const createProfile = (
     const config = {
       headers: {
         "Content-Type": "application/json"
-        // "Content-Type": "multipart/form-data"
       }
     };
 
@@ -177,38 +176,69 @@ export const updateAccount = (
   }
 };
 
-// // Add Experience
-// export const addExperience = (formData, history) => async dispatch => {
-//   try {
-//     const config = {
-//       headers: {
-//         'Content-Type': 'application/json'
-//       }
-//     };
+// upload photo
+export const uploadProfilePhoto = profilePhoto => async dispatch => {
+  const formData = new FormData();
+  formData.append("photo", profilePhoto, profilePhoto.name);
 
-//     const res = await axios.put('/api/profile/experience', formData, config);
+  try {
+    console.log(profilePhoto);
+    const res = await axios.post("/api/profile/profilePhoto", formData);
 
-//     dispatch({
-//       type: UPDATE_PROFILE,
-//       payload: res.data
-//     });
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data
+    });
 
-//     dispatch(setAlert('Experience Added', 'success'));
+    // dispatch(setAlert(edit ? "Profile Updated" : "Profile Created", "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
 
-//     history.push('/dashboard');
-//   } catch (err) {
-//     const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    }
 
-//     if (errors) {
-//       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-//     }
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
 
-//     dispatch({
-//       type: PROFILE_ERROR,
-//       payload: { msg: err.response.statusText, status: err.response.status }
-//     });
-//   }
-// };
+// Add Portfolio
+export const addPortfolio = formData => async dispatch => {
+  try {
+    // const config = {
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // };
+
+    console.log(formData);
+
+    const res = await axios.put("/api/profile/portfolio", formData);
+
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data
+    });
+
+    dispatch(setAlert("Portfolio Added", "success"));
+
+    // history.push('/dashboard');
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    }
+
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
 
 // // Add Education
 // export const addEducation = (formData, history) => async dispatch => {

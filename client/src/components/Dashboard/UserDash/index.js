@@ -22,10 +22,21 @@ const UserDash = ({
   ) : (
     <Fragment>
       <div className="user-item">
-        <div
-          className="user-picture"
-          style={{ backgroundImage: `url(${userImage})` }}
-        ></div>
+        {profile === null || profile.photo === null ? (
+          <div
+            className="user-picture"
+            style={{ backgroundImage: `url(${userImage})` }}
+          ></div>
+        ) : (
+          <div
+            className="user-picture"
+            // style={{ backgroundImage: `url(${userImage})` }}
+            style={{
+              backgroundImage: `url(${profile.photo})`
+            }}
+          ></div>
+        )}
+
         <div className="user-detail">
           <h3>
             {/* Have to put the user name here */}

@@ -22,6 +22,7 @@ import store from "./store";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
 import PostForm from "./components/PostDisplay/PostForm/PostForm";
+import AddPortfolio from "./components/profile-forms/AddPortfolio";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -57,8 +58,11 @@ const App = () => {
                   path="/edit-account"
                   component={EditAccount}
                 />
-               
-               
+                <PrivateRoute
+                  exact
+                  path="/portfolio"
+                  component={AddPortfolio}
+                />
               </Switch>
               <PrivateRoute exact path="/account" component={PostForm} />
             </div>
