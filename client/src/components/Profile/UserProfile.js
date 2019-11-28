@@ -52,8 +52,6 @@ const UserProfile = ({
           <Education education={profile.education} /> */}
 
           <div className="profile-content">
-        
-
             <button className="btn btn-danger" onClick={() => deleteAccount()}>
               <i className="fas fa-user-minus" /> Delete My Account
             </button>

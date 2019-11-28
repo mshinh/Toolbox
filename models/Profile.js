@@ -35,7 +35,19 @@ const ProfileSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  updated: Date
+  updated: Date,
+  portfolio: [
+    {
+      title: {
+        type: String,
+        required: true
+      },
+      imgCollection: [{ type: String }],
+      description: {
+        type: String
+      }
+    }
+  ]
 });
 
 module.exports = mongoose.model("Profile", ProfileSchema);
