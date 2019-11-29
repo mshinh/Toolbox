@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "../Layout/Spinner";
 import ProfileActions from "./ProfileActions";
+import PortfolioItem from "../Portfolio/PortfolioItem";
 import { getCurrentProfile, deleteAccount } from "../../actions/profile";
 import Moment from "react-moment";
 import moment from "moment";
@@ -33,18 +34,30 @@ const UserProfile = ({
       {profile !== null ? (
         <Fragment>
           <div className="profile-content">
-            <h4>{profile.gender ? profile.gender : " "}</h4>
-            <h4>
-              {" "}
-              {<Moment format="DD/MM/YY">{moment.utc(profile.dob)}</Moment>}
-            </h4>
+            <div className="user-info">
+              <h4>{profile.gender ? profile.gender : " "}</h4>
+              <h4>
+                {" "}
+                {<Moment format="DD/MM/YY">{moment.utc(profile.dob)}</Moment>}
+              </h4>
 
-            <h4>{profile.occupation ? profile.occupation : " "}</h4>
-            <h4>{user.email}</h4>
-            <h4>{profile.website ? profile.website : " "}</h4>
-            <h4>{profile.phone ? profile.phone : " "}</h4>
-            <h4>{profile.location ? profile.location : " "}</h4>
-            <h4>{profile.bio ? profile.bio : " "}</h4>
+              <h4>{profile.occupation ? profile.occupation : " "}</h4>
+              <h4>{user.email}</h4>
+              <h4>{profile.website ? profile.website : " "}</h4>
+              <h4>{profile.phone ? profile.phone : " "}</h4>
+              <h4>{profile.location ? profile.location : " "}</h4>
+              <h4>{profile.bio ? profile.bio : " "}</h4>
+            </div>
+            <div className="portfolio-board">
+              {profile.portfolio.length > 0 ? (
+                profile.portfolio.map(
+                  portf => <PortfolioItem key={portf._id} portfolio={portf} />
+                  // console.log(portf._id)
+                )
+              ) : (
+                <h4>No profiles found...</h4>
+              )}
+            </div>
 
             {/* KATE ADD USER INFO HERE */}
           </div>
