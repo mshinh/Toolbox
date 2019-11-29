@@ -10,7 +10,7 @@ const ProfileActions = () => {
       <Link to="/edit-account" className="input-btn">
         <i className="fab fa-black-tie text-primary" /> Edit Account
       </Link>
-      <Link to="/add-portfolio" className="input-btn">
+      <Link to="/portfolio" className="input-btn">
         <i className="fas fa-graduation-cap text-primary" /> Add Portfolio
       </Link>
     </div>
