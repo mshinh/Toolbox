@@ -1,4 +1,5 @@
 import {
+  GET_SEARCHED_POSTS,
   GET_POSTS,
   POST_ERROR,
   UPDATE_LIKES,
@@ -20,6 +21,7 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
+    case GET_SEARCHED_POSTS:
     case GET_POSTS:
       return {
         ...state,

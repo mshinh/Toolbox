@@ -1,78 +1,56 @@
-
-
-
-
 import React, { Component, useState, useEffect } from "react";
 
 import "./style.scss";
 import { Link, withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getPosts, getUserPosts } from "./../../../actions/post";
+import { getPostsSearch } from "./../../../actions/post";
 
 const Search = ({
-  getPosts,
+  getPostsSearch,
 
   post: { posts }
 }) => {
-  const [search, updateSearch] = useState(" ");
-  
- 
- 
+  const [search, updateSearch] = useState("");
+
   const onSubmit = e => {
-    console.log(search)
-    
+    console.log(search);
+    getPostsSearch(search);
   };
 
   const onChange = e => {
-  
-    
     updateSearch(e.target.value);
-   
   };
 
-  
-  useEffect(() => {
-     
-    getPosts();
-  }, [getPosts]);
+  useEffect(() => {}, [getPostsSearch]);
 
   return (
-   <div className="search-item">
-            
-         
+    <div className="search-item">
+      <div className="search-area">
+        <input
+          name="search"
+          type="Search"
+          id="search"
+          placeholder="Search"
+          onChange={e => onChange(e)}
+          value={search}
+        />
 
-           <div className="search-area">
-                <input
-                    name="search"
-                    type="Search"
-                    id="search"
-                    placeholder="Search"
-                     onChange={e => onChange(e)}
-                    value={search}
-                    
-                />
-                         
-            <button className="input-btn" onClick={() => onSubmit()}>
-                        <h4>Search</h4>  
-                        <span className="button-bar"></span>  
-            </button> 
-
-
-           </div>
+        <button className="input-btn" onClick={() => onSubmit()}>
+          <h4>Search</h4>
+          <span className="button-bar"></span>
+        </button>
+      </div>
     </div>
   );
 };
 
 Search.propTypes = {
-  getPosts: PropTypes.func.isRequired,
-  getUserPosts: PropTypes.func.isRequired,
+  getPostsSearch: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   post: state.post
 });
-export default connect(mapStateToProps, { getPosts, getUserPosts })(
-  withRouter(Search)
-);
+export default connect(mapStateToProps, { getPostsSearch })(withRouter(Search));

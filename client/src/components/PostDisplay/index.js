@@ -1,19 +1,24 @@
 import React, { Component, useState, useEffect } from "react";
 import Post from "./Post";
 import "./style.scss";
-import { Link, withRouter, Redirect, RouteComponentProps } from "react-router-dom";
+import {
+  Link,
+  withRouter,
+  Redirect,
+  RouteComponentProps
+} from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getPosts, getUserPosts } from "../../actions/post";
-import { getCurrentProfile} from "../../actions/profile";
-
+import { getCurrentProfile } from "../../actions/profile";
 
 const PostDisplay = ({
   getPosts,
   getCurrentProfile,
   getUserPosts,
   post: { posts, loading },
-  auth: { user }
+  auth: { user },
+  isAuthenticated
 }) => {
   const [currpost, updateCurr] = useState({
     title: "",
@@ -31,24 +36,28 @@ const PostDisplay = ({
   };
 
   useEffect(() => {
+    // getPosts();
     //The posts will be retrieved via the Search component
-   // getPosts();
+    // getPosts();
 
-  
-   
-  
-    if(window.location.pathname === "/account") {
+    // if (isAuthenticated && window.location.pathname === "/account") {
+    //   getUserPosts(user._id);
+    // } else {
+    //   getPosts();
+    // }
+
+    if (window.location.pathname === "/account") {
       // getCurrentProfile()
       // console.log(window.location.pathname);
       // console.log(user)
       // getPosts();
-      console.log(user)
+      console.log(user);
       getUserPosts(user._id);
     } else {
-      console.log("Get all")
+      console.log("Get all");
       getPosts();
     }
-      // console.log(location.search)
+    // console.log(location.search)
   }, [getUserPosts, getCurrentProfile, getPosts]);
 
   return loading ? (
@@ -56,7 +65,7 @@ const PostDisplay = ({
   ) : (
     <div className="home-container">
       <div className="page-heading">
-       {/* {user.fname} */}
+        {/* {user.fname} */}
         <h1>Welcome To Toolbox</h1>
         <h2>
           Your one stop location for <br />
@@ -102,14 +111,17 @@ PostDisplay.propTypes = {
   getUserPosts: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
-  getCurrentProfile: PropTypes.func.isRequired
+  getCurrentProfile: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
   post: state.post,
-  auth: state.auth
-  
+  auth: state.auth,
+  isAuthenticated: state.auth.isAuthenticated
 });
-export default connect(mapStateToProps, { getPosts, getCurrentProfile, getUserPosts })(
-  withRouter(PostDisplay)
-);
+export default connect(mapStateToProps, {
+  getPosts,
+  getCurrentProfile,
+  getUserPosts
+})(withRouter(PostDisplay));
