@@ -49,13 +49,17 @@ const UserProfile = ({
               <h4>{profile.bio ? profile.bio : " "}</h4>
             </div>
             <div className="portfolio-board">
+            {profile.portfolio.length > 0 ? (
+               <h2>Portfolio Preview</h2>
+            ): ( <h4>Create A Portfolio Below</h4> )}
               {profile.portfolio.length > 0 ? (
-                profile.portfolio.map(
+              
+              profile.portfolio.map(
                   portf => <PortfolioItem key={portf._id} portfolio={portf} />
                   // console.log(portf._id)
                 )
               ) : (
-                <h4>No profiles found...</h4>
+                <h4></h4>
               )}
             </div>
 

@@ -44,11 +44,18 @@
     padding-bottom: 40px;
   }
 }
-.round-img {
-  border-radius: 50%;
-  width: 100px;
-}
+.image-display {
+  display: flex;
 
+  .image-preview {
+    margin-right: 10px;
+    // border-radius: 50%;
+    height: 100px;
+    width: 150px;
+    background-size: cover;
+    background-position: center; 
+  }
+}
 .portfolio-board {
   .portfolio {
     margin-top: 40px;
