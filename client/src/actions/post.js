@@ -1,6 +1,7 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 import {
+  GET_SEARCHED_POSTS,
   GET_POSTS,
   POST_ERROR,
   UPDATE_LIKES,
@@ -10,9 +11,6 @@ import {
   ADD_COMMENT,
   REMOVE_COMMENT
 } from "./types";
-
-
-
 
 // Get posts
 export const getPosts = () => async dispatch => {
@@ -38,6 +36,24 @@ export const getUserPosts = id => async dispatch => {
 
     dispatch({
       type: GET_POSTS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Search post by title
+export const getPostsSearch = title => async dispatch => {
+  try {
+    console.log(title);
+    const res = await axios.get(`/api/posts/search/${title}`);
+
+    dispatch({
+      type: GET_SEARCHED_POSTS,
       payload: res.data
     });
   } catch (err) {

@@ -110,25 +110,21 @@ router.get("/:id", auth, async (req, res) => {
   }
 });
 
-
 //Search Option
 
-router.get("/search/:id", auth, async (req, res) => {
+router.get("/search/:title", auth, async (req, res) => {
   try {
-  
-
     const posts = await Post.find({
-      title: req.params.id
+      title: { $regex: req.params.title, $options: "i" }
     }).sort({ date: -1 });
 
-    res.json(post);
+    res.json(posts);
   } catch (err) {
     console.error(err.message);
 
     res.status(500).send("Server Error");
   }
 });
-
 
 // router.get('/find/:query', cors(), function(req, res) {
 //   var query = req.params.query;
