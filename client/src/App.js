@@ -15,6 +15,7 @@ import CreateProfile from "./components/profile-forms/CreateProfile";
 import EditProfile from "./components/profile-forms/EditProfile";
 import EditAccount from "./components/profile-forms/EditAccount";
 import PostDisplay from "./components/PostDisplay";
+import Friends from "./components/Friends/index";
 
 // Redux
 import { Provider } from "react-redux";
@@ -43,6 +44,7 @@ const App = () => {
                 <PrivateRoute exact path="/dashboard" component={PostDisplay} />
                 <Route exact path="/account" component={PostDisplay} />
                 <PrivateRoute exact path="/profile" component={Profile} />
+                <PrivateRoute exact path="/friends" component={Friends} />
                 <PrivateRoute
                   exact
                   path="/create-profile"

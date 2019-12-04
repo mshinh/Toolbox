@@ -14,10 +14,12 @@ const PortfolioItem = ({
         <p>{description}</p>
         <div className="image-display">
           {imgCollection.length > 0 ? (
-            imgCollection.map(
-              img => <img src={img} alt="" className="round-img" />
+            imgCollection.map(img => {
+            
+             return <div className="image-preview" style={{backgroundImage: `url(${img})`}} alt="" >
+              </div> 
               // console.log(portf._id)
-            )
+            })
           ) : (
             <h4>No images found...</h4>
           )}
@@ -25,7 +27,7 @@ const PortfolioItem = ({
         </div>
 
         <div className="buttom-container">
-          <button
+          {/* <button
             type="submit"
             //   onClick={e => {
             //     activeContent(post);
@@ -34,7 +36,7 @@ const PortfolioItem = ({
           >
             <h4>View Portfolio</h4>
             <span className="button-bar"></span>
-          </button>
+          </button> */}
         </div>
       </div>
       {/* <ul>

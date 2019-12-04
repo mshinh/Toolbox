@@ -110,6 +110,43 @@ router.get("/:id", auth, async (req, res) => {
   }
 });
 
+
+//Search Option
+
+router.get("/search/:id", auth, async (req, res) => {
+  try {
+  
+
+    const posts = await Post.find({
+      title: req.params.id
+    }).sort({ date: -1 });
+
+    res.json(post);
+  } catch (err) {
+    console.error(err.message);
+
+    res.status(500).send("Server Error");
+  }
+});
+
+
+// router.get('/find/:query', cors(), function(req, res) {
+//   var query = req.params.query;
+
+//   Model.find({
+//       'request': query
+//   }, function(err, result) {
+//       if (err) throw err;
+//       if (result) {
+//           res.json(result)
+//       } else {
+//           res.send(JSON.stringify({
+//               error : 'Error'
+//           }))
+//       }
+//   })
+// })
+
 // @route    DELETE api/posts/:id
 // @desc     Delete a post
 // @access   Private
