@@ -112,7 +112,7 @@ router.get("/:id", auth, async (req, res) => {
 
 //Search Option
 
-router.get("/search/:title", auth, async (req, res) => {
+router.get("/search/:title", async (req, res) => {
   try {
     const posts = await Post.find({
       title: { $regex: req.params.title, $options: "i" }
