@@ -15,7 +15,11 @@ import CreateProfile from "./components/profile-forms/CreateProfile";
 import EditProfile from "./components/profile-forms/EditProfile";
 import EditAccount from "./components/profile-forms/EditAccount";
 import PostDisplay from "./components/PostDisplay";
-import Friends from "./components/Friends/index";
+import UserPostDisplay from "./components/PostDisplay/UserPosts";
+// import Friends from "./components/Friends/index";
+
+import Friend from "./components/Profile/Profile";
+import Friends from "./components/Friends/Profiles";
 
 // Redux
 import { Provider } from "react-redux";
@@ -42,9 +46,10 @@ const App = () => {
               <Switch>
                 <Route exact path="/" component={PostDisplay} />
                 <PrivateRoute exact path="/dashboard" component={PostDisplay} />
-                <Route exact path="/account" component={PostDisplay} />
+                <Route exact path="/account" component={UserPostDisplay} />
                 <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute exact path="/friends" component={Friends} />
+                <PrivateRoute exact path="/friend/:id" component={Friend} />
                 <PrivateRoute
                   exact
                   path="/create-profile"

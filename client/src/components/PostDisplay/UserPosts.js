@@ -9,10 +9,14 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getPosts } from "../../actions/post";
+import { getUserPosts } from "../../actions/post";
 import Spinner from "../Layout/Spinner";
 
-const PostDisplay = ({ getPosts, post: { posts, loading } }) => {
+const UserPostDisplay = ({
+  getUserPosts,
+  post: { posts },
+  auth: { user, loading }
+}) => {
   const [currpost, updateCurr] = useState({
     title: "",
     body: "",
@@ -29,7 +33,7 @@ const PostDisplay = ({ getPosts, post: { posts, loading } }) => {
   };
 
   useEffect(() => {
-    getPosts();
+    getUserPosts(user._id);
 
     // getPosts();
     //The posts will be retrieved via the Search component
@@ -53,9 +57,9 @@ const PostDisplay = ({ getPosts, post: { posts, loading } }) => {
     //   getPosts();
     // }
     // console.log(location.search)
-  }, [getPosts]);
+  }, [getUserPosts]);
 
-  return loading ? (
+  return loading && user === null ? (
     <Spinner />
   ) : (
     <div className="home-container">
@@ -101,14 +105,16 @@ const PostDisplay = ({ getPosts, post: { posts, loading } }) => {
   );
 };
 
-PostDisplay.propTypes = {
-  getPosts: PropTypes.func.isRequired,
-  post: PropTypes.object.isRequired
+UserPostDisplay.propTypes = {
+  getUserPosts: PropTypes.func.isRequired,
+  post: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  post: state.post
+  post: state.post,
+  auth: state.auth
 });
 export default connect(mapStateToProps, {
-  getPosts
-})(withRouter(PostDisplay));
+  getUserPosts
+})(withRouter(UserPostDisplay));
