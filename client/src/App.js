@@ -10,7 +10,7 @@ import Home from "./components/Home";
 import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./routing/PrivateRoute";
 import Createpost from "./components/Createpost";
-import Profile from "./components/Profile/UserProfile";
+import UserProfile from "./components/Profile/UserProfile";
 import CreateProfile from "./components/profile-forms/CreateProfile";
 import EditProfile from "./components/profile-forms/EditProfile";
 import EditAccount from "./components/profile-forms/EditAccount";
@@ -47,7 +47,7 @@ const App = () => {
                 <Route exact path="/" component={PostDisplay} />
                 <PrivateRoute exact path="/dashboard" component={PostDisplay} />
                 <Route exact path="/account" component={UserPostDisplay} />
-                <PrivateRoute exact path="/profile" component={Profile} />
+                <PrivateRoute exact path="/profile" component={UserProfile} />
                 <PrivateRoute exact path="/friends" component={Friends} />
                 <PrivateRoute exact path="/friend/:id" component={Friend} />
                 <PrivateRoute

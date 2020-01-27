@@ -20,12 +20,13 @@ const EditProfile = ({
 }) => {
   const [formData, setFormData] = useState({
     dob: "",
-    gender: "",
     location: "",
     phone: "",
     occupation: "",
     website: "",
-    bio: ""
+    bio: "",
+    facebook: "",
+    instagram: ""
   });
   const [profilePhoto, setProfilePhoto] = useState({
     photo: ""
@@ -35,13 +36,16 @@ const EditProfile = ({
     getCurrentProfile();
 
     setFormData({
-      dob: loading || !profile.dob ? "" : profile.dob,
-      gender: loading || !profile.gender ? "" : profile.gender,
+      // dob: loading || !profile.dob ? "" : profile.dob,
+      dob:
+        loading || !profile.dob ? "" : moment(profile.dob).format("YYYY-MM-DD"),
       location: loading || !profile.location ? "" : profile.location,
       phone: loading || !profile.phone ? "" : profile.phone,
       occupation: loading || !profile.occupation ? "" : profile.occupation,
       website: loading || !profile.website ? "" : profile.website,
-      bio: loading || !profile.bio ? "" : profile.bio
+      bio: loading || !profile.bio ? "" : profile.bio,
+      facebook: loading || !profile.social ? "" : profile.social.facebook,
+      instagram: loading || !profile.social ? "" : profile.social.instagram
     });
 
     setProfilePhoto({
@@ -49,7 +53,16 @@ const EditProfile = ({
     });
   }, [loading, getCurrentProfile]);
 
-  const { dob, gender, location, phone, occupation, website, bio } = formData;
+  const {
+    dob,
+    location,
+    phone,
+    occupation,
+    website,
+    bio,
+    facebook,
+    instagram
+  } = formData;
 
   const { photo } = profilePhoto;
 
@@ -120,23 +133,6 @@ const EditProfile = ({
                     onChange={e => onChange(e)}
                   />
                 </div>
-
-                <div className="input-wrapper">
-                  <label htmlFor="gender">Gender</label>
-                  {/* Have to test select with onChange method */}
-                  {/* How to set default value with select? */}
-                  <select
-                    name="gender"
-                    id="gender"
-                    placeholder=""
-                    value={gender}
-                    onChange={e => onChange(e)}
-                  >
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">other</option>
-                  </select>
-                </div>
               </div>
 
               <div className="input-row">
@@ -193,6 +189,33 @@ const EditProfile = ({
                     placeholder="www.mysite.com"
                     onChange={e => onChange(e)}
                     value={website}
+                  />
+                </div>
+              </div>
+              <div className="input-row">
+                <div className="input-wrapper">
+                  <label htmlFor="facebook">Facebook</label>
+                  {/* <i className="fab fa-facebook" /> */}
+                  <input
+                    name="facebook"
+                    type="text"
+                    id="facebook"
+                    placeholder="Facebook URL"
+                    onChange={e => onChange(e)}
+                    value={facebook}
+                  />
+                </div>
+
+                <div className="input-wrapper">
+                  <label htmlFor="instagram">Instagram</label>
+                  {/* Maybe not have this at all, have to think about it*/}
+                  <input
+                    name="instagram"
+                    type="text"
+                    id="instagram"
+                    placeholder="Instagram URL"
+                    onChange={e => onChange(e)}
+                    value={instagram}
                   />
                 </div>
               </div>

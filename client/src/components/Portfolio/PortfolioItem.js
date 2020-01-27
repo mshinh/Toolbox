@@ -15,9 +15,13 @@ const PortfolioItem = ({
         <div className="image-display">
           {imgCollection.length > 0 ? (
             imgCollection.map(img => {
-            
-             return <div className="image-preview" style={{backgroundImage: `url(${img})`}} alt="" >
-              </div> 
+              return (
+                <div
+                  className="image-preview"
+                  style={{ backgroundImage: `url(${img})` }}
+                  alt=""
+                ></div>
+              );
               // console.log(portf._id)
             })
           ) : (

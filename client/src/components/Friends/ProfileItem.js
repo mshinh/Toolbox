@@ -5,7 +5,7 @@ import "./style.scss";
 
 const ProfileItem = ({
   profile: {
-    user: { _id, fname, lname },
+    user: { _id, fname, lname, userphoto },
     occupation,
     photo
   }
