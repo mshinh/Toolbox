@@ -22,7 +22,7 @@ const UserDash = ({
   ) : (
     <Fragment>
       <div className="user-item">
-        {profile === null || profile.photo === null ? (
+        {user.userphoto === null ? (
           <div
             className="user-picture"
             style={{ backgroundImage: `url(${userImage})` }}
@@ -32,7 +32,7 @@ const UserDash = ({
             className="user-picture"
             // style={{ backgroundImage: `url(${userImage})` }}
             style={{
-              backgroundImage: `url(${profile.photo})`
+              backgroundImage: `url(${user.userphoto})`
             }}
           ></div>
         )}

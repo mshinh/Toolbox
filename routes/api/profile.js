@@ -39,6 +39,30 @@ var upload = multer({
   }
 });
 
+// router.post(
+//   "/profilePhoto",
+//   auth,
+//   upload.single("photo"),
+//   async (req, res, next) => {
+//     const url = req.protocol + "://" + req.get("host");
+//     console.log("Request file ---", req.file);
+
+//     try {
+//       // Using upsert option (creates new doc if no match is found):
+//       let profile = await Profile.findOneAndUpdate(
+//         { user: req.user.id },
+//         { photo: url + "/public/" + req.file.filename },
+//         { new: true, upsert: true }
+//       );
+//       res.json(profile);
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send("Server Error");
+//     }
+//   }
+// );
+
+//upload profile image for user
 router.post(
   "/profilePhoto",
   auth,
@@ -49,12 +73,12 @@ router.post(
 
     try {
       // Using upsert option (creates new doc if no match is found):
-      let profile = await Profile.findOneAndUpdate(
-        { user: req.user.id },
-        { photo: url + "/public/" + req.file.filename },
+      let user = await User.findOneAndUpdate(
+        { _id: req.user.id },
+        { userphoto: url + "/public/" + req.file.filename },
         { new: true, upsert: true }
       );
-      res.json(profile);
+      res.json(user);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
@@ -104,20 +128,32 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { dob, gender, location, phone, occupation, website, bio } = req.body;
+    const {
+      dob,
+      location,
+      phone,
+      occupation,
+      website,
+      bio,
+      facebook,
+      instagram
+    } = req.body;
 
     // Build profile object
     const profileFields = {};
     profileFields.user = req.user.id;
 
     if (dob) profileFields.dob = dob;
-    if (gender) profileFields.gender = gender;
     if (location) profileFields.location = location;
     if (phone) profileFields.phone = phone;
     if (occupation) profileFields.occupation = occupation;
     if (website) profileFields.website = website;
     if (bio) profileFields.bio = bio;
     profileFields.updated = Date.now();
+    // Build social object
+    profileFields.social = {};
+    if (facebook) profileFields.social.facebook = facebook;
+    if (instagram) profileFields.social.instagram = instagram;
 
     try {
       // Using upsert option (creates new doc if no match is found):
@@ -143,7 +179,7 @@ router.get("/", async (req, res) => {
       "fname",
       "lname",
       "email",
-      "avatar"
+      "userphoto"
     ]);
     res.json(profiles);
   } catch (err) {
@@ -159,7 +195,7 @@ router.get("/user/:user_id", async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.params.user_id
-    }).populate("user", ["fname", "lname", "email", "avatar"]);
+    }).populate("user", ["fname", "lname", "email", "userphoto"]);
 
     if (!profile) return res.status(400).json({ msg: "Profile not found" });
 

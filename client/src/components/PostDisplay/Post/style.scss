@@ -1,43 +1,42 @@
-@import './../../../assets/stylesheets/main.scss';
+@import "./../../../assets/stylesheets/main.scss";
 
 .post-content {
-    position: fixed;
-    z-index: 6;
-    left: 0;
-    top: 0;
+  position: fixed;
+  z-index: 6;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: (1198 / $desktop) * 100vw;
+  background-color: #fff;
+  transform: translateY(-100%);
+
+  transition: transform 500ms $easeInOut3;
+
+  &.active {
+    transform: translateY(0%);
+  }
+  .post-template {
+    padding: $DwS;
+
+    p {
+      padding-top: 40px;
+    }
+  }
+  .close-content {
+    padding: 21px $DwS;
+
+    position: absolute;
     bottom: 0;
-    width: (1198/$desktop) * 100vw;
-    background-color: #fff;
-    transform: translateY(-100%);
+    left: 0;
+    right: 0;
 
-    transition: transform 500ms $easeInOut3;
+    border-top: 1px solid #000;
+    transition: background-color 500ms $easeInOut3;
 
-    &.active {
-        transform: translateY(0%);
+    &:hover {
+      background-color: #000;
+      cursor: pointer;
+      color: #fff;
     }
-    .post-template {
-        padding: $DwS;
-        
-        p {
-            padding-top: 40px;
-        }
-
-    }
-    .close-content {
-        padding: 21px $DwS;
-
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        
-        border-top: 1px solid #000;
-        transition: background-color 500ms $easeInOut3;
-     
-        &:hover {
-            background-color: #000;
-            cursor: pointer;
-            color: #fff;
-        }
-    }
+  }
 }

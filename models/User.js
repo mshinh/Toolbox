@@ -22,8 +22,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  avatar: {
-    type: String
+  userphoto: {
+    data: Buffer,
+    contentType: String
   },
   created: {
     type: Date,
