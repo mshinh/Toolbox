@@ -17,14 +17,12 @@ const Profiles = ({
     getProfiles();
   }, []);
 
+  
+  const [activeDisplay, setDisplay] = useState();
+
   const updateActive = (profile) => {
-    console.log(profile);
+    setDisplay(profile)
   }
-  const [activeDisplay, setDisplay] = useState({
-    profile: {},
-  });
-
-
   
   return (
     <Fragment>
@@ -34,10 +32,11 @@ const Profiles = ({
         <Fragment>
           <div className="friend-container">
             <h2>Contact Center</h2>
+            <h3>Keep track of your contacts for future reference</h3>
             <div className="friend-list">
               {profiles.length > 0 ? (
                 profiles.map(profile => (
-                      <ProfileItem key={profile._id}  profile={profile} />
+                      <ProfileItem key={profile._id} updateActive={updateActive}   profile={profile} />
                 ))
               ) : (
                 <h4>No Contacts Found</h4>
@@ -46,7 +45,7 @@ const Profiles = ({
           
           </div>
           <div className="displayContainer">
-                <ContactDisplay activeDisplay={activeDisplay} />
+                <ContactDisplay  active={activeDisplay}/>
           </div>
         </Fragment>
       )}
