@@ -75,9 +75,14 @@ const ProfileTop = ({
               </ul>
             </div>
             <div class="icons my-1">
-              <a href={website} target="_blank" rel="noopener noreferrer">
-                <i class="fas fa-globe fa-2x"></i>
-              </a>
+              {website ? (
+                <a href={website} target="_blank" rel="noopener noreferrer">
+                  <i class="fas fa-globe fa-2x"></i>
+                </a>
+              ) : (
+                ""
+              )}
+
               {social ? (
                 <a
                   href={social.facebook}
@@ -122,8 +127,8 @@ const ProfileTop = ({
         </div>
 
         <div className="portfolio-board">
-          {portfolio.length > 0 ? <h2>Portfolio Preview</h2> : <h2></h2>}
-          {portfolio.length > 0 ? (
+          {portfolio ? <h2>Portfolio Preview</h2> : <h2></h2>}
+          {portfolio ? (
             portfolio.map(
               portf => <PortfolioItem key={portf._id} portfolio={portf} />
               // console.log(portf._id)
