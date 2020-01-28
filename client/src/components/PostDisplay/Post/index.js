@@ -50,8 +50,6 @@ class Post extends Component {
                 <button  className="input-btn">
                   <h4>Contact {name}</h4>
                       <span className="button-bar"></span>
-                
-
                 </button>
          
 
@@ -59,7 +57,7 @@ class Post extends Component {
 
           
 
-                </div>
+        </div>
 
         <div className="close-content" onClick={e => this.props.toggle(false)}>
           <h4>Close</h4>
