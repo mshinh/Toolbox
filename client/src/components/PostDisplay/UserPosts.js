@@ -21,12 +21,13 @@ const UserPostDisplay = ({
     title: "",
     body: "",
     name: "",
+    location: "",
     imgCollection: []
   });
   const [active, updateActive] = useState(false);
 
   const activeContent = post => {
-    updateCurr({ title: post.title, body: post.body, name: post.name, imgCollection: post.imgCollection });
+    updateCurr({ title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection });
     updateActiveState(true);
   };
   const updateActiveState = newSet => {
@@ -83,7 +84,6 @@ const UserPostDisplay = ({
             <div key={post._id} className="post">
               <h4>{post.name}</h4>
               <h3>{post.title}</h3>
-              <p>{post.body}</p>
               {
                 post.imgCollection.map( (img) => (
                   <img src={window.location.origin + "/public/" + img} alt="image" />
