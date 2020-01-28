@@ -10,28 +10,42 @@ const PostForm = ({ addPost }) => {
     title: "",
     body: "",
     location: "",
-    type: ""
+    type: "",
+    imgCollection: null
   });
 
   const [active, activeToggle] = useState(false)
 
 
-  const { title, body, location, type } = formPost;
+  const { title, body, location, type, imgCollection } = formPost;
 
   const onChange = e => {
     setPostData({ ...formPost, [e.target.name]: e.target.value });
   };
-
+  const onFileChange = e => {
+    setPostData({ ...formPost, imgCollection: e.target.files });
+  };
 
 
   const onSubmit = e => {
     e.preventDefault();
-    addPost(formPost);
+
+    var formData = new FormData();
+    for (var x = 0; x < imgCollection.length; x++) {
+      formData.append("imgCollection", imgCollection[x]);
+    }
+
+    formData.append("title", title);
+    formData.append("body", body);
+    formData.append("location", location);
+    formData.append("type", type);
+    addPost(formData);
     setPostData({
       title: "",
       body: "",
       location: "",
-      type: "job"
+      type: "job",
+      imgCollection: null
     });
   };
 
@@ -87,6 +101,14 @@ const PostForm = ({ addPost }) => {
               />
             </div>
           </div>
+          <div className="form-group">
+                <input
+                  type="file"
+                  name="imgCollection"
+                  onChange={e => onFileChange(e)}
+                  multiple
+                />
+              </div>
           <div className="input-row">
             <div className="input-wrapper">
               <label htmlFor="location">Location</label>
