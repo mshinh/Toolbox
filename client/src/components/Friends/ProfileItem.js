@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./style.scss";
+//import fillerPhoto from "../../../public/f_trades.jpg";
+import fillerPhoto from "../../assets/images/f_trades.jpg";
 
 const ProfileItem = ({
   profile: {
@@ -20,7 +22,7 @@ const ProfileItem = ({
   } else {
     friendImage = <div
     className="friend-image"
-    style={{ backgroundImage: `url(../../../public/f_trades.jpg)` }}
+    style={{ backgroundImage: `url(${fillerPhoto})` }}
   ></div>;
   }
   return (

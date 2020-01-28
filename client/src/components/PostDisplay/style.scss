@@ -10,6 +10,22 @@
       margin-top: 40px;
       border-bottom: 1px solid #707070;
       padding-bottom: 20px;
+
+      .preview-images {
+        padding-bottom: 20px;
+        display: flex;
+
+        .image-item {
+          width: 200px;
+          height: 150px;
+          margin-right: 10px;
+          background-size: cover;
+          background-position: center;
+        }
+        img {
+          width: 200px;
+        }
+      }
     }
 
     h4 {

@@ -4,6 +4,7 @@ import "./style.scss";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Spinner from "../Layout/Spinner";
+import fillerPhoto from "../../assets/images/f_trades.jpg";
 
 
 
@@ -11,7 +12,18 @@ import Spinner from "../Layout/Spinner";
 const ContactDisplay = ({active}
 ) => {
  
- 
+  let friendImage;
+  if(active && active.user.userphoto) {
+  friendImage =  <div
+    className="contact-image"
+    style={{ backgroundImage: `url(${active.user.userphoto})` }}
+  ></div>;
+  } else {
+    friendImage = <div
+    className="contact-image"
+    style={{ backgroundImage: `url(${fillerPhoto})` }}
+  ></div>;
+  }
 
   return (<Fragment>
     
@@ -19,10 +31,7 @@ const ContactDisplay = ({active}
       <Fragment>
         <div className="contact-display-container">
         <div className="contact-header">
-          <div
-            className="contact-image"
-            style={{ backgroundImage: `url(${active.user.userphoto})` }}
-          ></div>
+          {friendImage}
           <div className="contact-info-name">
            <div> <h2>{active.user.fname} {active.user.lname} </h2>
                  <h3>{active.occupation && <span>{active.occupation}</span>}</h3>
