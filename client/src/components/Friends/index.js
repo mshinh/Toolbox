@@ -25,7 +25,7 @@ const Friends = ({
     <Spinner />
   ) : (
     <div className="friend-container">
-      <h2>Friends Center</h2>
+      <h2>Contact Center</h2>
 
       <div className="friend-list">
         <div className="friend-item">
@@ -34,8 +34,8 @@ const Friends = ({
             style={{ backgroundImage: `url(${userImage})` }}
           ></div>
           <div className="friend-info">
-            <h3>Friend Name</h3>
-            <h3>Friend Occupation</h3>
+            <h3>Contact Name</h3>
+            <h3>Contact Occupation</h3>
           </div>
         </div>
       </div>
