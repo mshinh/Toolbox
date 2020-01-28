@@ -21,7 +21,8 @@
     }
   }
   .friend-list {
-    width: 400px;
+   
+    padding-top: 100px;
 
     .friend-item {
       border: 1px solid #000;
@@ -29,6 +30,10 @@
       width: (450/1920) * 100vw;
       height: 125px;
       display: flex;
+
+      &:hover {
+        cursor: pointer;
+      }
 
       .friend-image {
         width: 38%;
@@ -58,18 +63,114 @@
           display: flex;
           flex-direction: column;
           align-items: flex-end;
+
           .side-btn {
+
             background-color: #fff;
             border: none;
             border-left: 1px solid #000;
             height: 50%;
-            width: 80px;
+            width: (80/1920) * 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 500ms ease-in-out;
+            svg {
+              path {
+              transition: fill 500ms ease-in-out;
+              }
+            }
+
+            span {
+              margin: 0 5px  0 5px;
+              font-size: (14/1920) * 100vw;
+              transition: color 700ms ease-in-out;
+            }
             &.long {
               border-bottom: 1px solid #000;
-              width: 100px;
+              width: (100/1920) * 100vw;
+            }
+           
+            &:hover {
+              background-color: #000;
+              svg {
+                path {
+                  fill: #fff;
+                }
+              }
+              span {
+                color: #fff;
+              }
             }
           }
+
+
         }
+      }
+    }
+  }
+
+}
+.contact-display-container {
+  position: fixed;
+  left: (550/1920) * 100vw;
+  top: 220px;
+  // right: 40px;
+  width: (800/1920) * 100vw;
+  .contact-header {
+
+    width: 100%;
+    display: flex; 
+
+    .contact-image {
+      height: 200px;
+      width: (300/1920) * 100vw;
+      background-size: cover;
+      background-position: center;
+    }
+    .contact-info-name {
+      width: (300/1920) * 100vw;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      padding-left: 20px;
+      .input-btn {
+        width: 100%;
+      }
+      h3 {
+        font-size: (20/1920) * 100vw;
+      }
+      h4 {
+        font-size: (12/1920) * 100vw;
+      }
+    }
+  }
+  .contact-meta-info {
+    margin-top: 20px;
+    .input-btn {
+      width: 100%;
+    }
+    
+    .contact-row {
+      display: flex;
+    }
+    .column {
+      width: (300/1920) * 100vw;
+       
+      &.last {
+        padding-left: 20px;
+      }
+    }
+    .skill-container {
+    
+      display: flex;
+      flex-wrap: wrap;
+      h4 {
+        padding: (12/1920) *100vw;
+        background-color:   #707070;
+        color: #fff;
+        margin-right: 5px;
+        font-size: (18/1920) * 100vw;
       }
     }
   }
