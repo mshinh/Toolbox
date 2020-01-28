@@ -79,6 +79,11 @@ const PostDisplay = ({ getPosts, post: { posts, loading } }) => {
               <h4>{post.name}</h4>
               <h3>{post.title}</h3>
               <p>{post.body}</p>
+              {
+                post.imgCollection.map( (img) => (
+                  <img src={window.location.origin + "/public/" + img} alt="image" />
+                ))
+              }
               <div className="buttom-container">
                 <button
                   type="submit"
