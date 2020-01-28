@@ -39,7 +39,7 @@ const ContactDisplay = ({active}
                  <h4>Phone: {active.phone}</h4>
                  <h4>Email: {active.user.email}</h4>
             </div>
-            <Link to={`/friend/${active._id}`} className="input-btn">
+            <Link to={`/friend/${active.user._id}`} className="input-btn">
             <h4>View Profile</h4>
                 <span className="button-bar"></span>
           
