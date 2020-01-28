@@ -1,4 +1,6 @@
 const express = require("express");
+const request = require("request");
+require("dotenv").config();
 const router = express.Router();
 const { check, validationResult } = require("express-validator/check");
 const auth = require("../../middleware/auth");
@@ -7,6 +9,32 @@ const Post = require("../../models/Post");
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
 
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: "./public/",
+  filename: function(req, file, cb) {
+    cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+  }
+});
+
+var upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype == "image/png" ||
+      file.mimetype == "image/jpg" ||
+      file.mimetype == "image/jpeg"
+    ) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
+    }
+  }
+});
+
 // @route    POST api/posts
 // @desc     Create a post
 // @access   Private
@@ -14,20 +42,24 @@ router.post(
   "/",
   [
     auth,
-    [
-      check("title", "Title is required")
-        .not()
-        .isEmpty(),
-      check("title", "Title must be between 4 to 150 characters").isLength({
-        min: 4,
-        max: 150
-      }),
-      check("body", "Text is required")
-        .not()
-        .isEmpty()
-    ]
+    //[
+    //  check("title", "Title is required")
+    //    .not()
+    //    .isEmpty(),
+    //  check("title", "Title must be between 4 to 150 characters").isLength({
+    //   min: 4,
+    //    max: 150
+    //  }),
+    //  check("body", "Text is required")
+    //    .not()
+    //    .isEmpty()
+    //]
   ],
+  upload.any(),
   async (req, res) => {
+    console.log('req', req)
+    console.log("body", req.body);
+    console.log('files', req.files)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -37,12 +69,19 @@ router.post(
       const user = await User.findById(req.user.id).select("-password");
 
       const username = user.fname + " " + user.lname;
+      let imgCollection = []
+      if(req.files){
+        req.files.forEach(file => {
+          imgCollection.push(file.filename)
+        });
+      }
 
       const newPost = new Post({
         title: req.body.title,
         body: req.body.body,
         location: req.body.location,
         type: req.body.type,
+        imgCollection,
         name: username,
         avatar: user.avatar,
         user: req.user.id

@@ -17,6 +17,7 @@ const PostSchema = new mongoose.Schema({
   location: {
     type: String
   },
+  imgCollection: [String],
   type: {
     type: String,
     required: true
