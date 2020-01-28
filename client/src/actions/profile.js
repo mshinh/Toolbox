@@ -1,5 +1,6 @@
 import axios from "axios";
 import { setAlert } from "./alert";
+import { loadUser } from "./auth";
 
 import {
   GET_PROFILE,
@@ -186,11 +187,13 @@ export const uploadProfilePhoto = profilePhoto => async dispatch => {
     const res = await axios.post("/api/profile/profilePhoto", formData);
 
     dispatch({
-      type: GET_PROFILE,
+      type: ACCOUNT_UPDATED,
       payload: res.data
     });
 
-    // dispatch(setAlert(edit ? "Profile Updated" : "Profile Created", "success"));
+    dispatch(loadUser());
+
+    dispatch(setAlert("Profile photo uploaded", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
 

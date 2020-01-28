@@ -79,13 +79,17 @@ const UserProfile = ({
                   </ul>
                 </div>
                 <div class="icons my-1">
-                  <a
-                    href={profile.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i class="fas fa-globe fa-2x"></i>
-                  </a>
+                  {profile.website ? (
+                    <a
+                      href={profile.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <i class="fas fa-globe fa-2x"></i>
+                    </a>
+                  ) : (
+                    ""
+                  )}
 
                   {profile.social ? (
                     <a
@@ -130,12 +134,12 @@ const UserProfile = ({
               </div>
             </div>
             <div className="portfolio-board">
-              {profile.portfolio.length > 0 ? (
+              {profile.portfolio ? (
                 <h2>Portfolio Preview</h2>
               ) : (
                 <h2>Create A Portfolio Below</h2>
               )}
-              {profile.portfolio.length > 0 ? (
+              {profile.portfolio ? (
                 profile.portfolio.map(
                   portf => <PortfolioItem key={portf._id} portfolio={portf} />
                   // console.log(portf._id)
