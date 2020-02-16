@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const Schema = mongoose.Schema;
 //Create Schema
 
 const UserSchema = new mongoose.Schema({
@@ -30,7 +30,12 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  updated: Date
+  updated: Date,
+  contact: [
+   { type: Schema.ObjectId,
+    ref: "User"
+  }
+  ]
 });
 
 module.exports = mongoose.model("User", UserSchema);

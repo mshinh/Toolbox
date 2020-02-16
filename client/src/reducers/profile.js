@@ -7,7 +7,8 @@ import {
   GET_REPOS,
   GET_ACCOUNT,
   ACCOUNT_ERROR,
-  ACCOUNT_UPDATED
+  ACCOUNT_UPDATED,
+  ADD_CONTACT
 } from "../actions/types";
 
 const initialState = {
@@ -24,6 +25,7 @@ export default function(state = initialState, action) {
   switch (type) {
     case GET_PROFILE:
     case ACCOUNT_UPDATED:
+    case ADD_CONTACT:
     case UPDATE_PROFILE:
       return {
         ...state,

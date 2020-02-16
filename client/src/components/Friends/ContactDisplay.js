@@ -5,13 +5,36 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Spinner from "../Layout/Spinner";
 import fillerPhoto from "../../assets/images/f_trades.jpg";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
+import { addContact } from '../../actions/profile'
 
-
-
-
-const ContactDisplay = ({active}
+const ContactDisplay = ({ 
+  active,
+  addContact}
 ) => {
- 
+  function confirm(e) {
+    e.preventDefault();
+    confirmAlert({
+      title: 'Confirm',
+      message: 'Are you sure you want to accept contact.',
+      buttons: [
+        {
+          label: 'Yes',
+         // onClick: () => alert('Contact added!'), 
+          onClick: () => {
+            addContact(active._id);
+            alert('Contact added!');
+          }
+        },
+        {
+          label: 'No',
+          //onClick: () => alert('Click No')
+        }
+      ]
+    })
+  }  
+
   let friendImage;
   if(active && active.user.userphoto) {
   friendImage =  <div
@@ -67,7 +90,7 @@ const ContactDisplay = ({active}
               </div>
               <div className="contact-row">
                 <div className="column">
-                <button  className="input-btn">
+                <button  className="input-btn" onClick={e => confirm(e)}>
                   <h4>Accept Contact</h4>
                       <span className="button-bar"></span>
                 
@@ -105,4 +128,6 @@ const mapStateToProps = state => ({
   
 });
 
-export default connect(mapStateToProps)(ContactDisplay);
+export default connect(mapStateToProps, {
+  addContact
+})(ContactDisplay);

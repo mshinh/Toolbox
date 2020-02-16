@@ -19,6 +19,10 @@ import {
   Label,
   Input
 } from "reactstrap";
+import { addContact } from '../../actions/profile'
+import { connect } from "react-redux";
+import { confirmAlert } from 'react-confirm-alert';
+
 
 const ProfileTop = ({
   profile: {
@@ -30,9 +34,34 @@ const ProfileTop = ({
     dob,
     portfolio,
     social,
-    user: { fname, lname, email, userphoto }
-  }
+    user: {  _id, fname, lname, email, userphoto }
+  },
+  addContact
 }) => {
+
+  function confirm(e) {
+    e.preventDefault();
+    confirmAlert({
+      title: 'Confirm',
+      message: 'Are you sure you want to accept contact.',
+      buttons: [
+        {
+          label: 'Yes',
+         // onClick: () => alert('Contact added!'), 
+          onClick: () => {
+           
+            console.log(_id);
+            addContact(_id);
+            alert('Contact added!');
+          }
+        },
+        {
+          label: 'No',
+          //onClick: () => alert('Click No')
+        }
+      ]
+    })
+  }  
   const [modal, setModal] = useState(false);
 
   const toggle = () => setModal(!modal);
@@ -43,7 +72,7 @@ const ProfileTop = ({
         <div className="profile-grid my-1">
           <div class="profile-top bg-light p-2">
             <div className="dash-buttons">
-              <Link onClick="" className="btn btn-light">
+              <Link onClick={e => confirm(e)} className="btn btn-light">
                 <i className="fas fa-user-plus" /> Add Contact
               </Link>
               <Link onClick={toggle} className="btn btn-light">
@@ -178,4 +207,12 @@ const ProfileTop = ({
 
 ProfileTop.propTypes = {};
 
-export default ProfileTop;
+const mapStateToProps = state => ({
+  
+  //  active: state.activeDisplay,
+  
+});
+
+export default connect(mapStateToProps, {
+  addContact
+})(ProfileTop);

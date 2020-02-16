@@ -12,7 +12,8 @@ import {
   UPDATE_PROFILE,
   CLEAR_PROFILE,
   ACCOUNT_DELETED,
-  GET_REPOS
+  GET_REPOS,
+  ADD_CONTACT
 } from "./types";
 
 // Get current users profile
@@ -65,6 +66,26 @@ export const getProfiles = () => async dispatch => {
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
+  }
+};
+
+// Get all contacts
+export const getFriends = () => async dispatch => {
+  dispatch({ type: CLEAR_PROFILE });
+
+  try {
+    const res = await axios.get("/api/profile/contacts");
+
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data
+    });
+  } catch (err) {
+    console.log(err)
+    // dispatch({
+    //   type: PROFILE_ERROR,
+    //   payload: { msg: err.response.statusText, status: err.response.status }
+    // });
   }
 };
 
@@ -163,6 +184,42 @@ export const updateAccount = (
 
     history.push("/profile");
   } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      // errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+      dispatch(setAlert(errors[0].msg, "danger"));
+    }
+
+    dispatch({
+      type: ACCOUNT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Add Contact
+export const addContact = (
+  formData
+) => async dispatch => {
+  console.log(formData);
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    const res = await axios.post("api/profile/addContact", JSON.stringify({contact: formData}), config);
+
+    dispatch({
+      type: ACCOUNT_UPDATED,
+      payload: res.data
+    });
+
+    dispatch(setAlert("Account Updated", "success"));
+  } catch (err) {
+    console.log(err)
     const errors = err.response.data.errors;
 
     if (errors) {

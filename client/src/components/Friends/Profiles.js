@@ -5,8 +5,9 @@ import { connect } from "react-redux";
 import Spinner from "../Layout/Spinner";
 import ProfileItem from "./ProfileItem";
 
-import { getProfiles } from "../../actions/profile";
+import { getProfiles, addContact } from "../../actions/profile";
 import ContactDisplay from "./ContactDisplay";
+import { Link } from "react-router-dom";
 
 const Profiles = ({
   getProfiles,
@@ -33,6 +34,10 @@ const Profiles = ({
           <div className="friend-container">
             <h2>Contact Center</h2>
             <h3>Keep track of your contacts for future reference</h3>
+            <Link to={`/contacts`} className="input-btn">
+            <h4>Contact List</h4>
+                <span className="button-bar"></span>
+            </Link>
             <div className="friend-list">
               {profiles.length > 0 ? (
                 profiles.map(profile => (
@@ -45,7 +50,7 @@ const Profiles = ({
           
           </div>
           <div className="displayContainer">
-                <ContactDisplay  active={activeDisplay}/>
+                <ContactDisplay  active={activeDisplay} />
           </div>
         </Fragment>
       )}

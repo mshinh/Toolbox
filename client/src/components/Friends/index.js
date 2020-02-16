@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import userImage from "./../../assets/images/f_trades.jpg";
 import { getCurrentProfile } from "../../actions/profile";
 
+
 const Friends = ({
   getCurrentProfile,
   profile: { profile, loading },
@@ -26,7 +27,7 @@ const Friends = ({
   ) : (
     <div className="friend-container">
       <h2>Contact Center</h2>
-
+  
       <div className="friend-list">
         <div className="friend-item">
           <div

@@ -312,4 +312,65 @@ router.delete("/portfolio/:portf_id", auth, async (req, res) => {
   }
 });
 
+// @route    POST api/profile/contacts
+// @desc     Add friend
+// @access   Public
+
+router.post("/addContact",
+  [
+    auth
+  ], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { contact } = req.body;
+    console.log(req.body)
+    try {
+      let user = await User.findOne({ _id: req.user.id });
+      if (user) {
+        user.contact.push(contact);
+        user.save();
+        res.status(200).json({ success: 'Done' })
+      } else {
+        return res.status(401).json({ errors: "User not foubd" });
+      }
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+
+// @route    POST api/profile/contacts
+// @desc     Get all friends
+// @access   Public
+
+router.get("/contacts",
+  [
+    auth
+  ], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      let user = await User.findOne({ _id: req.user.id });
+      if(user) {
+        const profiles = await Profile.find({'_id' : { $in: user.contact}}).populate("user", [
+          "fname",
+          "lname",
+          "email",
+          "userphoto"
+        ]);
+        res.json(profiles);
+      }
+     
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+  }
+);
+
 module.exports = router;
