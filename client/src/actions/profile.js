@@ -201,7 +201,7 @@ export const updateAccount = (
   }
 };
 
-// Add Contact
+// Add Contact from friends list
 export const addContact = (
   formData
 ) => async dispatch => {
@@ -236,6 +236,9 @@ export const addContact = (
     });
   }
 };
+
+
+
 
 // Delete Contact
 export const deleteContact = id => async dispatch => {
