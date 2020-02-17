@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from "react";
-
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./style.scss";
@@ -26,6 +25,7 @@ import { confirmAlert } from 'react-confirm-alert';
 
 const ProfileTop = ({
   profile: {
+    _id,
     bio,
     location,
     occupation,
@@ -34,8 +34,9 @@ const ProfileTop = ({
     dob,
     portfolio,
     social,
-    user: {  _id, fname, lname, email, userphoto }
+    user: { id, fname, lname, email, userphoto },   
   },
+  auth: {user},
   addContact
 }) => {
 
@@ -52,7 +53,7 @@ const ProfileTop = ({
            
             console.log(_id);
             addContact(_id);
-            alert('Contact added!');
+            //alert('Contact added!');
           }
         },
         {
@@ -61,10 +62,38 @@ const ProfileTop = ({
         }
       ]
     })
-  }  
-  const [modal, setModal] = useState(false);
+  };
 
+  let item;
+  let userContact = user.contact;
+  console.log(user._id);
+  console.log(_id);
+  //if(user._id.toString() == id.toString() ){
+    for(var i = 0; i < userContact.length; i++){
+      if(userContact[i]!=null){
+        if(userContact[i].toString() == _id.toString()){
+        item=<Link to={`/contacts`} className="btn btn-light">
+        <i className="fas fa-user-plus" /> Contact
+        </Link>;
+        console.log(user._id); //user logged in 
+        console.log(user.contact);
+        }
+      } else{
+        item=<Link onClick={e => confirm(e)} className="btn btn-light">
+        <i className="fas fa-user-plus" /> Add Contact
+        </Link>;
+      }
+    }
+ // } else{
+  //  item=<h3>Welcome</h3>;
+ // }
+
+  const [modal, setModal] = useState(false);
+  
   const toggle = () => setModal(!modal);
+
+  
+
 
   return (
     <section>
@@ -72,9 +101,7 @@ const ProfileTop = ({
         <div className="profile-grid my-1">
           <div class="profile-top bg-light p-2">
             <div className="dash-buttons">
-              <Link onClick={e => confirm(e)} className="btn btn-light">
-                <i className="fas fa-user-plus" /> Add Contact
-              </Link>
+              {item}
               <Link onClick={toggle} className="btn btn-light">
                 <i className="far fa-envelope" /> Message
               </Link>
@@ -205,10 +232,12 @@ const ProfileTop = ({
   );
 };
 
-ProfileTop.propTypes = {};
+ProfileTop.propTypes = {
+  auth: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
-  
+  auth: state.auth
   //  active: state.activeDisplay,
   
 });

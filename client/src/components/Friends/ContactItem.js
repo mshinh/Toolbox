@@ -1,9 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./style.scss";
 //import fillerPhoto from "../../../public/f_trades.jpg";
 import fillerPhoto from "../../assets/images/f_trades.jpg";
+import { deleteContact } from '../../actions/profile';
+import { confirmAlert } from 'react-confirm-alert';
+import { connect } from "react-redux";
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  FormGroup,
+  Form,
+  Label,
+  Input
+} from "reactstrap";
 
 const ContactItem = ({
     profile: {
@@ -11,8 +25,31 @@ const ContactItem = ({
       phone,
       occupation,
       photo
-    }, updateActive, profile
+    }, updateActive, profile, deleteContact
   }) => {
+
+    function confirm(e) {
+      e.preventDefault();
+      confirmAlert({
+        title: 'Confirm',
+        message: 'Are you sure you want to remove contact.',
+        buttons: [
+          {
+            label: 'Yes',
+           // onClick: () => alert('Contact added!'), 
+            onClick: () => {
+              console.log(_id);
+              deleteContact(_id);
+              //alert('Contact removed!');
+            }
+          },
+          {
+            label: 'No',
+            //onClick: () => alert('Click No')
+          }
+        ]
+      })
+    }  
 
     let friendImage;
     if(userphoto) {
@@ -27,7 +64,12 @@ const ContactItem = ({
     ></div>;
     }
 
-    return (
+    const [modal, setModal] = useState(false);
+  
+    const toggle = () => setModal(!modal);
+
+    return (<section>
+      <section>
         <div className="friend-item" onMouseEnter={e => updateActive(profile)}>
       
         {friendImage}
@@ -43,7 +85,7 @@ const ContactItem = ({
         
           </div>
           <div className="link-contents">
-            <Link to={`/friend/${_id}`} className="side-btn long">
+            <button  className="side-btn long" onClick={e => confirm(e)}>
               <span>delete</span>  
              {/* 
              <svg xmlns="http://www.w3.org/2000/svg" width="25.438" height="19.27" viewBox="0 0 25.438 19.27">
@@ -52,26 +94,63 @@ const ContactItem = ({
              */ }
   
   
-            </Link>
+            </button>
             
-            <button className="side-btn ">
+            <Link onClick={toggle} className="side-btn ">
               <svg xmlns="http://www.w3.org/2000/svg" width="25.091" height="24.182" viewBox="0 0 25.091 24.182">
                   <path id="Icon_material-message" data-name="Icon material-message" d="M25.582,3H5.509a2.461,2.461,0,0,0-2.5,2.418L3,27.182l5.018-4.836H25.582a2.472,2.472,0,0,0,2.509-2.418V5.418A2.472,2.472,0,0,0,25.582,3ZM23.073,17.509H8.018V15.091H23.073Zm0-3.627H8.018V11.464H23.073Zm0-3.627H8.018V7.836H23.073Z" transform="translate(-3 -3)"/>
               </svg>
-            </button>
+            </Link>
             
           </div>
         </div>
       </div>
+      </section>
+    <Modal isOpen={modal} toggle={toggle}>
+    <ModalHeader toggle={toggle}>Send Message</ModalHeader>
+    <ModalBody>
+      <Form>
+        <FormGroup></FormGroup>
+        <FormGroup>
+          <Label for="title">Title</Label>
+          <Input
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Request for Quote"
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="body">Body</Label>
+          <Input
+            type="textarea"
+            name="body"
+            id="body"
+            placeholder="Basement renovation"
+          />
+        </FormGroup>
+      </Form>
+    </ModalBody>
+    <ModalFooter>
+      <Button color="primary" onClick={toggle}>
+        Send
+      </Button>{" "}
+      <Button color="secondary" onClick={toggle}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </Modal>
     
-    
-    
-    );
+  </section>
+  
+  );
+
   };
 
   ContactItem.propTypes = {
     profile: PropTypes.object.isRequired,
-    updateActive: PropTypes.func.isRequired
+    updateActive: PropTypes.func.isRequired,
+    deleteContact: PropTypes.func.isRequired
   };
   
   
@@ -84,4 +163,4 @@ const ContactItem = ({
   
   });
 
-  export default ContactItem;
+  export default connect(null, {deleteContact})(ContactItem);

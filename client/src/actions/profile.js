@@ -13,7 +13,8 @@ import {
   CLEAR_PROFILE,
   ACCOUNT_DELETED,
   GET_REPOS,
-  ADD_CONTACT
+  ADD_CONTACT,
+  DELETE_CONTACT
 } from "./types";
 
 // Get current users profile
@@ -99,10 +100,12 @@ export const getProfileById = userId => async dispatch => {
       payload: res.data
     });
   } catch (err) {
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
+    console.log(err);
+    
+   // dispatch({
+    //  type: PROFILE_ERROR,
+     // payload: { msg: err.response.statusText, status: err.response.status }
+   // });
   }
 };
 
@@ -230,6 +233,35 @@ export const addContact = (
     dispatch({
       type: ACCOUNT_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Delete Contact
+export const deleteContact = id => async dispatch => {
+  console.log(id);
+  try {
+
+    const res = await axios.delete(`api/profile/deleteContact/${id}`);
+    
+    dispatch({
+      type: ACCOUNT_UPDATED,
+      paylod: res.data
+    });
+
+    dispatch(setAlert('Contact Removed', 'success'));
+  } catch (err) {
+    console.log(err)
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      // errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+      dispatch(setAlert(errors[0].msg, "danger"));
+    }
+    
+    dispatch({
+      type: ACCOUNT_ERROR,
+      paylod: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };

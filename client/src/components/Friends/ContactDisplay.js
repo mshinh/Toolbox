@@ -9,9 +9,14 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import { addContact } from '../../actions/profile'
 
+
 const ContactDisplay = ({ 
   active,
-  addContact}
+  addContact,
+  profile: { profile, loading },
+  auth
+ 
+}
 ) => {
   function confirm(e) {
     e.preventDefault();
@@ -24,7 +29,7 @@ const ContactDisplay = ({
          // onClick: () => alert('Contact added!'), 
           onClick: () => {
             addContact(active._id);
-            alert('Contact added!');
+           // alert('Contact added!');
           }
         },
         {
@@ -48,9 +53,14 @@ const ContactDisplay = ({
   ></div>;
   }
 
-  return (<Fragment>
     
-    {active ?
+  
+
+
+  return (<Fragment>
+    {profile === null || loading ? (
+      <Spinner /> ) : (
+    active ?
       <Fragment>
         <div className="contact-display-container">
         <div className="contact-header">
@@ -91,43 +101,34 @@ const ContactDisplay = ({
               <div className="contact-row">
                 <div className="column">
                 <button  className="input-btn" onClick={e => confirm(e)}>
-                  <h4>Accept Contact</h4>
-                      <span className="button-bar"></span>
-                
-
+                  <h4>Add Contact</h4>
+                  <span className="button-bar"></span>
                 </button>
-                </div>
-                <div className="column last">
-                <button  className="input-btn">
-                  <h4>Decline Contact</h4>
-                      <span className="button-bar"></span>
-                
-
-                </button>
-                </div>
-              </div>
-          </div>
-
+                </div> 
+                </div>         
+        </div>
         </div>
      </Fragment>
-    : <Fragment><h2>Nothing</h2></Fragment>}
-     
-    </Fragment>
-    );
+    : <Fragment><h2>Nothing</h2></Fragment>
+
+     ) }
+     </Fragment>
+  );
 };
 
-// ContactDisplay.propTypes = {
- 
-//       //  active: PropTypes.object,
-  
-// };
+ ContactDisplay.propTypes = {
+  auth: PropTypes.object.isRequired,
+    //  active: PropTypes.object,
+    profile: PropTypes.object.isRequired
+
+ };
 
 const mapStateToProps = state => ({
-  
+  profile: state.profile,
   //  active: state.activeDisplay,
-  
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, {
   addContact
-})(ContactDisplay);
+} )(ContactDisplay);

@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema({
   },
   updated: Date,
   contact: [
-   { type: Schema.ObjectId,
+   { type: Schema.Types.ObjectId,
     ref: "User"
   }
   ]

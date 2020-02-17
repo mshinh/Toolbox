@@ -8,17 +8,41 @@ import ContactItem from "./ContactItem";
 import { getFriends } from "../../actions/profile";
 //import ContactDisplay from "./ContactDisplay";
 import { Link } from "react-router-dom";
+//import { deleteContact } from '../../actions/profile';
 
 const Profiles = ({
     getFriends,
+   // deleteContact,
     profile: { profiles, loading },
     auth: { user }
   }) => {
     useEffect(() => {
       getFriends();
+      
     }, []);
   
-    
+  /*  function confirm(e) {
+      e.preventDefault();
+      confirmAlert({
+        title: 'Confirm',
+        message: 'Are you sure you want to remove contact.',
+        buttons: [
+          {
+            label: 'Yes',
+           // onClick: () => alert('Contact added!'), 
+            onClick: () => {
+              deleteContact(_id);
+              alert('Contact removed!');
+            }
+          },
+          {
+            label: 'No',
+            //onClick: () => alert('Click No')
+          }
+        ]
+      })
+    }  
+    */
     const [activeDisplay, setDisplay] = useState();
   
     const updateActive = (profile) => {
@@ -60,7 +84,8 @@ const Profiles = ({
   Profiles.propTypes = {
     getFriends: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+   // deleteContact: PropTypes.func.isRequired
   };
   
   const mapStateToProps = state => ({
