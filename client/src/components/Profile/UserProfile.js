@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "../Layout/Spinner";
 import ProfileActions from "./ProfileActions";
+import AddPortfolio from "../profile-forms/AddPortfolio";
 import PortfolioItem from "../Portfolio/PortfolioItem";
 import { getCurrentProfile, deleteAccount } from "../../actions/profile";
 import userImage from "../../assets/images/f_trades.jpg";
@@ -161,6 +162,7 @@ const UserProfile = ({
           </button>
         </div>
       </div>
+      <AddPortfolio />
     </Fragment>
   );
 };

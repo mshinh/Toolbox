@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import EditProfile from "../profile-forms/EditProfile";
 
-import { Collapse, Button, CardBody, Card } from "reactstrap";
-
 const ProfileActions = () => {
   // const [collapse, setCollapse] = useState(false);
   // const [status, setStatus] = useState("Closed");
@@ -29,9 +27,9 @@ const ProfileActions = () => {
       <Link to="/edit-account" className="input-btn bg-light">
         <i className="fas fa-user-cog" /> Edit Account
       </Link>
-      <Link to="/portfolio" className="input-btn bg-light">
+      {/* <Link to="/portfolio" className="input-btn bg-light">
         <i className="fas fa-briefcase" /> Add Portfolio
-      </Link>
+      </Link> */}
       {/* <Collapse
         isOpen={collapse}
         onEntering={onEntering}

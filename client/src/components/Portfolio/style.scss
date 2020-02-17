@@ -50,12 +50,15 @@
   .image-preview {
     margin-right: 10px;
     // border-radius: 50%;
-    height: 100px;
-    width: 150px;
+    // height: 100px;
+    // width: 150px;
+    height: 200px;
+    width: (300/1920) * 100vw;
     background-size: cover;
     background-position: center;
   }
 }
+
 .portfolio-board {
   .portfolio {
     margin-top: 40px;
