@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./style.scss";
 import userImage from "../../assets/images/f_trades.jpg";
-import PortfolioItem from "../Portfolio/PortfolioItem";
+import FriendPortfolio from "../Portfolio/FriendPortfolio";
 import Spinner from "../Layout/Spinner";
 import Moment from "react-moment";
 import moment from "moment";
@@ -130,7 +130,7 @@ const ProfileTop = ({
           {portfolio ? <h2>Portfolio Preview</h2> : <h2></h2>}
           {portfolio ? (
             portfolio.map(
-              portf => <PortfolioItem key={portf._id} portfolio={portf} />
+              portf => <FriendPortfolio key={portf._id} portfolio={portf} />
               // console.log(portf._id)
             )
           ) : (

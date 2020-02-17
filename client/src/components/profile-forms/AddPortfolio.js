@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addPortfolio } from "../../actions/profile";
 
+import { FormGroup, Form, Label, Input, CustomInput, Button } from "reactstrap";
+
 // import "./style.scss";
 
 const PortfolioForm = ({ addPortfolio }) => {
@@ -40,72 +42,53 @@ const PortfolioForm = ({ addPortfolio }) => {
       title: "",
       description: ""
     });
+    activeToggle(!active);
   };
 
   return (
     <div className={`post-form-container ${active ? "active" : "notActive"}`}>
       <button className="input-btn" onClick={() => activeToggle(!active)}>
-        <h4>Portfolio</h4>
+        <h4>Add Portfolio</h4>
         <span className="button-bar"></span>
       </button>
-
       <form className="addBarForm" onSubmit={e => onSubmit(e)}>
         <div className="form-wrapper">
-          <div className="form-row">
-            <fieldset className="form-column" id="meta-form">
-              <h2 className="input-heading">Porfolio</h2>
-
-              <div className="input-row">
-                <div className="input-wrapper">
-                  <label htmlFor="title">Project Title</label>
-
-                  {/* This will have to be broken down into street name, city name etc... next semester */}
-                  <input
-                    name="title"
-                    type="text"
-                    id="title"
-                    placeholder="Basement"
-                    onChange={e => onChange(e)}
-                    value={title}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <input
-                  type="file"
-                  name="imgCollection"
-                  onChange={e => onFileChange(e)}
-                  multiple
-                />
-              </div>
-
-              <div className="input-row">
-                <div className="input-wrapper">
-                  <label htmlFor="description">Description</label>
-                  {/* Maybe not have this at all, have to think about it*/}
-                  <textarea
-                    row="10"
-                    col="80"
-                    name="description"
-                    type="text"
-                    id="description"
-                    value={description}
-                    placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit.  "
-                    onChange={e => onChange(e)}
-                  >
-                    {description}
-                  </textarea>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-          {/*         
-        <button type='submit' className="input-btn" onClick={this.onSubmit}>
-                    <h4>Submit Post</h4>  
-                    <span className="button-bar"></span>  
-          </button> */}
-
+          <h2 className="input-heading">Porfolio</h2>
+          <Form>
+            <FormGroup>
+              <Label for="title">Project Title</Label>
+              <Input
+                name="title"
+                type="text"
+                id="title"
+                placeholder="Basement"
+                onChange={e => onChange(e)}
+                value={title}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="newImages">Upload new images</Label>
+              <CustomInput
+                type="file"
+                name="imgCollection"
+                onChange={e => onFileChange(e)}
+                multiple
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="description">Description</Label>
+              <Input
+                row="10"
+                col="80"
+                name="description"
+                type="text"
+                id="description"
+                value={description}
+                placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit.  "
+                onChange={e => onChange(e)}
+              />
+            </FormGroup>
+          </Form>
           <input type="submit" className="btn btn-dark my-1" value="Add" />
         </div>
       </form>
