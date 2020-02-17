@@ -309,8 +309,6 @@ export const addPortfolio = formData => async dispatch => {
     //   }
     // };
 
-    console.log(formData);
-
     const res = await axios.put("/api/profile/portfolio", formData);
 
     dispatch({
@@ -328,6 +326,101 @@ export const addPortfolio = formData => async dispatch => {
       errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
     }
 
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Edit Portfolio with no new photos
+export const editPortfolio = (id, formData) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    console.log(id);
+    console.log("edit portfolio action");
+
+    const res = await axios.put(
+      `/api/profile/portfolio/${id}`,
+      formData,
+      config
+    );
+
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data
+    });
+
+    dispatch(setAlert("Portfolio Edited", "success"));
+
+    // history.push('/dashboard');
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    }
+
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+//Edit Portfolio with new photos
+export const editPortfolioNewPhotos = (id, formData) => async dispatch => {
+  try {
+    // const config = {
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   }
+    // };
+
+    console.log(id);
+    console.log("edit portfolio action");
+
+    const res = await axios.put(`/api/profile/portfolioPhoto/${id}`, formData);
+
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data
+    });
+
+    dispatch(setAlert("Portfolio Edited", "success"));
+
+    // history.push('/dashboard');
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    }
+
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Delete portfolio
+export const deletePortfolio = id => async dispatch => {
+  try {
+    const res = await axios.delete(`/api/profile/portfolio/${id}`);
+
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data
+    });
+
+    dispatch(setAlert("Portfolio Removed", "success"));
+  } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }

@@ -18,10 +18,6 @@ const storage = multer.diskStorage({
     cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
   }
 });
-// const upload = multer({
-//   storage: storage,
-//   limits: { fileSize: 1000000 }
-// }).single("myImage");
 
 var upload = multer({
   storage: storage,
@@ -279,29 +275,101 @@ router.put(
   }
 );
 
-// @route    PUT api/profile/portfolio
-// @desc     delete photo from portfolio
+// @route    PUT api/profile/portfolio/:portf_id
+// @desc     Edit profile portfolio with no newly added pictures
+// @access   Private
+router.put("/portfolio/:portf_id", auth, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { newTitle, newDescription, prevImgCollection } = req.body;
+
+  // Build portfolio object
+  const portfolioFields = {};
+  if (newTitle) portfolioFields.title = newTitle;
+  if (newDescription) portfolioFields.description = newDescription;
+  if (prevImgCollection) portfolioFields.imgCollection = prevImgCollection;
+
+  try {
+    let profile = await Profile.findOneAndUpdate(
+      { user: req.user.id, "portfolio._id": req.params.portf_id },
+      { $set: { "portfolio.$": portfolioFields } },
+      { new: true }
+    );
+    res.json(profile);
+    // }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    PUT api/profile/portfolio/:portf_id
+// @desc     Edit profile portfolio with newly added pictures
+// @access   Private
+router.put(
+  "/portfolioPhoto/:portf_id",
+  auth,
+  upload.array("imgCollection", 6),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const url = req.protocol + "://" + req.get("host");
+
+    const { newTitle, newDescription, prevImgCollection } = req.body;
+
+    const portfolioFields = {};
+    if (newTitle) portfolioFields.title = newTitle;
+    if (newDescription) portfolioFields.description = newDescription;
+
+    if (req.files.length != 0) {
+      portfolioFields.imgCollection = [];
+      for (var i = 0; i < req.files.length; i++) {
+        portfolioFields.imgCollection.push(
+          url + "/public/" + req.files[i].filename
+        );
+      }
+    }
+    if (prevImgCollection) {
+      var preImg = prevImgCollection.split(",");
+
+      preImg.forEach(element => portfolioFields.imgCollection.push(element));
+    }
+
+    try {
+      let profile = await Profile.findOneAndUpdate(
+        { user: req.user.id, "portfolio._id": req.params.portf_id },
+        { $set: { "portfolio.$": portfolioFields } },
+        { new: true, upsert: true }
+      );
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+// @route    DELETE api/profile/education/:edu_id
+// @desc     Delete education from profile
 // @access   Private
 
-//To Do later
-
-// @route    DELETE api/profile/portfolio/:portf_id
-// @desc     Delete portfolio from profile
-// @access   Private
 router.delete("/portfolio/:portf_id", auth, async (req, res) => {
   try {
     const foundProfile = await Profile.findOne({ user: req.user.id });
-    const portfolioIds = foundProfile.portfolio.map(por => por._id.toString());
-    // if i dont add .toString() it returns this weird mongoose coreArray and the ids are somehow objects and it still deletes anyway even if you put /portfolio/5
-    const removeIndex = portfolioIds.indexOf(req.params.por_id);
+    const portfolioIds = foundProfile.portfolio.map(portf =>
+      portf._id.toString()
+    );
+
+    const removeIndex = portfolioIds.indexOf(req.params.portf_id);
     if (removeIndex === -1) {
       return res.status(500).json({ msg: "Server error" });
     } else {
-      // theses console logs helped me figure it out
-      console.log("portfolioIds", portfolioIds);
-      console.log("typeof porIds", typeof portfolioIds);
-      console.log("req.params", req.params);
-      console.log("removed", portfolioIds.indexOf(req.params.por_id));
       foundProfile.portfolio.splice(removeIndex, 1);
       await foundProfile.save();
       return res.status(200).json(foundProfile);
