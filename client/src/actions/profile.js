@@ -12,7 +12,9 @@ import {
   UPDATE_PROFILE,
   CLEAR_PROFILE,
   ACCOUNT_DELETED,
-  GET_REPOS
+  GET_REPOS,
+  ADD_CONTACT,
+  DELETE_CONTACT
 } from "./types";
 
 // Get current users profile
@@ -68,6 +70,26 @@ export const getProfiles = () => async dispatch => {
   }
 };
 
+// Get all contacts
+export const getFriends = () => async dispatch => {
+  dispatch({ type: CLEAR_PROFILE });
+
+  try {
+    const res = await axios.get("/api/profile/contacts");
+
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data
+    });
+  } catch (err) {
+    console.log(err)
+    // dispatch({
+    //   type: PROFILE_ERROR,
+    //   payload: { msg: err.response.statusText, status: err.response.status }
+    // });
+  }
+};
+
 // Get profile by ID
 export const getProfileById = userId => async dispatch => {
   try {
@@ -78,10 +100,12 @@ export const getProfileById = userId => async dispatch => {
       payload: res.data
     });
   } catch (err) {
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
+    console.log(err);
+    
+   // dispatch({
+    //  type: PROFILE_ERROR,
+     // payload: { msg: err.response.statusText, status: err.response.status }
+   // });
   }
 };
 
@@ -173,6 +197,74 @@ export const updateAccount = (
     dispatch({
       type: ACCOUNT_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Add Contact from friends list
+export const addContact = (
+  formData
+) => async dispatch => {
+  console.log(formData);
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    const res = await axios.post("api/profile/addContact", JSON.stringify({contact: formData}), config);
+
+    dispatch({
+      type: ACCOUNT_UPDATED,
+      payload: res.data
+    });
+
+    dispatch(setAlert("Account Updated", "success"));
+  } catch (err) {
+    console.log(err)
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      // errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+      dispatch(setAlert(errors[0].msg, "danger"));
+    }
+
+    dispatch({
+      type: ACCOUNT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+
+
+
+// Delete Contact
+export const deleteContact = id => async dispatch => {
+  console.log(id);
+  try {
+
+    const res = await axios.delete(`api/profile/deleteContact/${id}`);
+    
+    dispatch({
+      type: ACCOUNT_UPDATED,
+      paylod: res.data
+    });
+
+    dispatch(setAlert('Contact Removed', 'success'));
+  } catch (err) {
+    console.log(err)
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      // errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+      dispatch(setAlert(errors[0].msg, "danger"));
+    }
+    
+    dispatch({
+      type: ACCOUNT_ERROR,
+      paylod: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };

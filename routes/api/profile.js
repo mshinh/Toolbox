@@ -380,4 +380,101 @@ router.delete("/portfolio/:portf_id", auth, async (req, res) => {
   }
 });
 
+// @route    POST api/profile/addContact
+// @desc     Add friend
+// @access   Public
+
+router.post("/addContact",
+  [
+    auth
+  ], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { contact } = req.body;
+    console.log(req.body)
+    try {
+      let user = await User.findOne({ _id: req.user.id });
+      if (user) {
+        user.contact.push(contact);
+        user.save();
+        res.status(200).json({ success: 'Done' })
+      } else {
+        return res.status(401).json({ errors: "User not found" });
+      }
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+
+// @route    POST api/profile/contacts
+// @desc     Get all friends
+// @access   Public
+
+router.get("/contacts",
+  [
+    auth
+  ], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      let user = await User.findOne({ _id: req.user.id });
+      if(user) {
+        const profiles = await Profile.find({'_id' : { $in: user.contact}}).populate("user", [
+          "fname",
+          "lname",
+          "email",
+          "userphoto"
+        ]);
+        res.json(profiles);
+      }
+     
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+  }
+);
+
+// @route    DELETE api/profile/deleteContact/:id
+// @desc     Delete contact
+// @access   Private
+
+router.delete("/deleteContact/:id",
+  [
+    auth
+  ], async (req, res) => {
+    try{
+      let user = await User.findOne({ _id: req.user.id });
+      let userID = req.params.id;
+      let profileID = await Profile.findOne({ user: userID});
+      const contacts = user.contact;
+      console.log(contacts);
+
+      for(var i = 0; i < contacts.length; i++) {
+       //console.log("TYPE OF", typeof contacts[i].toString());
+       if(contacts[i] != null) { 
+        if(contacts[i].toString() == profileID._id.toString())
+         {
+          contacts.splice(i, 1);
+         }
+        }
+      }
+      await user.save();
+      console.log(contacts);
+      return res.status(200).json("Success");
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+
+
 module.exports = router;

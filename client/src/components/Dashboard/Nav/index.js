@@ -12,7 +12,7 @@ const NavContainer = ({ logout }) => {
         <div className="nav-item small">Messages</div>
        
         <Link to="/friends" className="nav-item small">
-          <h3> Friends </h3>
+          <h3> Contacts </h3>
         </Link>
         
       
