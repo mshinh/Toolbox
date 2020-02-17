@@ -24,7 +24,7 @@ const ContactDisplay = ({
          // onClick: () => alert('Contact added!'), 
           onClick: () => {
             addContact(active._id);
-            alert('Contact added!');
+            //alert('Contact added!');
           }
         },
         {
