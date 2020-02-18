@@ -7,6 +7,7 @@ import "./style.scss";
 
 const PostForm = ({ addPost }) => {
   const [formPost, setPostData] = useState({
+    tags: "",
     title: "",
     body: "",
     location: "",
@@ -14,17 +15,21 @@ const PostForm = ({ addPost }) => {
     imgCollection: null
   });
 
+  
   const [active, activeToggle] = useState(false)
 
 
-  const { title, body, location, type, imgCollection } = formPost;
+  const { title, body, location, type, imgCollection, tags } = formPost;
 
   const onChange = e => {
     setPostData({ ...formPost, [e.target.name]: e.target.value });
   };
+  
+  
   const onFileChange = e => {
     setPostData({ ...formPost, imgCollection: e.target.files });
   };
+
 
 
   const onSubmit = e => {
@@ -35,6 +40,15 @@ const PostForm = ({ addPost }) => {
       formData.append("imgCollection", imgCollection[x]);
     }
 
+    var tagsArray = tags.split(",");
+
+   
+
+    for (let i = 0; i < tagsArray.length; i++) {
+      formData.append("tags", tagsArray[i]);
+    }
+ 
+    formData.append("postStatus", "active")
     formData.append("title", title);
     formData.append("body", body);
     formData.append("location", location);
@@ -85,6 +99,23 @@ const PostForm = ({ addPost }) => {
                 <option value="other">other</option>
               </select>
             </div>
+
+            
+            <div className="input-wrapper">
+              <label htmlFor="tags">Tags (seperate with " , ")</label>
+
+              {/* This will have to be broken down into street name, city name etc... next semester */}
+              <input
+                name="tags"
+                type="text"
+                id="tags"
+                placeholder="plumber,mason"
+                onChange={e => onChange(e)}
+                value={tags}
+              />
+            </div>
+       
+
           </div>
           <div className="input-row">
             <div className="input-wrapper">
@@ -142,6 +173,7 @@ const PostForm = ({ addPost }) => {
               </textarea>
             </div>
           </div>
+          
 
           </fieldset>
         </div>

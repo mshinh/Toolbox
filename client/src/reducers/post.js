@@ -2,10 +2,13 @@ import {
   GET_SEARCHED_POSTS,
   GET_POSTS,
   POST_ERROR,
+  UPDATE_INTEREST,
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
+  UPDATE_ASSIGNED,
   GET_POST,
+  UPDATE_STATUS,
   ADD_COMMENT,
   REMOVE_COMMENT
 } from "../actions/types";
@@ -60,6 +63,35 @@ export default function(state = initialState, action) {
         ),
         loading: false
       };
+    case UPDATE_INTEREST:
+      return {
+        ...state,
+        posts: state.posts.map(post =>
+          post._id === payload.id ? { ...post, interest: payload.interest } : post
+        ),
+        loading: false
+      };
+    case UPDATE_ASSIGNED:
+      return {
+        ...state,
+        posts: state.posts.map(post =>
+          post._id === payload.id ? { ...post, assigned: payload.assigned } : post
+        ),
+        loading: false
+      };
+
+      case UPDATE_STATUS:
+        return {
+          ...state,
+          posts: state.posts.map(post =>
+            post._id === payload.id ? { ...post, status: payload.status } : post
+          ),
+          loading: false
+        };
+
+
+
+      
     case ADD_COMMENT:
       return {
         ...state,

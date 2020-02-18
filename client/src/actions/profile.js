@@ -11,6 +11,7 @@ import {
   ACCOUNT_UPDATED,
   UPDATE_PROFILE,
   CLEAR_PROFILE,
+  GET_POSTPROFILE,
   ACCOUNT_DELETED,
   GET_REPOS,
   ADD_CONTACT,
@@ -108,6 +109,24 @@ export const getProfileById = userId => async dispatch => {
    // });
   }
 };
+
+// Get post Interested
+export const getPostProfiles = userId => async dispatch => {
+  try {
+    const res = await axios.get(`/api/profile/postUser/${userId}`);
+
+    dispatch({
+      type: GET_POSTPROFILE,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 
 // // Get Github repos
 // export const getGithubRepos = username => async dispatch => {

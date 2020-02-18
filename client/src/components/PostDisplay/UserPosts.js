@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import Post from "./Post";
+import Post from "./Post/Post.js";
 import "./style.scss";
 import {
   Link,
@@ -10,14 +10,23 @@ import {
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getUserPosts } from "../../actions/post";
+import { getPostProfiles } from "../../actions/profile";
+
 import Spinner from "../Layout/Spinner";
 
 const UserPostDisplay = ({
   getUserPosts,
+  getPostProfiles,
+  postProfiles,
+  // postProfile: {postProfiles},
   post: { posts },
   auth: { user, loading }
 }) => {
   const [currpost, updateCurr] = useState({
+    id: "",
+    assigned: "",
+    postStatus: "",
+    interest : [],
     title: "",
     body: "",
     name: "",
@@ -27,38 +36,30 @@ const UserPostDisplay = ({
   const [active, updateActive] = useState(false);
 
   const activeContent = post => {
-    updateCurr({ title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection });
+ 
+    updateCurr({ id: post._id, assigned: post.assigned,  postStatus: post.postStatus,  interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection });
+    var intAccount = "";
+    
+    // post.interest.map(e => {
+    //   intAccount = intAccount + "," + e.user;
+    // })
+    // intAccount = intAccount.substring(1);
+    
+    // console.log(intAccount);
+    
+    // getPostProfiles(intAccount);
     updateActiveState(true);
+
   };
   const updateActiveState = newSet => {
+    
     updateActive(newSet);
   };
 
   useEffect(() => {
     getUserPosts(user._id);
 
-    // getPosts();
-    //The posts will be retrieved via the Search component
-    // getPosts();
-
-    // if (isAuthenticated && window.location.pathname === "/account") {
-    //   getUserPosts(user._id);
-    // } else {
-    //   getPosts();
-    // }
-
-    // if (window.location.pathname === "/account") {
-    //   // getCurrentProfile()
-    //   // console.log(window.location.pathname);
-    //   // console.log(user)
-    //   // getPosts();
-    //   console.log(user);
-    //   getUserPosts(user._id);
-    // } else {
-    //   console.log("Get all");
-    //   getPosts();
-    // }
-    // console.log(location.search)
+  
   }, [getUserPosts]);
 
   return loading && user === null ? (
@@ -67,7 +68,7 @@ const UserPostDisplay = ({
     <div className="home-container">
       <div className="page-heading">
         {/* {user.fname} */}
-        <h1>Welcome To Toolbox</h1>
+        <h1>Welcome To Your Home Page</h1>
         <h2>
           Your one stop location for <br />
           skilled workers and opportunities{" "}
@@ -106,21 +107,26 @@ const UserPostDisplay = ({
         </div>
       </div>
 
-      <Post currPost={currpost} active={active} toggle={updateActiveState} />
+      <Post currPost={currpost} active={active} addInt={updateActiveState} toggle={updateActiveState} accountHome={true} />
     </div>
   );
 };
 
 UserPostDisplay.propTypes = {
   getUserPosts: PropTypes.func.isRequired,
+  getPostProfiles: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
+  postProfile: PropTypes.object.isRequired,
+  postProfiles: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   post: state.post,
+  postProfile: state.postProfile,
+  postProfiles: state.postProfiles,
   auth: state.auth
 });
 export default connect(mapStateToProps, {
-  getUserPosts
+  getUserPosts, getPostProfiles
 })(withRouter(UserPostDisplay));

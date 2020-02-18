@@ -2,7 +2,7 @@ const express = require("express");
 const request = require("request");
 require("dotenv").config();
 const router = express.Router();
-
+const mongoose = require("mongoose");
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator/check");
 
@@ -204,6 +204,51 @@ router.get("/user/:user_id", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+router.get("/postUser/:user_id", async (req, res) => {
+  try {
+
+
+    var search = req.params.user_id;
+    var para = search.split(",");
+
+    let arr = para.map(ele => new mongoose.Types.ObjectId(ele));
+
+    // console.log(arr)
+
+  //   model.find({
+  //     '_id': { $in: [
+  //         mongoose.Types.ObjectId('4ed3ede8844f0f351100000c'),
+  //         mongoose.Types.ObjectId('4ed3f117a844e0471100000d'), 
+  //         mongoose.Types.ObjectId('4ed3f18132f50c491100000e')
+  //     ]}
+  // }, function(err, docs){
+  //      console.log(docs);
+  // });
+
+
+  const postProfiles = await Profile.find({
+    'user': { $in: arr}
+  }).populate("user", ["fname", "lname", "email", "userphoto"]);
+
+  
+
+    // const postProfiles = await Profile.find({
+    //   user: req.params.user_id
+    // }).populate("user", ["fname", "lname", "email", "userphoto"]);
+
+    if (!postProfiles) return res.status(400).json({ msg: "Profile not found" });
+  console.log(postProfiles)
+    res.json(postProfiles);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind == "ObjectId") {
+      return res.status(400).json({ msg: "Profiles not found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
+
 
 // @route    DELETE api/profile
 // @desc     Delete profile, user & posts

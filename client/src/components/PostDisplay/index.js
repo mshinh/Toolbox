@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import Post from "./Post";
+import Post from "./Post/Post.js";
 import "./style.scss";
 import {
   Link,
@@ -9,11 +9,13 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getPosts } from "../../actions/post";
+import { getPosts, addInterested } from "../../actions/post";
 import Spinner from "../Layout/Spinner";
 
-const PostDisplay = ({ getPosts, post: { posts, loading } }) => {
+const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loading } }) => {
   const [currpost, updateCurr] = useState({
+    postStatus: "",
+    id: "",
     title: "",
     body: "",
     name: "",
@@ -23,7 +25,7 @@ const PostDisplay = ({ getPosts, post: { posts, loading } }) => {
   const [active, updateActive] = useState(false);
 
   const activeContent = post => {
-    updateCurr({ title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection  });
+    updateCurr({ id: post._id, postStatus: post.postStatus, interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection  });
     updateActiveState(true);
   };
   const updateActiveState = newSet => {
@@ -33,28 +35,7 @@ const PostDisplay = ({ getPosts, post: { posts, loading } }) => {
   useEffect(() => {
     getPosts();
 
-    // getPosts();
-    //The posts will be retrieved via the Search component
-    // getPosts();
-
-    // if (isAuthenticated && window.location.pathname === "/account") {
-    //   getUserPosts(user._id);
-    // } else {
-    //   getPosts();
-    // }
-
-    // if (window.location.pathname === "/account") {
-    //   // getCurrentProfile()
-    //   // console.log(window.location.pathname);
-    //   // console.log(user)
-    //   // getPosts();
-    //   console.log(user);
-    //   getUserPosts(user._id);
-    // } else {
-    //   console.log("Get all");
-    //   getPosts();
-    // }
-    // console.log(location.search)
+  
   }, [getPosts]);
 
   return loading ? (
@@ -111,19 +92,23 @@ const PostDisplay = ({ getPosts, post: { posts, loading } }) => {
         </div>
       </div>
 
-      <Post currPost={currpost} active={active} toggle={updateActiveState} />
+      <Post currPost={currpost} active={active} postProfiles={postProfiles} addInt={addInterested} toggle={updateActiveState} accountHome={false}/>
     </div>
   );
 };
 
 PostDisplay.propTypes = {
   getPosts: PropTypes.func.isRequired,
-  post: PropTypes.object.isRequired
+  addInterested: PropTypes.func.isRequired,
+  post: PropTypes.object.isRequired,
+  postProfiles: PropTypes.object.isRequired,
+
 };
 
 const mapStateToProps = state => ({
-  post: state.post
+  post: state.post,
+  postProfiles: state.postProfiles
 });
 export default connect(mapStateToProps, {
-  getPosts
+  getPosts, addInterested
 })(withRouter(PostDisplay));
