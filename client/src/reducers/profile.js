@@ -6,6 +6,7 @@ import {
   GET_PROFILES,
   GET_REPOS,
   GET_ACCOUNT,
+  GET_POSTPROFILE,
   ACCOUNT_ERROR,
   ACCOUNT_UPDATED
 } from "../actions/types";
@@ -13,6 +14,8 @@ import {
 const initialState = {
   profile: null,
   profiles: [],
+  postProfile: null,
+  postProfiles: [],
   repos: [],
   loading: true,
   error: {}
@@ -37,6 +40,14 @@ export default function(state = initialState, action) {
         profiles: payload,
         loading: false
       };
+
+      case GET_POSTPROFILE:
+        console.log("Get post profiles");
+        console.log(payload);
+        return {
+          ...state,
+          postProfiles: payload,
+        };
     case ACCOUNT_ERROR:
     case PROFILE_ERROR:
       return {

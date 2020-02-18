@@ -12,6 +12,8 @@ const User = require("../../models/User");
 const multer = require("multer");
 const path = require("path");
 
+const mongoose = require("mongoose");
+
 const storage = multer.diskStorage({
   destination: "./public/",
   filename: function(req, file, cb) {
@@ -81,6 +83,8 @@ router.post(
         body: req.body.body,
         location: req.body.location,
         type: req.body.type,
+        postStatus: req.body.postStatus,
+        tags: req.body.tags,
         imgCollection,
         name: username,
         avatar: user.avatar,
@@ -154,7 +158,7 @@ router.get("/:id", auth, async (req, res) => {
 router.get("/search/:title", async (req, res) => {
   try {
     const posts = await Post.find({
-      title: { $regex: req.params.title, $options: "i" }
+      tags: { $regex: req.params.title, $options: "i" }
     }).sort({ date: -1 });
 
     res.json(posts);
@@ -208,6 +212,92 @@ router.delete("/:id", auth, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+
+// @route    PUT api/posts/interest/:id
+// @desc     interest a post
+// @access   Private
+router.put("/interest/:id", auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    // Check if the post has already been liked
+    if (
+      post.interest.filter(like => like.user.toString() === req.user.id).length > 0
+    ) {
+      return res.status(400).json({ msg: "Already Interested" });
+    }
+
+    post.interest.unshift({ user: req.user.id });
+
+    await post.save();
+
+    res.json(post.interest);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
+router.put("/assign/:id", auth, async (req, res) => {
+  try {
+
+    var search = req.params.id;
+    var para = search.split(",");
+
+    let arr = para.map(ele => new mongoose.Types.ObjectId(ele));
+
+
+    const post = await Post.findById(arr[0]);
+    
+    console.log(post)
+    console.log( arr[1]);
+    // Check if the post has already been liked
+    // if (
+    //   post.assigned.filter(like => like.user.toString() === req.user.id).length > 0
+    // ) {
+    //   return res.status(400).json({ msg: "Already Interested" });
+    // }
+
+    post.assigned = arr[1];
+    post.postStatus = "In Progress";
+
+    await post.save();
+
+    res.json(post.assigned);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
+router.put("/status/:id", auth, async (req, res) => {
+  try {
+
+    var search = req.params.id;
+    var para = search.split(",");
+    para[0] = new mongoose.Types.ObjectId(para[0]);
+    
+
+
+    const post = await Post.findById(para[0]);
+    
+  
+   
+   
+    post.postStatus = para[1];
+
+    await post.save();
+
+    res.json(post.postStatus);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 
 // @route    PUT api/posts/like/:id
 // @desc     Like a post

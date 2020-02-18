@@ -5,11 +5,14 @@ import {
   GET_POSTS,
   POST_ERROR,
   UPDATE_LIKES,
+  UPDATE_INTEREST,
   DELETE_POST,
   ADD_POST,
   GET_POST,
+  UPDATE_ASSIGNED,
   ADD_COMMENT,
-  REMOVE_COMMENT
+  REMOVE_COMMENT,
+  UPDATE_STATUS
 } from "./types";
 
 // Get posts
@@ -64,6 +67,75 @@ export const getPostsSearch = title => async dispatch => {
   }
 };
 
+
+
+
+
+
+// Add Interest
+export const addInterested = id => async dispatch => {
+  try {
+    const res = await axios.put(`/api/posts/interest/${id}`);
+
+    dispatch({
+      type: UPDATE_INTEREST,
+      payload: { id, interest: res.data }
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+export const assignTradesperson = id => async dispatch => {
+  try {
+
+    const res = await axios.put(`/api/posts/assign/${id}`);
+
+    var search = id;
+    var para = search.split(",");
+
+    var arr = para.map(ele => ele);
+    var id_ = arr[0];
+    dispatch({
+      type: UPDATE_ASSIGNED,
+      payload: { id_, assigned: res.data }
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+
+export const updateStatus = id => async dispatch => {
+  try {
+
+    const res = await axios.put(`/api/posts/status/${id}`);
+
+    var search = id;
+    var para = search.split(",");
+
+    var arr = para.map(ele => ele);
+    var id_ = arr[0];
+    dispatch({
+      type: UPDATE_STATUS,
+      payload: { id_, status: res.data }
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+
+
 // Add like
 export const addLike = id => async dispatch => {
   try {
@@ -80,6 +152,7 @@ export const addLike = id => async dispatch => {
     });
   }
 };
+
 
 // Remove like
 export const removeLike = id => async dispatch => {

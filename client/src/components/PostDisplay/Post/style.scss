@@ -19,6 +19,12 @@
   .post-template {
     padding: $DwS;
 
+
+    .interest-container {
+      display: flex;
+      flex-direction: column;
+    }
+
     .lnr-map-marker {
       font-size: 60px;
     }

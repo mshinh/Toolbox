@@ -28,6 +28,22 @@ const PostSchema = new mongoose.Schema({
   avatar: {
     type: String
   },
+  postStatus: {
+    type: String
+  },
+  assigned: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  },
+  interest: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      }
+    }
+  ],
+  tags: [String],
   likes: [
     {
       user: {
