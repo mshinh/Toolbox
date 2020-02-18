@@ -14,6 +14,7 @@ import Spinner from "../Layout/Spinner";
 
 const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loading } }) => {
   const [currpost, updateCurr] = useState({
+    postStatus: "",
     id: "",
     title: "",
     body: "",
@@ -24,7 +25,7 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
   const [active, updateActive] = useState(false);
 
   const activeContent = post => {
-    updateCurr({ id: post._id, interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection  });
+    updateCurr({ id: post._id, postStatus: post.postStatus, interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection  });
     updateActiveState(true);
   };
   const updateActiveState = newSet => {
