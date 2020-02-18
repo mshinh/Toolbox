@@ -8,7 +8,7 @@ const { check, validationResult } = require("express-validator/check");
 
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
-const Post = require("../../models/Post");
+const Post = require("../../models/post");
 const multer = require("multer");
 const path = require("path");
 
