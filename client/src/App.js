@@ -21,6 +21,7 @@ import UserPostDisplay from "./components/PostDisplay/UserPosts";
 import Friend from "./components/Profile/Profile";
 import Friends from "./components/Friends/Profiles";
 import ContactList from "./components/Friends/ContactList";
+import Notification from "./components/Notification";
 
 // Redux
 import { Provider } from "react-redux";
@@ -52,6 +53,7 @@ const App = () => {
                 <PrivateRoute exact path="/friends" component={Friends} />
                 <PrivateRoute exact path="/friend/:id" component={Friend} />
                 <PrivateRoute exact path="/contacts" component={ContactList} />
+                <PrivateRoute exact path="/notifications" component={Notification} />
                 <PrivateRoute
                   exact
                   path="/create-profile"

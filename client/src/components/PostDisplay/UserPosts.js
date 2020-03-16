@@ -85,11 +85,13 @@ const UserPostDisplay = ({
             <div key={post._id} className="post">
               <h4>{post.name}</h4>
               <h3>{post.title}</h3>
+              <div className="preview-images">
               {
                 post.imgCollection.map( (img) => (
                   <img src={window.location.origin + "/public/" + img} alt="image" />
                 ))
               }
+              </div>
               <div className="buttom-container">
                 <button
                   type="submit"
