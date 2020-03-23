@@ -20,12 +20,13 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
     body: "",
     name: "",
     location:"",
-    imgCollection: []
+    imgCollection: [],
+    userId: ""
   });
   const [active, updateActive] = useState(false);
 
   const activeContent = post => {
-    updateCurr({ id: post._id, postStatus: post.postStatus, interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection  });
+    updateCurr({ id: post._id, userId: post.user._id, postStatus: post.postStatus, interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection  });
     updateActiveState(true);
   };
   const updateActiveState = newSet => {

@@ -2,9 +2,11 @@ import React from "react";
 //import "./style.scss";
 
 const Notifications = () => {
-    return(
-        <h1>Notification Center</h1>
+    return (
+        <div>
+            <h1>Notification Center</h1>
+        </div>
     )
 }
 
-export default Notifications
+export default Notifications;

@@ -175,7 +175,7 @@ export const removeLike = id => async dispatch => {
 export const deletePost = id => async dispatch => {
   try {
     await axios.delete(`/api/posts/${id}`);
-
+    console.log("at delete");
     dispatch({
       type: DELETE_POST,
       payload: id

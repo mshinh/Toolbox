@@ -520,6 +520,22 @@ router.delete("/deleteContact/:id",
   }
 );
 
+// @route    POST api/profile/addNotification
+// @desc     Add notification
+// @access   Public
 
+router.post("/addNotification",
+  [
+    auth
+  ], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { notification } = req.body;
+    console.log(req.body)
+    
+  }
+);
 
 module.exports = router;

@@ -5,7 +5,7 @@ import "./style.scss";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getPostProfiles } from "../../../actions/profile";
-import { assignTradesperson, updateStatus } from "../../../actions/post";
+import { assignTradesperson, updateStatus} from "../../../actions/post";
 import {
   Link,
   withRouter,
@@ -14,21 +14,20 @@ import {
 } from "react-router-dom";
 
 
-const Post = ( props ) => {
+const Post = (props,
+  auth,
+  ) => {
  
-console.log(props)
+//console.log(props)
   useEffect(() => {
    
   if(props.active && props.currPost.interest)  { 
-    console.log("Run get profiles");
-    var intAccount = "";
-    
+  //  console.log("Run get profiles");
+    var intAccount = "";  
     props.currPost.interest.map(e => {
       intAccount = intAccount + "," + e.user;
     })
     intAccount = intAccount.substring(1);
-    
-
     props.getPostProfiles(intAccount);
   }
 
@@ -36,25 +35,25 @@ console.log(props)
   },);
 
   const assign = tradeId => {
-
     var delivery = props.currPost.id +","+ tradeId;
     console.log(delivery);
     props.assignTradesperson(delivery);
   };
 
   const status = newStatus => {
-
     var delivery = props.currPost.id +","+ newStatus;
     console.log(delivery);
     props.updateStatus(delivery);
   };
 
-
-
-  let { id, title, body, name, location, imgCollection, postStatus } = props.currPost;
+  function findName(userId){
+    console.log("USER",userId);
+    console.log("PROPS", props);
+    return "Hello";
+  }
+  let { id, userId, title, body, name, location, imgCollection, postStatus } = props.currPost;
  
-
-    return (
+  return (
       <div
         className={`post-content ${props.active ? "active" : "notActive"}`}
       >
@@ -72,8 +71,12 @@ console.log(props)
               <img src={window.location.origin + "/public/" + img} alt="image" />
             ))
             */}
-
+          
             {props.accountHome ? null : ( 
+            ( 
+            //  auth.loading === false &&
+            //  !auth.user._id === userId  &&
+            //  console.log("hellllooooo",auth.isAuthenticated)  (
             <div>
             <h2>Are you interested ?</h2>
             
@@ -81,27 +84,29 @@ console.log(props)
               <h4>Yes</h4>
                   <span className="button-bar"></span>
             </button>
-            </div>)
-            }
-
+            </div>) 
+)}
         
            
            {/* <button  className="input-btn">
               <h4>Decline</h4>
                   <span className="button-bar"></span>
             </button> */}
-            
+              
              
                 <button  className="input-btn">
                   <h4>Contact {name}</h4>
                       <span className="button-bar"></span>
                 </button>
+              
             
+
+
             {props.accountHome && props.currPost.interest ? (<div>
               <div className="interest-container">
               {props.currPost.interest.map(inx => {
                 return(
-                <div className="int-item"><h4>User: {inx.user}</h4>
+                <div className="int-item"><h4>User: {findName(inx.user)}</h4>
                   <Link to={`/friend/${inx.user}`} className="side-btn long">
                       <span>More</span>  
                       <svg xmlns="http://www.w3.org/2000/svg" width="25.438" height="19.27" viewBox="0 0 25.438 19.27">
@@ -148,6 +153,8 @@ console.log(props)
 
         </div>
 
+       
+
         <div className="close-content" onClick={e => props.toggle(false)}>
           <h4>Close</h4>
         </div>
@@ -165,6 +172,7 @@ Post.propTypes = {
   assignTradesperson: PropTypes.func.isRequired,
   getPostProfiles: PropTypes.func.isRequired,
   postProfiles: PropTypes.object.isRequired,
+  
 
 };
 
@@ -185,7 +193,7 @@ const mapStateToProps = state => ({
 //   profile: state.profile
 // });
 
-export default connect(mapStateToProps, { getPostProfiles, assignTradesperson, updateStatus })(Post);
+export default connect(mapStateToProps, { getPostProfiles, assignTradesperson, updateStatus, })(Post);
 
 
 // Post.propTypes = {
