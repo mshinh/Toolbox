@@ -265,7 +265,8 @@ router.put("/assign/:id", auth, async (req, res) => {
 
     var search = req.params.id;
     var para = search.split(",");
-
+    console.log("SEARCH", search);
+    console.log("PARA", para);
     let arr = para.map(ele => new mongoose.Types.ObjectId(ele));
 
 
@@ -284,7 +285,7 @@ router.put("/assign/:id", auth, async (req, res) => {
     post.postStatus = "In Progress";
 
     await post.save();
-
+    console.log("Post Assigned", post.assigned);
     res.json(post.assigned);
 
 
