@@ -30,13 +30,13 @@ const Search = ({
         <input
           name="search"
           type="Search"
-          id="search"
+          className="search-input"
           placeholder="Search"
           onChange={e => onChange(e)}
           value={search}
         />
 
-        <button className="input-btn" onClick={() => onSubmit()}>
+        <button className="input-btn search-btn" onClick={() => onSubmit()}>
           <h4>Search</h4>
           <span className="button-bar"></span>
         </button>

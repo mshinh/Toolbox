@@ -5,7 +5,11 @@
    // border-bottom: 1px solid #000;
    
     .user-detail {
-        padding: $DwS;
+        padding-left: $DwS;
+        padding-top: 20px;
+        h3 {
+            font-size: $h3Size;
+        }
     }
     
     .user-picture {

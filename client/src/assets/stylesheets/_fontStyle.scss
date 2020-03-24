@@ -8,3 +8,10 @@ h2 {
 a {
     color: #707070;
 }
+
+@media(max-width: $semi-mobile) {
+    h2 {
+        font-size: $m-h2Size;
+    }
+    
+}

@@ -34,7 +34,7 @@ const NavContainer = ({ logout,
         </Link>
 
         <div className="nav-item small" onClick={logout}>
-          Logout
+          <h3>Logout</h3>
         </div>
         {/* <div className="nav-item small">preferences</div> */}
       </div>
