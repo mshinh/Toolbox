@@ -11,6 +11,7 @@
     z-index: 2;
     transition: height 400ms $easeInOut3;
     background-color: #fff;
+
     .login-button {
         position: absolute;
         top: 0;
@@ -25,7 +26,6 @@
 
         h2 {
             padding-top: 5px;
-            font-size: $h2Size;
             font-family: $mainTextR;
             transition: color 300ms $easeInOut3;
         }
@@ -69,5 +69,12 @@
             
        
         }
+    }
+}
+
+@media(max-width: $semi-mobile) {
+    
+    .login-area {
+        bottom: 50px;
     }
 }

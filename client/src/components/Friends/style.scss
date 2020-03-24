@@ -199,3 +199,30 @@
     }
   }
 }
+
+
+@media(max-width: $semi-mobile) {
+
+  .friend-container .friend-list .friend-item {
+    width: 100%;
+  }
+  .friend-container .friend-list .friend-item .friend-info h2 {
+    font-size: (22/560) * 100vw; 
+  }
+  .friend-container .friend-list .friend-item .friend-info h3 {
+    font-size: (22/560) * 100vw;   
+  }
+  .contact-display-container {
+    display: none;
+  }
+  .friend-container .friend-list .friend-item .friend-info .link-contents .side-btn.long {
+    width: (120/560) * 100vw;
+  }
+  .friend-container .friend-list .friend-item .friend-info .link-contents .side-btn span {
+    font-size: (22/560) * 100vw;
+  }
+  .friend-container .friend-list .friend-item .friend-info .link-contents .side-btn {
+    width: (100/560) * 100vw;
+  }
+  
+}

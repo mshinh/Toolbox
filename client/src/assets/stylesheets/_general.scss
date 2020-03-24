@@ -33,7 +33,7 @@ input {
 .input-btn {
   border: 1px solid #707070;
   background-color: transparent;
-  padding: 5px 40px;
+  padding: 5px 20px;
   padding-top: 10px;
   position: relative;
   display: block;
@@ -169,11 +169,59 @@ a {
 }
 
 
-@media(max-width: 460px) {
-    .form-column {
-        padding-left: 0;
+
+@media(max-width: $semi-mobile) {
+
+  .input-row .input-wrapper input {
+    font-size: (14/560) * 100vw;
+  }
+  .input-row {
+    flex-direction: column;
+    .input-wrapper {
+      &:nth-child(even) {
+        margin-right: 0;
+        margin-left: 0;
+      }
     }
+  }
+
+  .form-wrapper {
+    padding-bottom: 70px
+  }
+
+  .form-column {
+      padding-left: 0;
+  }
+  .input-btn {
+    width: 100%;
+
+    &.cancel {
+      width: 100%;
+      margin: 0;
+      margin-top: 5px;
+
+      margin-bottom: 20px;
+
+    }
+  }
+  .input-btn h4 {
+    font-size: (14/560) * 100vw;
+  }
 }
+
+
+
+@media(max-width: 460px) {
+
+ 
+
+
+
+  .form-column {
+      padding-left: 0;
+  }
+}
+
 //presets
 textarea, input, button { outline: none; }
 //input {-webkit-appearance: none;}
