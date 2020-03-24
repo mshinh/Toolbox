@@ -21,6 +21,9 @@ const NavContainer = ({ logout }) => {
         <Link to="/account" className="nav-item small">
           <h3> Account Home </h3>
         </Link>
+        <Link to="/notifications" className="nav-item small">
+          <h3>Notifications </h3>
+        </Link>
       </div>
       <div className="nav-row">
         <Link to="/profile" className="nav-item small">

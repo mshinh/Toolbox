@@ -478,6 +478,7 @@ router.get("/contacts",
           "userphoto"
         ]);
         res.json(profiles);
+      //  console.log(profiles);
       }
      
   } catch (err) {
@@ -520,6 +521,98 @@ router.delete("/deleteContact/:id",
   }
 );
 
+// @route    POST api/profile/notification
+// @desc     Get all notification
+// @access   Public
 
+router.get("/notification",
+  [
+    auth
+  ], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try{
+      let profile = await Profile.findOne({ user: req.user.id });
+      if(profile) {
+       // const profile = await Profile.findOne
+        const posts = await Post.find({'_id' : { $in: profile.notification}}).populate("user", [
+          "fname",
+          "lname",
+          "email",
+          "userphoto"
+        ]); 
+        
+       //const notification = profile.notification;
+        res.json(posts);
+       // console.log("NOTIFICATION POSTS", notification);
+      }
+    } catch (err) {
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+// @route    POST api/profile/deleteNotification/:id
+// @desc     Delete notification
+// @access   Public
+router.delete("/deleteNotification/:id",
+  [
+    auth
+  ], async (req, res) => {
+    try{
+      let profile = await Profile.findOne({ user: req.user.id });
+      const notification = profile.notification;
+
+      for(var i = 0; i < notification.length; i++) {
+        if(notification[i] != null){
+          if(notification[i]){
+            notification.splice(i, 1);
+          }
+        }
+      }
+      await profile.save();
+      return res.status(200).json("Success");
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+/*
+// @route    POST api/profile/addNotification
+// @desc     Add notification
+// @access   Public
+
+router.post("/addNotification",
+  [
+    auth
+  ], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    //const post = await Post.findOne({ _id : req.body});
+   // console.log("POST INFO", post);
+    const { notification } = req.body;
+    console.log("NOTIFICATIONS",req.body)
+    try {
+      let profile = await Profile.findOne({ user: req.user.id});
+      if(profile) {
+        profile.notification.push(notification);
+        profile.save();
+        res.status(200).json({ success: 'Done' })
+      } else {
+        return res.status(401).json({ errors: "User not found" });
+      }  
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+      }
+    }
+);
+*/
 
 module.exports = router;

@@ -12,7 +12,9 @@ import {
   UPDATE_ASSIGNED,
   ADD_COMMENT,
   REMOVE_COMMENT,
-  UPDATE_STATUS
+  UPDATE_STATUS,
+  GET_NOTIFICATION,
+  DELETE_NOTIFICATION
 } from "./types";
 
 // Get posts
@@ -49,6 +51,8 @@ export const getUserPosts = id => async dispatch => {
   }
 };
 
+
+
 // Search post by title
 export const getPostsSearch = title => async dispatch => {
   try {
@@ -67,8 +71,44 @@ export const getPostsSearch = title => async dispatch => {
   }
 };
 
+// Get notification of post
+export const getNotification = () => async dispatch => {
+ // dispatch({ type: CLEAR_PROFILE });
+
+  try {
+    const res = await axios.get("/api/profile/notification");
+
+    dispatch({
+      type: GET_POSTS,
+      payload: res.data
+    });
+  } catch (err) {
+    console.log(err)
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
 
 
+// Delete notification of post
+export const deleteNotification = id => async dispatch => {
+  try{
+    await axios.delete(`/api/profile/deleteNotification/${id}`);
+    dispatch({
+      type: DELETE_NOTIFICATION,
+      payload: id
+    });
+    dispatch(setAlert("Notification Removed", "success"));
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+
+};
 
 
 
@@ -175,7 +215,7 @@ export const removeLike = id => async dispatch => {
 export const deletePost = id => async dispatch => {
   try {
     await axios.delete(`/api/posts/${id}`);
-
+    console.log("at delete");
     dispatch({
       type: DELETE_POST,
       payload: id

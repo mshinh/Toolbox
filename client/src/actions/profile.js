@@ -15,7 +15,8 @@ import {
   ACCOUNT_DELETED,
   GET_REPOS,
   ADD_CONTACT,
-  DELETE_CONTACT
+  DELETE_CONTACT,
+  ADD_NOTIFICATION
 } from "./types";
 
 // Get current users profile
@@ -91,6 +92,27 @@ export const getFriends = () => async dispatch => {
   }
 };
 
+// Get notifications
+/*
+export const getNotification = () => async dispatch => {
+  dispatch({ type: CLEAR_PROFILE });
+
+  try {
+    const res = await axios.get("/api/profile/notification");
+
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data
+    });
+  } catch (err) {
+    console.log(err)
+    // dispatch({
+    //   type: PROFILE_ERROR,
+    //   payload: { msg: err.response.statusText, status: err.response.status }
+    // });
+  }
+};
+*/
 // Get profile by ID
 export const getProfileById = userId => async dispatch => {
   try {
@@ -447,6 +469,41 @@ export const deletePortfolio = id => async dispatch => {
   }
 };
 
+/*
+// Add notification
+export const addNotification = (
+  formData
+) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+  };
+
+  const res = await axios.post("api/profile/addNotification", JSON.stringify({notification: formData}), config);
+
+  dispatch({
+    type: ADD_NOTIFICATION,
+    payload: res.data
+  });
+
+  dispatch(setAlert("Notification Added", "success"));
+} catch(err) {
+  console.log(err) 
+  const errors = err.response.data.errors;
+
+  if (errors) {
+    // errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    dispatch(setAlert(errors[0].msg, "danger"));
+  }
+  dispatch({
+    type: ACCOUNT_ERROR,
+    payload: { msg: err.response.statusText, status: err.response.status }
+  });
+  }
+};
+*/
 // // Add Education
 // export const addEducation = (formData, history) => async dispatch => {
 //   try {
