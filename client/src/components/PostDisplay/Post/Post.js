@@ -4,7 +4,7 @@ import "./style.scss";
 //import locationImage from "../../../assets/images/one.jpg";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getPostProfiles } from "../../../actions/profile";
+import { getPostProfiles, addNotification } from "../../../actions/profile";
 import { assignTradesperson, updateStatus} from "../../../actions/post";
 import {
   Link,
@@ -193,7 +193,7 @@ const mapStateToProps = state => ({
 //   profile: state.profile
 // });
 
-export default connect(mapStateToProps, { getPostProfiles, assignTradesperson, updateStatus, })(Post);
+export default connect(mapStateToProps, { getPostProfiles, assignTradesperson, updateStatus})(Post);
 
 
 // Post.propTypes = {

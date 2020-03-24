@@ -56,10 +56,12 @@ const ProfileSchema = new mongoose.Schema({
       }
     }
   ],
-  notifications: [ 
-    { type: Schema.Types.ObjectId,
+  notification: [  {
+  
+      type: Schema.Types.ObjectId,
       ref: "Post"
-    }
+  
+  }
   ]
 });
 

@@ -33,13 +33,13 @@ const UserPostDisplay = ({
     name: "",
     location: "",
     imgCollection: [],
-    userId: ""
+   
   });
   const [active, updateActive] = useState(false);
 
   const activeContent = post => {
  
-    updateCurr({ id: post._id, userId: post.user._id, assigned: post.assigned,  postStatus: post.postStatus,  interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection });
+    updateCurr({ id: post._id, assigned: post.assigned,  postStatus: post.postStatus,  interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection });
     var intAccount = "";
     
     // post.interest.map(e => {

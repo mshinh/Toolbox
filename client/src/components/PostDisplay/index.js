@@ -21,12 +21,12 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
     name: "",
     location:"",
     imgCollection: [],
-    userId: ""
+    
   });
   const [active, updateActive] = useState(false);
 
   const activeContent = post => {
-    updateCurr({ id: post._id, userId: post.user._id, postStatus: post.postStatus, interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection  });
+    updateCurr({ id: post._id, postStatus: post.postStatus, interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection  });
     updateActiveState(true);
   };
   const updateActiveState = newSet => {
@@ -60,7 +60,7 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
           {/* {this.createPosts()} */}
           {posts.map(post => (
             <div key={post._id} className="post">
-              <h4>{post.name}</h4>
+             
               <h3>{post.title}</h3>
               <div className="preview-images">
                 {
