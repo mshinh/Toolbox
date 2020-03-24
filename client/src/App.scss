@@ -4,7 +4,7 @@
     display: flex;
 
     #dash-container {
-        width: (722/$desktop) * 100vw;
+        width: (600/$desktop) * 100vw;
         border-left: 1px solid #000;
         height: 100vh;
         position: relative;
@@ -12,9 +12,119 @@
         
     }
     #subclass-container {
-        width: (1198/$desktop) * 100vw;
+        width: (1320/$desktop) * 100vw;
         height: 100vh;
         position: relative;
         overflow-y: scroll;
     }
+}
+#toolbox-app {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+.mobile-menu {
+    display: none; 
+}
+
+@media(max-width: $semi-mobile) {
+    #toolbox-app {
+        
+    
+        #dash-container {
+            width: 100vw;
+            border: 0;
+            border-top: 1px solid #000;
+            background-color: #fff;
+            height: 100vh;
+            position: fixed;
+            
+            bottom: 0;
+            z-index: 5;
+            
+        }
+        #subclass-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow-y: scroll;
+        }
+    }
+
+
+    .mobile-menu {
+        
+        position: fixed;
+        z-index: 10;
+        left: 0;
+        right: 0;
+        bottom: 0px;
+        height: 50px;
+        background-color: #fff;
+        border-top: 1px solid #000;
+
+        display: flex;
+        justify-content: space-evenly;
+
+        // transform: translateY(-100%);
+
+        .mobile-home-btn {
+            height: 100%;
+            width: 80%;
+            display: flex; 
+            align-items: center;
+            justify-content: flex-start;
+
+            h1 {
+                font-size: (28/560) * 100vw;
+                padding-left: $DwS;
+            }
+        }
+
+        .toggle-menu {
+            height: 100%;
+            width: 20%;
+            border-left: 1px solid #000;
+            position: relative;
+
+            .close-icon, .open-icon {
+                position: absolute;
+                width: 25px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+
+                transition: opacity 300ms ease-in-out;
+                svg {
+                    width: 25px;
+                }
+            }
+            .close-icon {
+
+             
+                opacity: 0;
+            }
+
+            .open-icon {
+                opacity: 1;
+            }
+
+        }
+        
+        &.true {
+            .toggle-menu {
+            
+                .close-icon {
+                    opacity: 1;
+                }
+                .open-icon {
+                    opacity: 0;
+                }
+    
+            }
+                
+        }
+
+    }
+    
 }

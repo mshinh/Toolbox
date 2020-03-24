@@ -1,12 +1,13 @@
 @import "./../../../assets/stylesheets/main.scss";
 
 .post-content {
+
   position: fixed;
   z-index: 6;
   left: 0;
   top: 0;
   bottom: 0;
-  width: (1198 / $desktop) * 100vw;
+  width: (1320/$desktop) * 100vw;
   background-color: #fff;
   transform: translateY(-100%);
 
@@ -120,6 +121,16 @@
           cursor: pointer;
           color: #fff;
         }
+    }
+
+
+    @media(max-width: $semi-mobile) {
+      .post-content {
+        width: 100%;
+        bottom: 50px;
+      }
+
+
     }
 
 

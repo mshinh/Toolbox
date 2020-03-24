@@ -18,7 +18,7 @@ const NavContainer = ({ logout }) => {
         </Link>
       </div>
       <div className="nav-row">
-        <Link to="/account" className="nav-item large">
+        <Link to="/account" className="nav-item small">
           <h3> Account Home </h3>
         </Link>
       </div>
@@ -28,7 +28,7 @@ const NavContainer = ({ logout }) => {
         </Link>
 
         <div className="nav-item small" onClick={logout}>
-          Logout
+          <h3>Logout</h3>
         </div>
         {/* <div className="nav-item small">preferences</div> */}
       </div>
