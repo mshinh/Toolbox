@@ -57,12 +57,15 @@ const ProfileSchema = new mongoose.Schema({
     }
   ],
   notification: [  {
-  
       type: Schema.Types.ObjectId,
       ref: "Post"
-  
   }
-  ]
+  ],
+  jobNotification: [ {
+    type: Schema.Types.ObjectId,
+    ref: "Post"
+  }
+]
 });
 
 module.exports = mongoose.model("Profile", ProfileSchema);

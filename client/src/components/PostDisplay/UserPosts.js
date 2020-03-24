@@ -11,8 +11,16 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getUserPosts, deletePost } from "../../actions/post";
 import { getPostProfiles } from "../../actions/profile";
-
 import Spinner from "../Layout/Spinner";
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
+} from "reactstrap";
+import { confirmAlert } from 'react-confirm-alert';
+
 
 const UserPostDisplay = ({
   getUserPosts,
@@ -50,6 +58,19 @@ const UserPostDisplay = ({
     // console.log(intAccount);
     
     // getPostProfiles(intAccount);
+    /*<Modal isOpen={modal} toggle={toggleDelete}>
+    <ModalHeader toggle={toggleDelete}>Confirm</ModalHeader>  
+    <ModalBody>Are you sure you want to delete this Post?</ModalBody>
+    <ModalFooter>
+      <Button color="primary" onClick={() => deletePost(post._id)}>
+        Yes
+      </Button>{" "}
+      <Button color="secondary" onClick={toggleDelete}>
+        Cancel
+      </Button>
+    </ModalFooter>          
+  </Modal>
+  */
     updateActiveState(true);
 
   };
@@ -64,63 +85,95 @@ const UserPostDisplay = ({
   
   }, [getUserPosts]);
 
+  const [modal, setModal] = useState(false);
+  const toggleDelete = () => setModal(!modal);
+
+  function confirm(id) {
+   // e.preventDefault();
+    confirmAlert({
+      title: 'Confirm',
+      message: 'Are you sure you want to delete post?',
+      buttons: [
+        {
+          label: 'Yes',
+         // onClick: () => alert('Contact added!'), 
+          onClick: () => {
+            //console.log(_id);
+            deletePost(id);
+            //alert('Contact removed!');
+          }
+        },
+        {
+          label: 'No',
+          //onClick: () => alert('Click No')
+        }
+      ]
+    })
+  }  
+  
+   
+  
   return loading && user === null ? (
     <Spinner />
   ) : (
-    <div className="home-container">
-      <div className="page-heading">
-        {/* {user.fname} */}
-        <h1>Welcome To Your Home Page</h1>
-        <h2>
-          Your one stop location for <br />
-          skilled workers and opportunities{" "}
-        </h2>
-      </div>
-      {/* Make this a class */}
-      <div className="post-template">
-        <div className="post-popup">
-          {/* This has to be moved becasue it will take up the entire home page */}
+    <section>
+      <div className="home-container">
+        <div className="page-heading">
+          {/* {user.fname} */}
+          <h1>Welcome To Your Home Page</h1>
+          <h2>
+            Your one stop location for <br />
+            skilled workers and opportunities{" "}
+          </h2>
         </div>
-        <div className="post-board">
-          {/* {this.createPosts()} */}
-          {posts.map(post => (
-            <div key={post._id} className="post">
-              <h4>{post.name}</h4>
-              <h3>{post.title}</h3>
-              <div className="preview-images">
-              {
-                post.imgCollection.map( (img) => (
-                  <img src={window.location.origin + "/public/" + img} alt="image" />
-                ))
-              }
+        {/* Make this a class */}
+        <div className="post-template">
+          <div className="post-popup">
+            {/* This has to be moved becasue it will take up the entire home page */}
+          </div>
+          <div className="post-board">
+            {/* {this.createPosts()} */}
+            {posts.map(post => (
+              <div key={post._id} className="post">
+                <h4>{post.name}</h4>
+                <h3>{post.title}</h3>
+                <div className="preview-images">
+                {
+                  post.imgCollection.map( (img) => (
+                    <img src={window.location.origin + "/public/" + img} alt="image" />
+                  ))
+                }
+                </div>
+                <div className="buttom-container">
+                  <button
+                    type="submit"
+                    onClick={e => {
+                      activeContent(post);
+                    }}
+                    className="input-btn"
+                  >
+                    <h4>More Information</h4>
+                    <span className="button-bar"></span>
+                  </button>
+                </div>
+                <br></br>
+                  <Button
+                  onClick={() => confirm(post._id)}
+                  type='button'
+                  className='btn btn-danger' >Delete 
+                  {   } <i className='fas fa-times' />
+                  </Button>
+                
               </div>
-              <div className="buttom-container">
-                <button
-                  type="submit"
-                  onClick={e => {
-                    activeContent(post);
-                  }}
-                  className="input-btn"
-                >
-                  <h4>More Information</h4>
-                  <span className="button-bar"></span>
-                </button>
-              </div>
-              
-                <button 
-                onClick={() => deletePost(post._id)}
-                type='button'
-                className='btn btn-danger' >
-                  <i className='fas fa-times' />
-                </button>
-              
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+
+        <Post currPost={currpost} active={active} addInt={updateActiveState} toggle={updateActiveState} accountHome={true} />
       </div>
 
-      <Post currPost={currpost} active={active} addInt={updateActiveState} toggle={updateActiveState} accountHome={true} />
-    </div>
+      
+    </section>
   );
 };
 

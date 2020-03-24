@@ -15,17 +15,36 @@
             flex-grow: 1;
             padding: 20px;
             padding-left: $DwS;
-            font-size: 22px;
+         
            // padding: 20px;
             border-top: 1px solid #000;
             transition: color 300ms $easeInOut3, background-color 300ms $easeInOut3;
+
+            h3 {
+                font-size: $h3Size;
+                margin: 0;
+            }
             &:hover {
                 cursor: pointer;
                 background-color: #707070;
                 h3{
                 color: #fff;
+              
                 } 
             }
         }
+    }
+}
+
+@media(max-width: $semi-mobile) {
+
+    .nav-container {
+        bottom: 50px;
+    }
+    .nav-container .nav-row .nav-item h3 {
+        font-size: (26/560) * 100vw;
+    }
+    .user-item .user-detail h3 {
+        font-size: (20/560) * 100vw;
     }
 }

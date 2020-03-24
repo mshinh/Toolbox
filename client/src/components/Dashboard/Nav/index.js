@@ -4,8 +4,11 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../../../actions/auth";
 import "./style.scss";
+//import Notification from "../../Notification/index";
 
-const NavContainer = ({ logout }) => {
+const NavContainer = ({ logout,
+ }) => {
+
   return (
     <div className="nav-container">
       <div className="nav-row">
@@ -31,7 +34,7 @@ const NavContainer = ({ logout }) => {
         </Link>
 
         <div className="nav-item small" onClick={logout}>
-          Logout
+          <h3>Logout</h3>
         </div>
         {/* <div className="nav-item small">preferences</div> */}
       </div>
