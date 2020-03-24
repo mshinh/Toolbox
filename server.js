@@ -8,9 +8,12 @@ var cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 dotenv.config();
 
-//DB config
+// var server = app.listen(3000);
 
-// const db = require('./config/keys').mongoURI;
+// const http = require("http").Server(app);
+// const io = require("socket.io").listen(server);
+
+//DB config
 
 //Connect to Mongo
 mongoose.Promise = global.Promise;
@@ -49,10 +52,24 @@ app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/posts", postRoutes);
 
+// socket related events
+// const socketOps = require("./socketOps");
+// socketOps.allSocketOps(io);
+
 // app.use(function(err, req, res, next) {
 //   if (err.name === "UnauthorizedError") {
 //     res.status(401).json({ error: "Unauthorized!" });
 //   }
+// });
+
+// io.on("connection", function(socket) {
+//   console.log("a user connected");
+//   socket.on("disconnect", function() {
+//     console.log("User Disconnected");
+//   });
+//   socket.on("example_message", function(msg) {
+//     console.log("message: " + msg);
+//   });
 // });
 
 const port = process.env.PORT || 8000;
