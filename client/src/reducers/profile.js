@@ -10,7 +10,8 @@ import {
   ACCOUNT_ERROR,
   ACCOUNT_UPDATED,
   ADD_CONTACT,
-  DELETE_CONTACT
+  DELETE_CONTACT,
+  ADD_NOTIFICATION
 } from "../actions/types";
 
 const initialState = {
@@ -30,7 +31,7 @@ export default function(state = initialState, action) {
     case GET_PROFILE:
     case ACCOUNT_UPDATED:
     case ADD_CONTACT:
-    case DELETE_CONTACT:
+    case DELETE_CONTACT:     
     case UPDATE_PROFILE:
       return {
         ...state,

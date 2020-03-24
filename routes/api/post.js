@@ -59,9 +59,9 @@ router.post(
   ],
   upload.any(),
   async (req, res) => {
-    console.log('req', req)
-    console.log("body", req.body);
-    console.log('files', req.files)
+   // console.log('req', req)
+   // console.log("body", req.body);
+   // console.log('files', req.files)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -94,6 +94,26 @@ router.post(
       const post = await newPost.save();
 
       res.json(post);
+
+      //console.log("POST_ID", post._id );
+      const postTag = post.tags.toString();
+      //console.log(postTag.toString());
+      const notifyUser = await Profile.find( { occupation: postTag });
+     // console.log("NOTIFIED USER",notifyUser);
+     if(notifyUser != null) {
+        notifyUser.map((user) => {
+          user.notification.push([post._id,"post"]);
+          console.log("NOTIFICATIONS----------",user.notification);
+          user.save();
+        }); 
+        
+      /* for(var i = 0; i < notifyUser; i++) {
+         notifyUser[i].notification.id = post._id;
+         notifyUser[i].notification.type = "post";
+         console.log("NOTIFICATIONS----------",notifyUser[i].notification);
+         //notifyUser[i].save();
+       } */
+      }
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
@@ -251,7 +271,7 @@ router.put("/assign/:id", auth, async (req, res) => {
 
     const post = await Post.findById(arr[0]);
     
-    console.log(post)
+    //console.log(post)
     console.log( arr[1]);
     // Check if the post has already been liked
     // if (
@@ -266,6 +286,8 @@ router.put("/assign/:id", auth, async (req, res) => {
     await post.save();
 
     res.json(post.assigned);
+
+
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

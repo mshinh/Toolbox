@@ -9,17 +9,20 @@ const NavContainer = ({ logout }) => {
   return (
     <div className="nav-container">
       <div className="nav-row">
-        <div className="nav-item small">Messages</div>
-       
+        <Link to="/mailbox" className="nav-item small">
+          <h3> Mailbox </h3>
+        </Link>
+
         <Link to="/friends" className="nav-item small">
           <h3> Contacts </h3>
         </Link>
-        
-      
       </div>
       <div className="nav-row">
-        <Link to="/account" className="nav-item large">
+        <Link to="/account" className="nav-item small">
           <h3> Account Home </h3>
+        </Link>
+        <Link to="/notifications" className="nav-item small">
+          <h3>Notifications </h3>
         </Link>
       </div>
       <div className="nav-row">
