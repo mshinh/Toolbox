@@ -10,7 +10,9 @@ import {
   GET_POST,
   UPDATE_STATUS,
   ADD_COMMENT,
-  REMOVE_COMMENT
+  REMOVE_COMMENT,
+  GET_NOTIFICATION,
+  DELETE_NOTIFICATION
 } from "../actions/types";
 
 const initialState = {
@@ -37,6 +39,18 @@ export default function(state = initialState, action) {
         post: payload,
         loading: false
       };
+    case GET_NOTIFICATION:
+      return {
+        ...state,
+        post: payload,
+        loading: false
+      } 
+    case DELETE_NOTIFICATION:
+      return {
+        ...state,
+        posts: state.posts.filter(post => post._id !== payload),
+        loading: false
+      }
     case ADD_POST:
       return {
         ...state,

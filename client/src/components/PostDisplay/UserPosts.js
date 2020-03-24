@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getUserPosts } from "../../actions/post";
+import { getUserPosts, deletePost } from "../../actions/post";
 import { getPostProfiles } from "../../actions/profile";
 
 import Spinner from "../Layout/Spinner";
@@ -18,8 +18,9 @@ const UserPostDisplay = ({
   getUserPosts,
   getPostProfiles,
   postProfiles,
+  deletePost,
   // postProfile: {postProfiles},
-  post: { posts },
+  post: { posts},
   auth: { user, loading }
 }) => {
   const [currpost, updateCurr] = useState({
@@ -31,7 +32,8 @@ const UserPostDisplay = ({
     body: "",
     name: "",
     location: "",
-    imgCollection: []
+    imgCollection: [],
+   
   });
   const [active, updateActive] = useState(false);
 
@@ -85,11 +87,13 @@ const UserPostDisplay = ({
             <div key={post._id} className="post">
               <h4>{post.name}</h4>
               <h3>{post.title}</h3>
+              <div className="preview-images">
               {
                 post.imgCollection.map( (img) => (
                   <img src={window.location.origin + "/public/" + img} alt="image" />
                 ))
               }
+              </div>
               <div className="buttom-container">
                 <button
                   type="submit"
@@ -102,6 +106,14 @@ const UserPostDisplay = ({
                   <span className="button-bar"></span>
                 </button>
               </div>
+              
+                <button 
+                onClick={() => deletePost(post._id)}
+                type='button'
+                className='btn btn-danger' >
+                  <i className='fas fa-times' />
+                </button>
+              
             </div>
           ))}
         </div>
@@ -118,7 +130,8 @@ UserPostDisplay.propTypes = {
   post: PropTypes.object.isRequired,
   postProfile: PropTypes.object.isRequired,
   postProfiles: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  deletePost: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -128,5 +141,5 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 export default connect(mapStateToProps, {
-  getUserPosts, getPostProfiles
+  getUserPosts, getPostProfiles, deletePost
 })(withRouter(UserPostDisplay));

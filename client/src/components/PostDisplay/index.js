@@ -20,7 +20,8 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
     body: "",
     name: "",
     location:"",
-    imgCollection: []
+    imgCollection: [],
+    
   });
   const [active, updateActive] = useState(false);
 
@@ -59,7 +60,7 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
           {/* {this.createPosts()} */}
           {posts.map(post => (
             <div key={post._id} className="post">
-              <h4>{post.name}</h4>
+             
               <h3>{post.title}</h3>
               <div className="preview-images">
                 {
