@@ -55,11 +55,8 @@ const App = () => {
                 <PrivateRoute exact path="/friends" component={Friends} />
                 <PrivateRoute exact path="/friend/:id" component={Friend} />
                 <PrivateRoute exact path="/contacts" component={ContactList} />
-<<<<<<< HEAD
                 <PrivateRoute exact path="/notifications" component={Notification} />
-=======
                 <PrivateRoute exact path="/mailbox" component={Messenger} />
->>>>>>> 94edb17409f33d0b3de201a1a22fc2b1825e525f
                 <PrivateRoute
                   exact
                   path="/create-profile"
