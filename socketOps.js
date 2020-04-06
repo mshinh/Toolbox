@@ -1,9 +1,6 @@
-// dependencies
-// const dbOps = require("./dbOps");
-
 const TIME_TO_WAIT_BEFORE_STORE_IN_DB = 15000;
 
-const Message = require("./models/Message");
+const Mail = require("./models/Mail");
 
 const allSocketOps = io => {
   //   io.on("connection", function(socket) {
@@ -16,90 +13,99 @@ const allSocketOps = io => {
   //     });
   //   });
 
-  io.on("connection", socket => {
-    // Get the last 10 messages from the database.
-    Message.find()
-      .sort({ createdAt: -1 })
-      .limit(10)
-      .exec((err, messages) => {
-        if (err) return console.error(err);
+  let messagesToStoreInDb = [];
 
-        // Send the last messages to the user.
-        socket.emit("init", messages);
-      });
+  let activeUsers = [];
+  let users = {};
+
+  io.on("connection", socket => {
+    console.log("socket connection done successfully...", socket.id);
 
     // Listen to connected users for a new message.
-    socket.on("message", msg => {
-      // Create a message with the content and the name of the user.
-      const message = new Message({
-        fromUser: msg.fromUser,
-        toUser: msg.toUser,
-        title: msg.formMessage.title,
-        content: msg.formMessage.content
+    socket.on("newMail", data => {
+      console.log("data is inside socketOps", data);
+      messagesToStoreInDb.push(data);
+
+      const newMessage = {};
+      newMessage.content = data.formMessage.content;
+      newMessage.author = data.fromUser;
+
+      const mail = new Mail({
+        fromUser: data.fromUser,
+        toUser: data.toUser,
+        title: data.formMessage.title,
+        messages: newMessage
       });
 
       // Save the message to the database.
-      message.save(err => {
+      mail.save(err => {
         if (err) return console.error(err);
       });
 
       // Notify all other users about a new message.
-      socket.broadcast.emit("push", msg);
+      socket.broadcast.emit("newMail", data);
+    });
+
+    // Listen to new messages inside conversation.
+    socket.on("message", data => {
+      console.log("data is inside socketOps", data);
+      //messagesToStoreInDb.push(data);
+      //console.log(data.conversationId);
+
+      let req = { body: data };
+      makeUpdateRoom(req);
+
+      // Notify all other users about a new message.
+      socket.broadcast.emit("message", data);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("socket disconnected...", socket.id);
+      activeUsers = activeUsers.filter(activeUser => {
+        return activeUser != users[socket.id]["userId"];
+      });
+
+      // send to all except the sender
+      socket.broadcast.emit("onlineUser", activeUsers);
+    });
+
+    socket.on("onlineUser", data => {
+      console.log("data is", data);
+      if (data) {
+        users[socket.id] = { userId: data };
+
+        if (activeUsers.indexOf(data) == -1) {
+          activeUsers.push(data);
+        }
+      }
+
+      // send to all clients including sender most important don't forget
+      io.emit("onlineUser", activeUsers);
     });
   });
 
-  //   let messagesToStoreInDb = [];
+  let makeUpdateRoom = async req => {
+    const mailId = req.body.conversationId;
+    console.log(mailId);
 
-  //   let activeUsers = [];
-  //   let users = {};
+    const newMessage = {};
+    newMessage.content = req.body.message;
+    newMessage.author = req.body.author;
 
-  //   io.sockets.on("connection", socket => {
-  //     console.log("socket connection done successfully...", socket.id);
+    try {
+      const mail = await Mail.findOne({ _id: mailId });
 
-  //     socket.on("message", data => {
-  //       console.log("data is inside socketOps", data);
-  //       messagesToStoreInDb.push(data);
+      mail.messages.push(newMessage);
 
-  //       // after 15 sec store all the messages in the DB
-  //       setTimeout(() => {
-  //         if (messagesToStoreInDb.length > 0) {
-  //           console.log("15 sec crossed, we have some messages.. STORE IN DB...");
-  //           let req = { body: messagesToStoreInDb };
-
-  //           dbOps.connectDbAndRunQueries("updateRoom", req);
-
-  //           // reset the array
-  //           messagesToStoreInDb = [];
-  //         }
-  //       }, TIME_TO_WAIT_BEFORE_STORE_IN_DB);
-  //       socket.broadcast.emit("message", data);
-  //     });
-
-  //     socket.on("disconnect", () => {
-  //       console.log("socket disconnected...", socket.id);
-  //       activeUsers = activeUsers.filter(activeUser => {
-  //         return activeUser != users[socket.id]["userId"];
-  //       });
-
-  //       // send to all except the sender
-  //       socket.broadcast.emit("onlineUser", activeUsers);
-  //     });
-
-  //     socket.on("onlineUser", data => {
-  //       console.log("data is", data);
-  //       if (data) {
-  //         users[socket.id] = { userId: data };
-
-  //         if (activeUsers.indexOf(data) == -1) {
-  //           activeUsers.push(data);
-  //         }
-  //       }
-
-  //       // send to all clients including sender most important don't forget
-  //       io.emit("onlineUser", activeUsers);
-  //     });
-  //   });
+      await mail.save(err => {
+        if (err) return console.error(err);
+      });
+    } catch (error) {
+      console.log("Unable to update rooms with messages", error);
+    }
+  };
 };
+
 module.exports = {
   allSocketOps
 };

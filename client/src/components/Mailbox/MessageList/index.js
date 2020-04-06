@@ -6,93 +6,59 @@ import Message from "../Message/index.js";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { getConversationInfo, getMessages } from "../../../actions/messanger";
+import openSocket from "socket.io-client";
 
 import "./MessageList.css";
 
-const MY_USER_ID = "apple";
+const MessageList = ({
+  messanger: { conversation, conversationMessages, loading, messagesLoading },
+  auth: { user }
+}) => {
+  const MY_USER_ID = user._id;
+  const socket = openSocket("http://localhost:8000");
 
-const MessageList = ({ messanger: { conversation } }) => {
   const [messages, setMessages] = useState([]);
+  const [incomingMessage, setIncomingMessage] = useState({
+    id: "",
+    author: "",
+    message: "",
+    timestamp: ""
+  });
 
   useEffect(() => {
-    getMessages();
-  }, []);
+    if (conversationMessages.messages != null && messagesLoading === false) {
+      let newMessages = conversationMessages.messages.map(msg => {
+        return {
+          id: msg._id,
+          author: msg.author,
+          message: msg.content,
+          timestamp: msg.time
+        };
+      });
 
-  const getMessages = () => {
-    var tempMessages = [
-      {
-        id: 1,
-        author: "apple",
-        message:
-          "Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.",
+      setMessages(newMessages);
+      // if (incomingMessage.author != "") {
+      //   setMessages([...messages, incomingMessage]);
+      // }
+    }
+
+    // }
+  }, [conversationMessages, incomingMessage]);
+
+  // when a new message arrives
+  socket.on("message", data => {
+    console.log("data value ", data);
+
+    if (data.conversationId == conversation.id) {
+      setIncomingMessage({
+        id: "",
+        author: data.author,
+        message: data.message,
         timestamp: new Date().getTime()
-      },
-      {
-        id: 2,
-        author: "orange",
-        message:
-          "It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!",
-        timestamp: new Date().getTime()
-      },
-      {
-        id: 3,
-        author: "orange",
-        message:
-          "Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.",
-        timestamp: new Date().getTime()
-      },
-      {
-        id: 4,
-        author: "apple",
-        message:
-          "It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!",
-        timestamp: new Date().getTime()
-      },
-      {
-        id: 5,
-        author: "apple",
-        message:
-          "Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.",
-        timestamp: new Date().getTime()
-      },
-      {
-        id: 6,
-        author: "apple",
-        message:
-          "It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!",
-        timestamp: new Date().getTime()
-      },
-      {
-        id: 7,
-        author: "orange",
-        message:
-          "Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.",
-        timestamp: new Date().getTime()
-      },
-      {
-        id: 8,
-        author: "orange",
-        message:
-          "It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!",
-        timestamp: new Date().getTime()
-      },
-      {
-        id: 9,
-        author: "apple",
-        message:
-          "Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.",
-        timestamp: new Date().getTime()
-      },
-      {
-        id: 10,
-        author: "orange",
-        message:
-          "It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!",
-        timestamp: new Date().getTime()
-      }
-    ];
-    setMessages([...messages, ...tempMessages]);
-  };
+      });
+    }
+  });
 
   const renderMessages = () => {
     let i = 0;
@@ -151,7 +117,6 @@ const MessageList = ({ messanger: { conversation } }) => {
       // Proceed to the next message.
       i += 1;
     }
-
     return tempMessages;
   };
 
@@ -173,9 +138,11 @@ const MessageList = ({ messanger: { conversation } }) => {
 };
 
 MessageList.propTypes = {
-  messanger: PropTypes.object.isRequired
+  messanger: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({
-  messanger: state.messanger
+  messanger: state.messanger,
+  auth: state.auth
 });
-export default connect(mapStateToProps)(MessageList);
+export default connect(mapStateToProps, {})(MessageList);

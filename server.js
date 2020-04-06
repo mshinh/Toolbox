@@ -3,15 +3,17 @@ const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const expressValidator = require("express-validator");
-const path = require("path");
+
 var cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 dotenv.config();
 
 // var server = app.listen(3000);
 
-// const http = require("http").Server(app);
-// const io = require("socket.io").listen(server);
+const port = process.env.PORT || 8000;
+const http = require("http").Server(app);
+const path = require("path");
+const io = require("socket.io")(http);
 
 //DB config
 
@@ -31,6 +33,7 @@ const authRoutes = require("./routes/api/auth");
 const postRoutes = require("./routes/api/post");
 const userRoutes = require("./routes/api/user");
 const profileRoutes = require("./routes/api/profile");
+const mailboxRoutes = require("./routes/api/mailbox");
 
 //middleware
 
@@ -51,10 +54,11 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/mailbox", mailboxRoutes);
 
-// socket related events
-// const socketOps = require("./socketOps");
-// socketOps.allSocketOps(io);
+//socket related events
+const socketOps = require("./socketOps");
+socketOps.allSocketOps(io);
 
 // app.use(function(err, req, res, next) {
 //   if (err.name === "UnauthorizedError") {
@@ -72,6 +76,6 @@ app.use("/api/posts", postRoutes);
 //   });
 // });
 
-const port = process.env.PORT || 8000;
+//app.listen(port, () => console.log(`Server started on port ${port}`));
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+http.listen(port, () => console.log(`Server started on port ${port}`));

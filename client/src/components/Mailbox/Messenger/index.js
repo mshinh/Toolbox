@@ -4,6 +4,7 @@ import MessageList from "../MessageList";
 import "./Messenger.css";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import Spinner from "../../Layout/Spinner";
 
 const Messenger = ({ messanger: { conversation } }) => {
   return (
@@ -32,7 +33,7 @@ const Messenger = ({ messanger: { conversation } }) => {
       </div>
 
       <div className="scrollable content">
-        {conversation.id != undefined ? <MessageList /> : ""}
+        {conversation.id != undefined ? <MessageList /> : <Spinner />}
       </div>
     </div>
   );

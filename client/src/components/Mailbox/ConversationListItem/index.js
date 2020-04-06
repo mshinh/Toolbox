@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { setConversationRoom } from "../../../actions/messanger";
+import { deleteMail, setConversationRoom } from "../../../actions/messanger";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -23,7 +23,8 @@ import "./ConversationListItem.css";
 
 const ConversationListItem = ({
   item: { id, title, photo, name, text, status },
-  setConversationRoom
+  setConversationRoom,
+  deleteMail
 }) => {
   //   useEffect(() => {
   //     shave(".conversation-snippet", 20);
@@ -106,7 +107,15 @@ const ConversationListItem = ({
         <ModalHeader toggle={toggleDelete}>{title}</ModalHeader>
         <ModalBody>Are you sure you want to delete this Message?</ModalBody>
         <ModalFooter>
-          <Button color="primary">Yes</Button>{" "}
+          <Button
+            color="primary"
+            onClick={() => {
+              deleteMail(id);
+              setModal(!modal);
+            }}
+          >
+            Yes
+          </Button>{" "}
           <Button color="secondary" onClick={toggleDelete}>
             Cancel
           </Button>
@@ -117,6 +126,7 @@ const ConversationListItem = ({
 };
 
 ConversationListItem.propTypes = {
+  deleteMail: PropTypes.func.isRequired,
   setConversationRoom: PropTypes.func.isRequired,
   messanger: PropTypes.object.isRequired
 };
@@ -124,5 +134,6 @@ const mapStateToProps = state => ({
   messanger: state.messanger
 });
 export default connect(mapStateToProps, {
-  setConversationRoom
+  setConversationRoom,
+  deleteMail
 })(ConversationListItem);
