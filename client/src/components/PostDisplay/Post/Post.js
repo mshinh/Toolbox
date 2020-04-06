@@ -13,9 +13,13 @@ import {
   RouteComponentProps
 } from "react-router-dom";
 
+import Moment from "react-moment";
+import moment from "moment";
 
-const Post = (props,
-  auth,
+import locationImage from "../../../assets/images/loc.png";
+
+const Post = (props
+  
   ) => {
  
 //console.log(props)
@@ -51,8 +55,16 @@ const Post = (props,
     console.log("PROPS", props);
     return "Hello";
   }
-  let { id, userId, title, body, name, location, imgCollection, postStatus } = props.currPost;
+  
  
+  let { id, user, title, body, name, location, imgCollection, postStatus, tags, date } = props.currPost;
+  //let currUser = props.currUser;
+ 
+  function print() {
+    //this is called when button clicked
+    //this prints undefined
+   console.log("current user" , props.currUser);
+ }
   return (
       <div
         className={`post-content ${props.active ? "active" : "notActive"}`}
@@ -60,30 +72,70 @@ const Post = (props,
         <div className="post-template">
 
           <h4>Status: {postStatus}</h4>
-
-          <h3>{name}</h3>
-          <h1>{title}</h1>
+          <Link to={`/friend/${user}`}><h3>{name}</h3> </Link>
+          <h1 className="title">{title}</h1>
+          <br></br>
+          <Moment format="DD/MM/YYYY" className="date">
+                          {moment.utc(date)}
+                        </Moment>
+          <div className="clear"></div>
           <p>{body}</p>
-         
-         
+
+          <div className="preview-images">
+          <div
+          className="image-item">
+          <img src={locationImage} alt="" />
+          <br></br>
+          <h3 >{location}</h3>
+          </div>
+          </div>
+          <br></br>
           {/*
             imgCollection.map((img) => (
               <img src={window.location.origin + "/public/" + img} alt="image" />
             ))
+            {tags.map( (tag) => (
+                  <div>
+                    <h4>{tag}</h4>
+                    </div>
+                ))
+              }
             */}
-          
+          { tags  ? (
+            <div className="tags">
+              
+                <h3>Required Skills</h3>
+                <ul>
+                {tags.map( (tag) => (
+                  <li><h4>{tag}</h4></li>
+                  ))
+                }
+                </ul>
+                
+            </div>
+          ) : <div>
+           
+            </div>
+          } 
+          <div className="clear"><br></br></div>
             {props.accountHome ? null : ( 
             ( 
             //  auth.loading === false &&
             //  !auth.user._id === userId  &&
             //  console.log("hellllooooo",auth.isAuthenticated)  (
-            <div>
+            <div className="interest">
             <h2>Are you interested ?</h2>
             
-            <button  className="input-btn"  onClick={ e => props.addInt(id)}>
+            <button  className="input-btn" 
+             onClick={ e => { props.addInt(props.currUser);
+              print();
+            }
+          } 
+            >
               <h4>Yes</h4>
                   <span className="button-bar"></span>
             </button>
+            
             </div>) 
 )}
         
@@ -92,13 +144,14 @@ const Post = (props,
               <h4>Decline</h4>
                   <span className="button-bar"></span>
             </button> */}
-              
-             
+              { /*
+             <br></br>
                 <button  className="input-btn">
                   <h4>Contact {name}</h4>
                       <span className="button-bar"></span>
                 </button>
-              
+                */
+              }
             
 
 
@@ -106,7 +159,7 @@ const Post = (props,
               <div className="interest-container">
               {props.currPost.interest.map(inx => {
                 return(
-                <div className="int-item"><h4>User: {findName(inx.user)}</h4>
+                <div className="int-item"><h4>User:  {findName(inx.user)}</h4>
                   <Link to={`/friend/${inx.user}`} className="side-btn long">
                       <span>More</span>  
                       <svg xmlns="http://www.w3.org/2000/svg" width="25.438" height="19.27" viewBox="0 0 25.438 19.27">
@@ -172,12 +225,13 @@ Post.propTypes = {
   assignTradesperson: PropTypes.func.isRequired,
   getPostProfiles: PropTypes.func.isRequired,
   postProfiles: PropTypes.object.isRequired,
-  
+  auth: PropTypes.object.isRequired
 
 };
 
 const mapStateToProps = state => ({
  
+  auth: state.auth,
 
   postProfiles: state.postProfiles
 });

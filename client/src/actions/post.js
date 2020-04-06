@@ -114,6 +114,7 @@ export const deleteNotification = id => async dispatch => {
 
 // Add Interest
 export const addInterested = id => async dispatch => {
+  console.log("action interest" , id);
   try {
     const res = await axios.put(`/api/posts/interest/${id}`);
 
