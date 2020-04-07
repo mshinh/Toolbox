@@ -18,14 +18,25 @@
     h1 {
         font-size: $h1Size;
         color: #707070;
+        transition: transform 300ms $easeInOut3;
     }
     h3 {
         position: absolute; 
         left: $DwS;
         bottom: 10px;
         font-size: $h3Size;
+        transition: transform 300ms $easeInOut3;
     }
     border-bottom: 1px solid #000;
+
+    &:hover {
+        h1 {
+            transform: translateX(10%);
+        }
+        h3 {
+            transform: translateY(-10px);
+        }
+    }
 }
 
 

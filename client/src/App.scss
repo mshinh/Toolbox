@@ -16,6 +16,45 @@
         height: 100vh;
         position: relative;
         overflow-y: scroll;
+
+        > div:first-of-type  {
+
+
+      
+            .fade-enter-done {
+                opacity: 1;
+               
+            }
+            
+            .fade-enter{
+             
+                opacity: 0;
+             }
+            
+             .fade-enter-active{
+                 
+                 opacity: 1;
+                 transition: opacity 500ms ease-in-out 300ms;
+               
+
+             }
+             .fade-exit {
+                 opacity: 0;
+                 transition: opacity 200ms ease-in-out;
+             }
+             .fade-exit-active{
+               transition: opacity 300ms ease-in-out;
+               transform: scale(0.9);
+             }
+             .fade-enter-active {
+                 opacity: 1;
+             }
+
+            
+        }  
+        
+        
+
     }
 }
 #toolbox-app {
@@ -26,6 +65,8 @@
 .mobile-menu {
     display: none; 
 }
+
+
 
 @media(max-width: $semi-mobile) {
     #toolbox-app {

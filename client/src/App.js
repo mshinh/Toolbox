@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import {CSSTransition, TransitionGroup} from "react-transition-group";
+
 
 import "./assets/fonts/fonts.scss";
 import "./assets/stylesheets/_reset.scss";
@@ -32,6 +34,7 @@ import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
 import PostForm from "./components/PostDisplay/PostForm/PostForm";
 import AddPortfolio from "./components/profile-forms/AddPortfolio";
+import FriendPortfolio from "./components/Portfolio/FriendPortfolio";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -45,41 +48,62 @@ const App = () => {
   }, []);
   return (
     <Provider store={store}>
-      <Router>
+      <Router >
+        
         <Fragment>
           <div id="toolbox-app">
             <div id="subclass-container">
-              <Switch>
-                <Route exact path="/" component={PostDisplay} />
-                <PrivateRoute exact path="/dashboard" component={PostDisplay} />
-                <Route exact path="/account" component={UserPostDisplay} />
-                <PrivateRoute exact path="/profile" component={UserProfile} />
-                <PrivateRoute exact path="/friends" component={Friends} />
-                <PrivateRoute exact path="/friend/:id" component={Friend} />
-                <PrivateRoute exact path="/contacts" component={ContactList} />
-                <PrivateRoute exact path="/notifications" component={Notification} />
-                <PrivateRoute exact path="/mailbox" component={Messenger} />
-                <PrivateRoute
-                  exact
-                  path="/create-profile"
-                  component={CreateProfile}
-                />
-                <PrivateRoute
-                  exact
-                  path="/edit-profile"
-                  component={EditProfile}
-                />
-                <PrivateRoute
-                  exact
-                  path="/edit-account"
-                  component={EditAccount}
-                />
-                <PrivateRoute
-                  exact
-                  path="/portfolio"
-                  component={AddPortfolio}
-                />
-              </Switch>
+              <Route render={({location})=> (
+
+            
+              <TransitionGroup>
+                <CSSTransition
+                  timeout={{  
+                  
+                    enter: 1000,
+                    exit: 0,
+                  }}
+                
+                 
+                  delay={1000}
+                  key={location.key}
+                  classNames="fade"
+               
+                >
+                  <Switch location={location}>
+                    <Route exact path="/" component={PostDisplay} />
+                    <PrivateRoute exact path="/dashboard" component={PostDisplay} />
+                    <Route exact path="/account" component={UserPostDisplay} />
+                    <PrivateRoute exact path="/profile" component={UserProfile} />
+                    <PrivateRoute exact path="/friends" component={Friends} />
+                    <PrivateRoute exact path="/friend/:id" component={Friend} />
+                    <PrivateRoute exact path="/contacts" component={ContactList} />
+                    <PrivateRoute exact path="/notifications" component={Notification} />
+                    <PrivateRoute exact path="/mailbox" component={Messenger} />
+                    <PrivateRoute
+                      exact
+                      path="/create-profile"
+                      component={CreateProfile}
+                    />
+                    <PrivateRoute
+                      exact
+                      path="/edit-profile"
+                      component={EditProfile}
+                    />
+                    <PrivateRoute
+                      exact
+                      path="/edit-account"
+                      component={EditAccount}
+                    />
+                    <PrivateRoute
+                      exact
+                      path="/portfolio"
+                      component={AddPortfolio}
+                    />
+                  </Switch>
+                  </CSSTransition>
+                </TransitionGroup>
+                  )} />
               <PrivateRoute exact path="/account" component={PostForm} />
             </div>
             <div id={`dash-container`} className={ ` dash-wrapper ${mobileMenu}`}>
@@ -107,7 +131,7 @@ const App = () => {
               </div>
            </div> 
         </Fragment>
-      </Router>
+        </Router>
     </Provider>
   );
 };

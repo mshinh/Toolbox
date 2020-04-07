@@ -7,7 +7,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import "./MessageList.css";
+import "./MessageList.scss";
 
 const MY_USER_ID = "apple";
 
@@ -169,6 +169,7 @@ const MessageList = ({ messanger: { conversation } }) => {
 
       <Compose />
     </div>
+      
   );
 };
 

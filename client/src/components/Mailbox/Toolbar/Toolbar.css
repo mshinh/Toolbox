@@ -55,3 +55,11 @@
   object-fit: cover;
   margin-right: 10px;
 }
+
+
+@media(max-width: 1060px) {
+  .toolbar {
+    z-index: 2;
+  }
+
+}

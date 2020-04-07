@@ -24,9 +24,10 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
     
   });
   const [active, updateActive] = useState(false);
+  const [lazyLoad, lazyToggle] = useState(false);
 
   const activeContent = post => {
-    updateCurr({ id: post._id, postStatus: post.postStatus, interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection  });
+    updateCurr({ id: post._id, postStatus: post.postStatus, tags: post.tags, interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection  });
     updateActiveState(true);
   };
   const updateActiveState = newSet => {
@@ -35,14 +36,16 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
 
   useEffect(() => {
     getPosts();
-
-  
+    setTimeout(()=> {
+      lazyToggle(true);
+    }, 500)
+    
   }, [getPosts]);
 
   return loading ? (
     <Spinner />
   ) : (
-    <div className="home-container">
+    <div className={`home-container ${loading !== lazyLoad ? "lazyLoad" : " " } `}>
       <div className="page-heading">
         {/* {user.fname} */}
         <h1>Welcome To Toolbox</h1>
@@ -61,20 +64,10 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
           {posts.map(post => (
             <div key={post._id} className="post">
              
-              <h3>{post.title}</h3>
-              <div className="preview-images">
-                {
-                  post.imgCollection.map( (img) => (
-                    // <div className="preview-image" background>
-                    //   <img src={window.location.origin + "/public/" + img} alt="image" />
-                    // </div> 
-                    <div
-                    className="image-item"
-                    style={{ backgroundImage: `url(${window.location.origin + "/public/" + img})` }}>
-                    </div>
-                  ))
-                }
-              </div>
+             <h4>{post.name}  <span className={`status ${post.postStatus}`}>{post.postStatus}</span> </h4>
+                <h4>Tags: <span className="tags">{post.tags}</span></h4>
+                <h2>{post.title}</h2>
+                <p>{post.body}</p>
               
               <div className="buttom-container">
                 <button

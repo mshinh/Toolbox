@@ -1,3 +1,5 @@
+@import "./../../../assets/stylesheets/main.scss";
+
 .compose {
   padding: 10px;
   display: flex;
@@ -36,4 +38,13 @@
 
 .compose .toolbar-button:hover {
   color: #99999c;
+}
+
+@media(max-width: $semi-mobile) {
+  .compose {
+    position: fixed;
+    bottom: 80px;
+    width: 100vw;
+    
+  }
 }

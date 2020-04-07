@@ -1,0 +1,15 @@
+.message-list-container {
+  padding: 10px;
+  padding-bottom: 70px;
+}
+
+@media(max-width: 1060px) {
+
+
+.message-list {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  overflow-y: scroll;
+}
+}

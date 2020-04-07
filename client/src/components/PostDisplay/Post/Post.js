@@ -51,99 +51,116 @@ const Post = (props,
     console.log("PROPS", props);
     return "Hello";
   }
-  let { id, userId, title, body, name, location, imgCollection, postStatus } = props.currPost;
- 
+  let { id, userId, title, body, name, location, imgCollection, postStatus, tags } = props.currPost;
+
   return (
       <div
         className={`post-content ${props.active ? "active" : "notActive"}`}
       >
         <div className="post-template">
-
-          <h4>Status: {postStatus}</h4>
-
-          <h3>{name}</h3>
+        <div className="post-left-column">
+          <h3>Posting Is:  <span className={`status ${postStatus}`}>{postStatus}</span> </h3>
           <h1>{title}</h1>
-          <p>{body}</p>
-         
-         
-          {/*
-            imgCollection.map((img) => (
-              <img src={window.location.origin + "/public/" + img} alt="image" />
-            ))
-            */}
           
+          <p>{body}</p>
+          
+          <div className="image-container">
+              {
+                imgCollection.map( (img) => (
+                  // <div className="preview-image" background>
+                  //   <img src={window.location.origin + "/public/" + img} alt="image" />
+                  // </div> 
+                  <div
+                  className="image-item"
+                  style={{ backgroundImage: `url(${window.location.origin + "/public/" + img})` }}>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+          <div className="post-right-column">
+          <div className="location"> 
+             <h3>{location}</h3>
+            </div>
+            <div className="tags-display">
+             
+             <h3>{ tags }</h3>
+            </div>
+
+
             {props.accountHome ? null : ( 
             ( 
             //  auth.loading === false &&
             //  !auth.user._id === userId  &&
             //  console.log("hellllooooo",auth.isAuthenticated)  (
             <div>
+           
             <h2>Are you interested ?</h2>
             
-            <button  className="input-btn"  onClick={ e => props.addInt(id)}>
-              <h4>Yes</h4>
+            <button  className="input-btn post-btn"  onClick={ e => props.addInt(id)}>
+            <h4>Contact {name}</h4>
                   <span className="button-bar"></span>
             </button>
             </div>) 
-)}
+            )}
         
            
-           {/* <button  className="input-btn">
-              <h4>Decline</h4>
-                  <span className="button-bar"></span>
-            </button> */}
+         
               
              
-                <button  className="input-btn">
-                  <h4>Contact {name}</h4>
-                      <span className="button-bar"></span>
-                </button>
-              
+          
             
 
 
             {props.accountHome && props.currPost.interest ? (<div>
               <div className="interest-container">
+                <h3>List Of Interested</h3>
               {props.currPost.interest.map(inx => {
                 return(
-                <div className="int-item"><h4>User: {findName(inx.user)}</h4>
-                  <Link to={`/friend/${inx.user}`} className="side-btn long">
-                      <span>More</span>  
-                      <svg xmlns="http://www.w3.org/2000/svg" width="25.438" height="19.27" viewBox="0 0 25.438 19.27">
-                        <path id="Icon_material-more" data-name="Icon material-more" d="M23.02,4.5H7.325a1.969,1.969,0,0,0-1.664.921L0,13.917,5.661,22.4a2.108,2.108,0,0,0,1.737.931H23.02a2.1,2.1,0,0,0,2.093-2.093V6.593A2.1,2.1,0,0,0,23.02,4.5ZM9.417,15.487a1.57,1.57,0,1,1,1.57-1.57A1.567,1.567,0,0,1,9.417,15.487Zm5.232,0a1.57,1.57,0,1,1,1.57-1.57A1.567,1.567,0,0,1,14.649,15.487Zm5.232,0a1.57,1.57,0,1,1,1.57-1.57A1.567,1.567,0,0,1,19.881,15.487Z" transform="matrix(-1, -0.017, 0.017, -1, 25.031, 23.769)"/>
-                      </svg>
+                <div className="int-item">
+                  <h4>User: {findName(inx.user)}</h4>
+                  <Link to={`/friend/${inx.user}`} className="side-btn input-btn">
+                   <h4>More</h4>
+                    <span className="button-bar"></span>
 
-                     </Link> 
-                     <div className="buttom-container">
-                      <button
-                        type="submit"
-                        onClick={e => {
-                          assign(inx.user);
-                        }}
-                        className="input-btn"
-                      >
-                        <h4>Accept Interest</h4>
-                        <span className="button-bar"></span>
-                      </button>
-                     </div>
+
+                  </Link> 
+                  <div className="buttom-container">
+                  <button
+                    type="submit"
+                    onClick={e => {
+                      assign(inx.user);
+                    }}
+                    className="input-btn"
+                  >
+                    <h4>Accept</h4>
+                    <span className="button-bar"></span>
+                  </button>
+                  </div>
                      
-                     </div>)
+                  </div>)
               })}
               </div>
+              <div className="assigned">
+                <h3>Current Assigned User: {props.currPost.assigned}</h3>
+              </div>              
+              <div className="close-project-container"> 
+              <h2>Close Project?</h2>
+              <p>If the post has been satisfied, you can close the project.</p>
 
-              <h3>Current Assigned User: {props.currPost.assigned}</h3>
-             
-              <div className="buttom-container">
-                <button
-                  type="submit"
-                  onClick={e => {
-                    status("Completed");
-                  }}
-                  className="input-btn"
-                >
-                  <h4>Project Completed</h4>
-                  <span className="button-bar"></span>
-                </button>
+                <div className="buttom-container">
+                  <button
+                    type="submit"
+                    onClick={e => {
+                      status("Completed");
+                    }}
+                    className="input-btn"
+                  >
+                    <h4>Close Project</h4>
+                    
+                    <span className="button-bar"></span>
+                  </button>
+                </div>
               </div>
 
             </div>) : null}
@@ -153,10 +170,15 @@ const Post = (props,
 
         </div>
 
-       
+        </div> 
 
         <div className="close-content" onClick={e => props.toggle(false)}>
-          <h4>Close</h4>
+          <h3>Close</h3>
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25">
+          <path id="Icon_ionic-ios-close-circle" data-name="Icon ionic-ios-close-circle" d="M15.875,3.375a12.5,12.5,0,1,0,12.5,12.5A12.5,12.5,0,0,0,15.875,3.375ZM19.042,20.4l-3.167-3.167L12.708,20.4a.96.96,0,1,1-1.358-1.358l3.167-3.167L11.35,12.708a.96.96,0,0,1,1.358-1.358l3.167,3.167,3.167-3.167A.96.96,0,1,1,20.4,12.708l-3.167,3.167L20.4,19.042a.965.965,0,0,1,0,1.358A.954.954,0,0,1,19.042,20.4Z" transform="translate(-3.375 -3.375)" fill="#707070"/>
+        </svg>
+
+
         </div>
       </div>
 

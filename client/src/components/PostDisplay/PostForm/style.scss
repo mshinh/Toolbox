@@ -8,6 +8,9 @@
 .test {
     color: blue;
 }
+.addBarForm {
+    padding-bottom: 50px;
+}
 .post-form-container {
     position: fixed;
     background-color: #fff;
@@ -17,21 +20,50 @@
     left: 0;
     z-index: 5;
     border-top: 1px solid #000;
-    transform: translateY(80%);
+    transform: translateY(85%);
     
     transition: transform 500ms $easeInOut3;
 
     .input-btn {
-        width: 100%;
+        width: 200px;
+        height: 70px;
+        position: absolute;
+        right: $DwS;
+        top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: none;
+
+        
+        .arrow-container {
+            transition: transform 500ms $easeInOut3 500ms;
+        }
+        h4 {
+            margin-right: 20px;
+        }
+
+        &:hover {
+            
+            .arrow-container svg {
+                fill: #fff;
+            }
+        }
     }
 
     .input-heading {
-        padding-bottom: 40px;
+        padding-bottom: 30px;
+        padding-top: 30px;
     }
 
     &.active {
+
         transform: translateY(0%);
+        .input-btn {
+           .arrow-container {
+               transform: rotate(180deg);
+           } 
+        }
     }
 }
 

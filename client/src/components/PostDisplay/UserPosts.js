@@ -47,7 +47,7 @@ const UserPostDisplay = ({
 
   const activeContent = post => {
  
-    updateCurr({ id: post._id, assigned: post.assigned,  postStatus: post.postStatus,  interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection });
+    updateCurr({ id: post._id, assigned: post.assigned, tags: post.tags,  postStatus: post.postStatus,  interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection });
     var intAccount = "";
     
     // post.interest.map(e => {
@@ -122,8 +122,8 @@ const UserPostDisplay = ({
           {/* {user.fname} */}
           <h1>Welcome To Your Home Page</h1>
           <h2>
-            Your one stop location for <br />
-            skilled workers and opportunities{" "}
+            You can find all your posts here.
+
           </h2>
         </div>
         {/* Make this a class */}
@@ -135,15 +135,11 @@ const UserPostDisplay = ({
             {/* {this.createPosts()} */}
             {posts.map(post => (
               <div key={post._id} className="post">
-                <h4>{post.name}</h4>
-                <h3>{post.title}</h3>
-                <div className="preview-images">
-                {
-                  post.imgCollection.map( (img) => (
-                    <img src={window.location.origin + "/public/" + img} alt="image" />
-                  ))
-                }
-                </div>
+                <h4>{post.name}  <span className={`status ${post.postStatus}`}>{post.postStatus}</span> </h4>
+                <h4>Tags: <span className="tags">{post.tags}</span></h4>
+                <h2>{post.title}</h2>
+                <p>{post.body}</p>
+            
                 <div className="buttom-container">
                   <button
                     type="submit"

@@ -2,14 +2,22 @@
 
 .home-container {
   padding: ($DwS/2) $DwS;
+  // opacity: 0;
+  // transform: scale(0.8);
+  // transition: opacity 800ms $easeInOut3 300ms, transform 700ms $easeInOut3 300ms;
+
+  // &.lazyLoad {
+  //   opacity: 1;
+  //   transform: scale(1);
+  // }
   .page-heading {
     margin-bottom: 50px;
   }
   .post-board {
     .post {
-      margin-top: 40px;
+      margin-top: 50px;
       border-bottom: 1px solid #707070;
-      padding-bottom: 20px;
+      padding-bottom: 50px;
 
       .preview-images {
         padding-bottom: 20px;
@@ -25,6 +33,21 @@
         img {
           width: 200px;
         }
+      }
+      .status {
+        text-transform: capitalize;
+
+        &.active {
+          color: green;
+        }
+        &.Completed {
+          color: red;
+        }
+        color: orange;
+      }
+
+      .tags {
+        color: orange;
       }
     }
 

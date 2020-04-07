@@ -1,5 +1,5 @@
 import React from "react";
-import "./Compose.css";
+import "./Compose.scss";
 
 export default function Compose(props) {
   return (
