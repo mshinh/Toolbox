@@ -13,6 +13,11 @@
   background: #eeeef1;
 }
 
+.conversation-info {
+  padding: 5px;
+  width: 300px;
+}
+
 .conversation-photo {
   width: 50px;
   height: 50px;

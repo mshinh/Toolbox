@@ -5,7 +5,7 @@ import ConversationSearch from "../ConversationSearch";
 import ConversationListItem from "../ConversationListItem";
 import Toolbar from "../Toolbar";
 import ToolbarButton from "../ToolbarButton";
-import { getProfiles } from "../../../actions/profile";
+import { getInboxMail, getSentMail } from "../../../actions/messanger";
 import Spinner from "../../Layout/Spinner";
 
 import fillerPhoto from "../../../assets/images/f_trades.jpg";
@@ -13,61 +13,45 @@ import fillerPhoto from "../../../assets/images/f_trades.jpg";
 import "./ConversationList.css";
 
 const ConversationList = ({
-  getProfiles,
-  profile: { profiles, loading },
+  getInboxMail,
+  getSentMail,
+  messanger: { mailbox, mailboxSent, loading },
   auth: { user }
 }) => {
   const [conversations, setConversations] = useState([]);
-  const titles = [
-    "Plumber Needed",
-    "Looking for job",
-    "Work Opportunities",
-    "Plumber Required",
-    "Need Service",
-    "Plumber Needed",
-    "Looking for job",
-    "Work Opportunities",
-    "Plumber Required",
-    "Need Service",
-    "Plumber Needed",
-    "Looking for job",
-    "Work Opportunities",
-    "Plumber Required",
-    "Need Service",
-    "Plumber Needed",
-    "Looking for job",
-    "Work Opportunities",
-    "Plumber Required",
-    "Need Service",
-    "Plumber Needed",
-    "Looking for job",
-    "Work Opportunities",
-    "Plumber Required",
-    "Need Service",
-    "Plumber Needed",
-    "Looking for job",
-    "Work Opportunities",
-    "Plumber Required",
-    "Need Service"
-  ];
 
   let count = 0;
 
   useEffect(() => {
-    getProfiles();
-    let newConversations = profiles.map(profile => {
+    getInboxMail();
+    getSentMail();
+
+    let newConversations = mailbox.map(mail => {
       return {
-        id: profile.user._id,
-        title: titles[count++],
-        photo: profile.user.userphoto ? profile.user.userphoto : fillerPhoto,
-        name: `${profile.user.fname} ${profile.user.lname}`,
-        text:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id.",
+        id: mail._id,
+        title: mail.title,
+        photo: mail.fromUser.userphoto ? mail.fromUser.userphoto : fillerPhoto,
+        name: `${mail.fromUser.fname} ${mail.fromUser.lname}`,
+        text: mail.messages[0].content,
         status: "unread"
       };
     });
-    setConversations([...conversations, ...newConversations]);
-  }, [getProfiles]);
+
+    let sentConversations = mailboxSent.map(mail => {
+      return {
+        id: mail._id,
+        title: mail.title,
+        photo: mail.toUser.userphoto ? mail.toUser.userphoto : fillerPhoto,
+        name: `${mail.toUser.fname} ${mail.toUser.lname}`,
+        text: mail.messages[0].content,
+        status: "read"
+      };
+    });
+
+    let allConversations = [...newConversations, ...sentConversations];
+
+    setConversations([...conversations, ...allConversations]);
+  }, [getInboxMail, getSentMail]);
 
   return (
     <div className="conversation-list">
@@ -89,14 +73,18 @@ const ConversationList = ({
 };
 
 ConversationList.propTypes = {
-  getProfiles: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired,
+  getInboxMail: PropTypes.func.isRequired,
+  getSentMail: PropTypes.func.isRequired,
+  messanger: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  profile: state.profile
+  messanger: state.messanger
 });
 
-export default connect(mapStateToProps, { getProfiles })(ConversationList);
+export default connect(mapStateToProps, {
+  getInboxMail,
+  getSentMail
+})(ConversationList);

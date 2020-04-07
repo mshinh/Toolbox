@@ -22,7 +22,7 @@ import {
 import { addContact } from "../../actions/profile";
 import { connect } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
-// import openSocket from "socket.io-client";
+import openSocket from "socket.io-client";
 
 const ProfileTop = ({
   profile: {
@@ -35,9 +35,10 @@ const ProfileTop = ({
     dob,
     portfolio,
     social,
-    user: { id, fname, lname, email, userphoto }
+    // user: { id, fname, lname, email, userphoto },
+    user
   },
-  auth: { user },
+  auth,
   addContact
 }) => {
   function confirm(e) {
@@ -64,8 +65,8 @@ const ProfileTop = ({
   }
 
   let item;
-  let userContact = user.contact;
-  console.log(user._id);
+  let userContact = auth.user.contact;
+  console.log(auth.user._id);
   console.log(_id);
   //if(user._id.toString() == id.toString() ){
   for (var i = 0; i < userContact.length; i++) {
@@ -76,8 +77,8 @@ const ProfileTop = ({
             <i className="fas fa-user-plus" /> Contact
           </Link>
         );
-        console.log(user._id); //user logged in
-        console.log(user.contact);
+        console.log(auth.user._id); //user logged in
+        console.log(auth.user.contact);
       }
     } else {
       item = (
@@ -106,17 +107,18 @@ const ProfileTop = ({
 
   const toggle = () => setModal(!modal);
 
-  // const sendSocketIO = e => {
-  //   console.log(formMessage);
-  //   // const socket = openSocket("http://localhost:3000");
-  //   // console.log("here");
-  //   socket.emit("message", {
-  //     fromUser: user._id,
-  //     toUser: id,
-  //     formMessage
-  //   });
-  //   setModal(!modal);
-  // };
+  const sendSocketIO = () => {
+    console.log("here");
+    console.log(formMessage);
+    const socket = openSocket("http://localhost:8000");
+    console.log("here");
+    socket.emit("newMail", {
+      fromUser: auth.user._id,
+      toUser: user._id,
+      formMessage
+    });
+    setModal(!modal);
+  };
 
   return (
     <section>
@@ -130,13 +132,13 @@ const ProfileTop = ({
                 <i className="far fa-envelope" /> Message
               </Link>
             </div>
-            {userphoto ? (
-              <img class="round-img my-1" src={userphoto} alt="" />
+            {user.userphoto ? (
+              <img class="round-img my-1" src={user.userphoto} alt="" />
             ) : (
               <img class="round-img my-1" src={userImage} alt="" />
             )}
             <h1 class="large">
-              {fname} {lname}
+              {user.fname} {user.lname}
             </h1>
             <p class="lead">{occupation}</p>
             <p>{location}</p>
@@ -146,7 +148,7 @@ const ProfileTop = ({
                   <i class="lnr lnr-phone-handset"></i> {phone}
                 </li>
                 <li class="p-1">
-                  <i class="lnr lnr-envelope" /> {email}
+                  <i class="lnr lnr-envelope" /> {user.email}
                 </li>
                 <li class="p-1">
                   <i class="lnr lnr-calendar-full"></i>{" "}
@@ -190,7 +192,7 @@ const ProfileTop = ({
           <div className="profile-about bg-light p-2">
             {bio && (
               <Fragment>
-                <h2>{fname.trim().split(" ")[0]}'s Bio</h2>
+                <h2>{user.fname.trim().split(" ")[0]}'s Bio</h2>
                 <p>{bio}</p>
                 <div className="line" />
               </Fragment>
@@ -246,10 +248,10 @@ const ProfileTop = ({
           </Form>
         </ModalBody>
         <ModalFooter>
-          {/* <Button color="primary" onClick={e => sendSocketIO(e)}> */}
-          <Button color="primary" onClick={toggle}>
+          <Button color="primary" onClick={sendSocketIO}>
+            {/* <Button color="primary" onClick={toggle}> */}
             Send
-          </Button>{" "}
+          </Button>
           <Button color="secondary" onClick={toggle}>
             Cancel
           </Button>
@@ -261,10 +263,12 @@ const ProfileTop = ({
 
 ProfileTop.propTypes = {
   auth: PropTypes.object.isRequired
+  //profile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth
+  //profile: state.profile
   //  active: state.activeDisplay,
 });
 
