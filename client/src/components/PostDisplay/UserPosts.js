@@ -48,7 +48,7 @@ const UserPostDisplay = ({
 
   const activeContent = post => {
  
-    updateCurr({ id: post._id, assigned: post.assigned,  postStatus: post.postStatus,  interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection });
+    updateCurr({ id: post._id, assigned: post.assigned,  postStatus: post.postStatus,  interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection, tags: post.tags });
     var intAccount = "";
     
     // post.interest.map(e => {

@@ -90,7 +90,7 @@ router.post(
         avatar: user.avatar,
         user: req.user.id
       });
-
+      newPost.postStatus = "active";
       const post = await newPost.save();
 
       res.json(post);
@@ -366,6 +366,7 @@ async (req, res) => {
     let post = await Post.findOne({ interest: { $all: user }});
     if(post){
     post.assigned = user;
+    post.postStatus = "Assigned";
     post.save();
     console.log("Assign succesfull", post.assigned); 
     } else

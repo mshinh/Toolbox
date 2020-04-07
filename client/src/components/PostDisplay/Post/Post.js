@@ -4,7 +4,7 @@ import "./style.scss";
 //import locationImage from "../../../assets/images/one.jpg";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getPostProfiles, addNotification } from "../../../actions/profile";
+import { getPostProfiles } from "../../../actions/profile";
 import { assignTradesperson, updateStatus} from "../../../actions/post";
 import {
   Link,
@@ -37,7 +37,7 @@ const Post = (props
 
   
   },);
-
+/*
   const assign = tradeId => {
     var delivery = props.currPost.id +","+ tradeId;
     console.log(delivery);
@@ -55,9 +55,9 @@ const Post = (props
     console.log("PROPS", props);
     return "Hello";
   }
-  
+  */
  
-  let { id, user, title, body, name, location, imgCollection, postStatus, tags, date } = props.currPost;
+  let { id, user, title, body, name,assigned, location, imgCollection, postStatus, tags, date } = props.currPost;
   //let currUser = props.currUser;
  
   function print() {
@@ -65,7 +65,18 @@ const Post = (props
     //this prints undefined
    console.log("current user" , props.currUser);
    console.log("post id" , id);
- }
+  }
+   let postTag;
+   if(tags){
+     tags.map( (tag) => (
+      postTag= <li><h4>{tag}</h4></li>
+       )) 
+     }
+   else{
+     postTag=null;
+   }
+   
+ 
   return (
       <div
         className={`post-content ${props.active ? "active" : "notActive"}`}
@@ -80,9 +91,13 @@ const Post = (props
                           {moment.utc(date)}
                         </Moment>
           <div className="clear"></div>
+
           <p>{body}</p>
 
-          <div className="preview-images">
+
+          
+          {/*'
+        <div className="preview-images">
           <div
           className="image-item">
           <img src={locationImage} alt="" />
@@ -91,7 +106,6 @@ const Post = (props
           </div>
           </div>
           <br></br>
-          {/*
             imgCollection.map((img) => (
               <img src={window.location.origin + "/public/" + img} alt="image" />
             ))
@@ -102,7 +116,7 @@ const Post = (props
                 ))
               }
             */}
-          { tags  ? (
+          {/* tags  ? (
             <div className="tags">
               
                 <h3>Required Skills</h3>
@@ -117,13 +131,26 @@ const Post = (props
           ) : <div>
            
             </div>
-          } 
+              */ } 
           <div className="clear"><br></br></div>
-            {props.accountHome ? null : ( 
-            ( 
-            //  auth.loading === false &&
-            //  !auth.user._id === userId  &&
-            //  console.log("hellllooooo",auth.isAuthenticated)  (
+            {!props.accountHome ?  ( 
+             <div>
+            
+              <div className="preview-images">
+          <div
+          className="image-item">
+          <img src={locationImage} alt="" />
+          <br></br>
+          <h3 >{location}</h3>
+          </div>
+          </div>
+          <br></br>
+          <div className="tags">
+              
+          <h3>Required Skills</h3>
+          <ul>{postTag}</ul>
+          </div>
+            <div className="clear"> </div>
             <div className="interest">
             <h2>Are you interested ?</h2>
             
@@ -137,8 +164,10 @@ const Post = (props
                   <span className="button-bar"></span>
             </button>
             
-            </div>) 
-)}
+            </div>
+            
+            </div>) : null 
+            }
         
            
            {/* <button  className="input-btn">
@@ -156,7 +185,8 @@ const Post = (props
             
 
 
-            {props.accountHome && props.currPost.interest ? (<div>
+            { /*
+            props.accountHome && props.currPost.interest ? (<div>
               <div className="interest-container">
               {props.currPost.interest.map(inx => {
                 return(
@@ -200,7 +230,9 @@ const Post = (props
                 </button>
               </div>
 
-            </div>) : null}
+            </div>) 
+            : null
+                */}
          
 
            

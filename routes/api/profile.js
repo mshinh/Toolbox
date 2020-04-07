@@ -543,6 +543,14 @@ router.get("/notification",
           "userphoto"
         ]); 
         
+       /* const temp = [];
+
+        posts.forEach((post) => (temp.push({
+          post,
+          notification: notification.filter(({ postReference}) => postReference.toString() == this.post._id)
+        })));
+        res.json(temp);
+        */
        //const notification = profile.notification;
         res.json(posts);
        // console.log("NOTIFICATION POSTS", notification);
