@@ -18,7 +18,8 @@ import Post from '../PostDisplay/Post/Post';
 const Notification = ( {
     getNotification,
     deleteNotification,
-    addInterested,
+    Post,
+    Notification,
     postProfiles,
     post: { posts },
     auth: { user, loading }
