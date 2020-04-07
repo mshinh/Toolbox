@@ -37,10 +37,8 @@ const PostSchema = new mongoose.Schema({
   },
   interest: [
     {
-      user: {
         type: Schema.Types.ObjectId,
         ref: "User"
-      }
     }
   ],
   tags: [String],

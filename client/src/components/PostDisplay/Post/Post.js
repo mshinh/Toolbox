@@ -4,7 +4,7 @@ import "./style.scss";
 //import locationImage from "../../../assets/images/one.jpg";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getPostProfiles, addNotification } from "../../../actions/profile";
+import { getPostProfiles } from "../../../actions/profile";
 import { assignTradesperson, updateStatus} from "../../../actions/post";
 import {
   Link,
@@ -13,9 +13,13 @@ import {
   RouteComponentProps
 } from "react-router-dom";
 
+import Moment from "react-moment";
+import moment from "moment";
 
-const Post = (props,
-  auth,
+import locationImage from "../../../assets/images/loc.png";
+
+const Post = (props
+  
   ) => {
  
 //console.log(props)
@@ -33,7 +37,7 @@ const Post = (props,
 
   
   },);
-
+/*
   const assign = tradeId => {
     var delivery = props.currPost.id +","+ tradeId;
     console.log(delivery);
@@ -51,7 +55,27 @@ const Post = (props,
     console.log("PROPS", props);
     return "Hello";
   }
-  let { id, userId, title, body, name, location, imgCollection, postStatus } = props.currPost;
+  */
+ 
+  let { id, user, title, body, name,assigned, location, imgCollection, postStatus, tags, date } = props.currPost;
+  //let currUser = props.currUser;
+ 
+  function print() {
+    //this is called when button clicked
+    //this prints undefined
+   console.log("current user" , props.currUser);
+   console.log("post id" , id);
+  }
+   let postTag;
+   if(tags){
+     tags.map( (tag) => (
+      postTag= <li><h4>{tag}</h4></li>
+       )) 
+     }
+   else{
+     postTag=null;
+   }
+   
  
   return (
       <div
@@ -60,53 +84,113 @@ const Post = (props,
         <div className="post-template">
 
           <h4>Status: {postStatus}</h4>
+          <Link to={`/friend/${user}`}><h3>{name}</h3> </Link>
+          <h1 className="title">{title}</h1>
+          <br></br>
+          <Moment format="DD/MM/YYYY" className="date">
+                          {moment.utc(date)}
+                        </Moment>
+          <div className="clear"></div>
 
-          <h3>{name}</h3>
-          <h1>{title}</h1>
           <p>{body}</p>
-         
-         
-          {/*
+
+
+          
+          {/*'
+        <div className="preview-images">
+          <div
+          className="image-item">
+          <img src={locationImage} alt="" />
+          <br></br>
+          <h3 >{location}</h3>
+          </div>
+          </div>
+          <br></br>
             imgCollection.map((img) => (
               <img src={window.location.origin + "/public/" + img} alt="image" />
             ))
+            {tags.map( (tag) => (
+                  <div>
+                    <h4>{tag}</h4>
+                    </div>
+                ))
+              }
             */}
-          
-            {props.accountHome ? null : ( 
-            ( 
-            //  auth.loading === false &&
-            //  !auth.user._id === userId  &&
-            //  console.log("hellllooooo",auth.isAuthenticated)  (
-            <div>
+          {/* tags  ? (
+            <div className="tags">
+              
+                <h3>Required Skills</h3>
+                <ul>
+                {tags.map( (tag) => (
+                  <li><h4>{tag}</h4></li>
+                  ))
+                }
+                </ul>
+                
+            </div>
+          ) : <div>
+           
+            </div>
+              */ } 
+          <div className="clear"><br></br></div>
+            {!props.accountHome ?  ( 
+             <div>
+            
+              <div className="preview-images">
+          <div
+          className="image-item">
+          <img src={locationImage} alt="" />
+          <br></br>
+          <h3 >{location}</h3>
+          </div>
+          </div>
+          <br></br>
+          <div className="tags">
+              
+          <h3>Required Skills</h3>
+          <ul>{postTag}</ul>
+          </div>
+            <div className="clear"> </div>
+            <div className="interest">
             <h2>Are you interested ?</h2>
             
-            <button  className="input-btn"  onClick={ e => props.addInt(id)}>
+            <button  className="input-btn" 
+             onClick={ e => { props.addInt(id, props.currUser);
+              print();
+            }
+          } 
+            >
               <h4>Yes</h4>
                   <span className="button-bar"></span>
             </button>
-            </div>) 
-)}
+            
+            </div>
+            
+            </div>) : null 
+            }
         
            
            {/* <button  className="input-btn">
               <h4>Decline</h4>
                   <span className="button-bar"></span>
             </button> */}
-              
-             
+              { /*
+             <br></br>
                 <button  className="input-btn">
                   <h4>Contact {name}</h4>
                       <span className="button-bar"></span>
                 </button>
-              
+                */
+              }
             
 
 
-            {props.accountHome && props.currPost.interest ? (<div>
+            { /*
+            props.accountHome && props.currPost.interest ? (<div>
               <div className="interest-container">
               {props.currPost.interest.map(inx => {
                 return(
-                <div className="int-item"><h4>User: {findName(inx.user)}</h4>
+                <div className="int-item"><h4>User:  {findName(inx.user)}</h4>
                   <Link to={`/friend/${inx.user}`} className="side-btn long">
                       <span>More</span>  
                       <svg xmlns="http://www.w3.org/2000/svg" width="25.438" height="19.27" viewBox="0 0 25.438 19.27">
@@ -146,7 +230,9 @@ const Post = (props,
                 </button>
               </div>
 
-            </div>) : null}
+            </div>) 
+            : null
+                */}
          
 
            
@@ -172,12 +258,13 @@ Post.propTypes = {
   assignTradesperson: PropTypes.func.isRequired,
   getPostProfiles: PropTypes.func.isRequired,
   postProfiles: PropTypes.object.isRequired,
-  
+  auth: PropTypes.object.isRequired
 
 };
 
 const mapStateToProps = state => ({
  
+  auth: state.auth,
 
   postProfiles: state.postProfiles
 });

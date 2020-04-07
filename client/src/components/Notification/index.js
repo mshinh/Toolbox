@@ -19,17 +19,17 @@ import Button from "react-bootstrap/Button";
 import Post from "../PostDisplay/Post/Post";
 //import Nav from '../Dashboard/Nav/index';
 
-const Notification = ({
-  getNotification,
-  deleteNotification,
-  addInterested,
-  postProfiles,
-  post: { posts },
-  auth: { user, loading }
-}) => {
-  useEffect(() => {
-    getNotification();
-  }, [getNotification]);
+const Notification = ( {
+    getNotification,
+    deleteNotification,
+    Post,
+    Notification,
+    postProfiles,
+    post: { posts },
+    auth: { user, loading }
+}
+) => {
+
 
   const [currpost, updateCurr] = useState({
     postStatus: "",

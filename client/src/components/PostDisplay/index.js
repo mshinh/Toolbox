@@ -12,7 +12,13 @@ import PropTypes from "prop-types";
 import { getPosts, addInterested } from "../../actions/post";
 import Spinner from "../Layout/Spinner";
 
-const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loading } }) => {
+const PostDisplay = ({ 
+  getPosts, 
+  addInterested, 
+  postProfiles, 
+  post: { posts, loading },
+  auth
+ }) => {
   const [currpost, updateCurr] = useState({
     postStatus: "",
     id: "",
@@ -21,12 +27,15 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
     name: "",
     location:"",
     imgCollection: [],
+    tags: [],
+    date: "",
+    user: ""
     
   });
   const [active, updateActive] = useState(false);
-
+  const [ currUser, setCurrUser ] = useState(0);
   const activeContent = post => {
-    updateCurr({ id: post._id, postStatus: post.postStatus, interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection  });
+    updateCurr({ id: post._id, postStatus: post.postStatus, interest: post.interest, title: post.title, body: post.body, name: post.name, location: post.location, imgCollection: post.imgCollection, tags: post.tags, date: post.date, user: post.user  });
     updateActiveState(true);
   };
   const updateActiveState = newSet => {
@@ -38,6 +47,15 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
 
   
   }, [getPosts]);
+
+  //scurrUser = "foo";
+  const storeUser = id => {
+    //this prints correct
+    //this is called on click of a button
+    
+    setCurrUser(id);
+    console.log("index user", currUser);
+  };
 
   return loading ? (
     <Spinner />
@@ -75,25 +93,31 @@ const PostDisplay = ({ getPosts, addInterested, postProfiles, post: { posts, loa
                   ))
                 }
               </div>
-              
+              {auth.isAuthenticated &&
+            auth.loading === false &&
+             (
               <div className="buttom-container">
                 <button
                   type="submit"
                   onClick={e => {
                     activeContent(post);
+                    storeUser(auth.user._id);
                   }}
+             
                   className="input-btn"
                 >
                   <h4>More Information</h4>
                   <span className="button-bar"></span>
                 </button>
               </div>
+            )}
+              
             </div>
           ))}
         </div>
       </div>
 
-      <Post currPost={currpost} active={active} postProfiles={postProfiles} addInt={addInterested} toggle={updateActiveState} accountHome={false}/>
+      <Post  currUser = { currUser } currPost={currpost} active={active} postProfiles={postProfiles} addInt={addInterested} toggle={updateActiveState} accountHome={false}/>
     </div>
   );
 };
@@ -103,10 +127,13 @@ PostDisplay.propTypes = {
   addInterested: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
   postProfiles: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  
 
 };
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   post: state.post,
   postProfiles: state.postProfiles
 });
