@@ -64,6 +64,7 @@ const Post = (props
     //this is called when button clicked
     //this prints undefined
    console.log("current user" , props.currUser);
+   console.log("post id" , id);
  }
   return (
       <div
@@ -127,7 +128,7 @@ const Post = (props
             <h2>Are you interested ?</h2>
             
             <button  className="input-btn" 
-             onClick={ e => { props.addInt(props.currUser);
+             onClick={ e => { props.addInt(id, props.currUser);
               print();
             }
           } 

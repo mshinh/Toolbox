@@ -1,5 +1,7 @@
 import axios from "axios";
 import { setAlert } from "./alert";
+import { loadUser } from "./auth";
+
 import {
   GET_SEARCHED_POSTS,
   GET_POSTS,
@@ -14,8 +16,13 @@ import {
   REMOVE_COMMENT,
   UPDATE_STATUS,
   GET_NOTIFICATION,
-  DELETE_NOTIFICATION
+  DELETE_NOTIFICATION,
+  GET_PROFILES,
+  PROFILE_ERROR,
+  CLEAR_PROFILE,
+
 } from "./types";
+
 
 // Get posts
 export const getPosts = () => async dispatch => {
@@ -113,14 +120,14 @@ export const deleteNotification = id => async dispatch => {
 
 
 // Add Interest
-export const addInterested = id => async dispatch => {
-  console.log("action interest" , id);
+export const addInterested = (postId, userId) => async dispatch => {
+  //console.log("action interest" , userId);
   try {
-    const res = await axios.put(`/api/posts/interest/${id}`);
+    const res = await axios.put(`/api/posts/interest/${postId}/${userId}`);
 
     dispatch({
       type: UPDATE_INTEREST,
-      payload: { id, interest: res.data }
+      payload: { postId, interest: res.data }
     });
   } catch (err) {
     dispatch({
@@ -130,19 +137,47 @@ export const addInterested = id => async dispatch => {
   }
 };
 
-export const assignTradesperson = id => async dispatch => {
-  try {
+//Get Interests
 
+export const getInterest = (id) => async dispatch => {
+  dispatch({ type: CLEAR_PROFILE });
+
+  console.log("post id", id);
+  try {
+    const res = await axios.get(`api/posts/interests/${id}`);
+
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data
+    });
+
+    
+  } catch (err) {
+    console.log(err);
+   // dispatch({
+     // type: PROFILE_ERROR,
+     // payload: { msg: err.response.statusText, status: err.response.status }
+    //});
+  }
+
+};
+
+
+//Assign user for project
+export const assignTradesperson = (id) => async dispatch => {
+  console.log("ASSIGN ID", id);
+  try {
+    
     const res = await axios.put(`/api/posts/assign/${id}`);
 
-    var search = id;
-    var para = search.split(",");
+    //var search = id;
+    //var para = search.split(",");
 
-    var arr = para.map(ele => ele);
-    var id_ = arr[0];
+    //var arr = para.map(ele => ele);
+    //var id_ = arr[0];
     dispatch({
       type: UPDATE_ASSIGNED,
-      payload: { id_, assigned: res.data }
+      payload: { id, assigned: res.data }
     });
   } catch (err) {
     dispatch({

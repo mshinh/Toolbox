@@ -524,7 +524,35 @@ router.delete("/deleteContact/:id",
 // @route    POST api/profile/notification
 // @desc     Get all notification
 // @access   Public
-
+router.get("/notification",
+  [
+    auth
+  ], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try{
+      let profile = await Profile.findOne({ user: req.user.id });
+      if(profile) {
+        const postsIDs = profile.notification.map(({postReference}) => postReference);
+        const posts = await Post.find({'_id' : { $in: postsIDs }}).populate("user", [
+          "fname",
+          "lname",
+          "email",
+          "userphoto"
+        ]); 
+        
+       //const notification = profile.notification;
+        res.json(posts);
+       // console.log("NOTIFICATION POSTS", notification);
+      }
+    } catch (err) {
+      res.status(500).send("Server Error");
+    }
+  }
+);
+/*
 router.get("/notification",
   [
     auth
@@ -553,7 +581,7 @@ router.get("/notification",
     }
   }
 );
-
+*/
 // @route    POST api/profile/deleteNotification/:id
 // @desc     Delete notification
 // @access   Public

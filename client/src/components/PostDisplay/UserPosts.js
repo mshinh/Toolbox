@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getUserPosts, deletePost } from "../../actions/post";
+import { getUserPosts, deletePost, getInterest } from "../../actions/post";
 import { getPostProfiles } from "../../actions/profile";
 import Spinner from "../Layout/Spinner";
 import {
@@ -27,6 +27,7 @@ const UserPostDisplay = ({
   getPostProfiles,
   postProfiles,
   deletePost,
+  getInterest,
   // postProfile: {postProfiles},
   post: { posts},
   auth: { user, loading }
@@ -157,12 +158,22 @@ const UserPostDisplay = ({
                   </button>
                 </div>
                 <br></br>
+               <Link to={"/interests"} > 
+              
+                <Button type="button"
+                  className='btn btn-primary'
+                  onClick={() => getInterest(post._id)}
+                  >
+                    Interested users
+                  </Button>
+                  </Link>
                   <Button
                   onClick={() => confirm(post._id)}
                   type='button'
-                  className='btn btn-danger' >Delete 
+                  className='btn btn-danger' >Delete Post
                   {   } <i className='fas fa-times' />
                   </Button>
+                  
                 
               </div>
             ))}
@@ -184,7 +195,8 @@ UserPostDisplay.propTypes = {
   postProfile: PropTypes.object.isRequired,
   postProfiles: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
-  deletePost: PropTypes.func.isRequired
+  deletePost: PropTypes.func.isRequired,
+  getInterest: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -194,5 +206,5 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 export default connect(mapStateToProps, {
-  getUserPosts, getPostProfiles, deletePost
+  getUserPosts, getPostProfiles, deletePost, getInterest
 })(withRouter(UserPostDisplay));

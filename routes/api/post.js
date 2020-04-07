@@ -101,12 +101,22 @@ router.post(
       const notifyUser = await Profile.find( { occupation: postTag });
      // console.log("NOTIFIED USER",notifyUser);
      if(notifyUser != null) {
+      notifyUser.map((user) => {
+        console.log('POSTTTTAAA', post)
+        user.notification.push({
+          postReference: post._id
+        });
+        console.log("NOTIFICATIONS----------",user.notification);
+        user.save();
+      }); 
+     /*if(notifyUser != null) {
         notifyUser.map((user) => {
-          user.notification.push([post._id,"post"]);
+          user.notification.push(post._id);
           console.log("NOTIFICATIONS----------",user.notification);
           user.save();
         }); 
-        
+       */
+
       /* for(var i = 0; i < notifyUser; i++) {
          notifyUser[i].notification.id = post._id;
          notifyUser[i].notification.type = "post";
@@ -237,12 +247,17 @@ router.delete("/:id", auth, async (req, res) => {
 // @route    PUT api/posts/interest/:id
 // @desc     interest a post
 // @access   Private
-router.put("/interest/:id", auth, async (req, res) => {
+router.put("/interest/:postId/:userId", 
+auth, 
+async (req, res) => {
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
   try {
-    const post = await Post.findById(req.params.id);
-
+    
     // Check if the post has already been liked
-    if (
+    /*if (
       post.interest.filter(like => like.user.toString() === req.user.id).length > 0
     ) {
       return res.status(400).json({ msg: "Already Interested" });
@@ -253,16 +268,74 @@ router.put("/interest/:id", auth, async (req, res) => {
     await post.save();
 
     res.json(post.interest);
+    */
+   const post = await Post.findById(req.params.postId);
+   const user = await User.findById(req.params.userId);
+   if( post ) {
+     if( user ){
+        post.interest.push(user);
+        post.save();
+        console.log("Successfulllllll post interest");
+        res.status(200).json({ success: 'Done' })
+     }
+     else {
+      return res.status(401).json({ errors: "User not found" });
+    }
+   }
+   else {
+    return res.status(401).json({ errors: "Post not found" });
+  }
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
 
+// @route    GET api/posts/interests/:id
+// @desc     get interests  of a post
+// @access   Private
+router.get("/interests/:postId",
+  [
+    auth
+  ], async ( req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-router.put("/assign/:id", auth, async (req, res) => {
+    try {
+      let post_id = req.params.postId;
+      //console.log("POST_ID", post_id);
+
+      let post = await Post.findById(post_id);
+      
+      if(post) {
+        
+        const profiles = await Profile.find({'user' : { $in: post.interest}}).populate("user", [
+          "fname",
+          "lname",
+          "email",
+          "userphoto"
+        ]);
+        res.json(profiles);
+        console.log("successfull", profiles);
+      }
+
+    } catch (err) {
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+router.put("/assign/:id", 
+auth, 
+async (req, res) => {
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
   try {
-
+/*
     var search = req.params.id;
     var para = search.split(",");
     console.log("SEARCH", search);
@@ -288,7 +361,15 @@ router.put("/assign/:id", auth, async (req, res) => {
     console.log("Post Assigned", post.assigned);
     res.json(post.assigned);
 
-
+*/
+    let user = req.params.id;
+    let post = await Post.findOne({ interest: { $all: user }});
+    if(post){
+    post.assigned = user;
+    post.save();
+    console.log("Assign succesfull", post.assigned); 
+    } else
+    console.log("Post not found");
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

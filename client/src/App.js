@@ -22,6 +22,7 @@ import Friend from "./components/Profile/Profile";
 import Friends from "./components/Friends/Profiles";
 import ContactList from "./components/Friends/ContactList";
 import Notification from "./components/Notification";
+import Interests from "./components/PostDisplay/Interests/Interests";
 
 import Messenger from "./components/Mailbox/Messenger";
 
@@ -59,6 +60,7 @@ const App = () => {
                 <PrivateRoute exact path="/contacts" component={ContactList} />
                 <PrivateRoute exact path="/notifications" component={Notification} />
                 <PrivateRoute exact path="/mailbox" component={Messenger} />
+                <PrivateRoute exact path="/interests" component={Interests} />
                 <PrivateRoute
                   exact
                   path="/create-profile"
